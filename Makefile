@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/02/20 19:01:46 by luicasad         ###   ########.fr        #
+#    Updated: 2024/02/21 09:21:22 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,6 +85,7 @@ LLIBS 			= -L$(LIBDIR) -l$(LOADLIBARGPA) -l$(LOADLIBPRINTF) -l$(LOADLIBFT)
 
 HEADER		=	pipex.h
 SRCS_PIPEX	= 	execute.c \
+				create.c \
 				show_pipex_args.c \
 				pipex.c
 

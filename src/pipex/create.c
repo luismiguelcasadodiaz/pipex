@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   create.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/20 17:57:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/21 09:23:19 by luicasad         ###   ########.fr       */
+/*   Created: 2024/02/21 09:18:22 by luicasad          #+#    #+#             */
+/*   Updated: 2024/02/21 09:22:51 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include "argpar.h"
+#include <stdlib.h>
 
-int	main(int argc, char **argv)
+t_pipex_args	create(void)
 {
-	extern char **environ;
-	t_pipex_args	pip_arg;
+	t_pipex_args r;
 
-	pip_arg = create();
-	if (arg_ok(argc, argv, environ, &pip_arg))
-		execute(pip_arg);
-	return (0);
+	r.infile = NULL;
+	r.outfile = NULL;
+	r.cmd1 = NULL;
+	r.cmd2 = NULL;
+	return (r);
 }
