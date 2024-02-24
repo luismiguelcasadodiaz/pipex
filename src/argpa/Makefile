@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 18:16:38 by luicasad          #+#    #+#              #
-#    Updated: 2024/02/20 18:41:26 by luicasad         ###   ########.fr        #
+#    Updated: 2024/02/24 10:33:20 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 MAKEFLAGS += rR
@@ -63,6 +63,7 @@ HEADER	=	argpar.h
 SRCS	=	show_usage.c \
 			arg_is_filename.c \
 			arg_is_command.c \
+			arg_fin_env_var.c \
 			arg_digi.c \
 			arg_rang.c \
 			arg_pars.c 

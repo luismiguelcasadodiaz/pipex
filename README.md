@@ -10,7 +10,7 @@ Your program will be executed as follows:
 It must take 4 arguments
 
 file1 & file2 are file names
-cmd1 and cmd2 are shell commnads wiht their parameters.
+cmd1 and cmd2 are shell commands with their parameters.
 
 I must behave exactly the same as this shell command
 
@@ -26,11 +26,25 @@ For file2 check that there are writing permits
 
 check that either cmd1 or cmd2 are found in any path.
 
-I use the funciton arg_ok that verifies that four argument, prints all errore message related to such verification.
+I use the funcition arg_ok that verifies that four argument, prints all error messages related to such verification.
 If all four arguments are correct, arg_ok returns a struct with the right values to pass to the children processes
 
 ```c
-typedef
+typedef struct	s_pipex_args
+{
+	char	*infile;
+	char	*outfile;
+	char	*cmd1;
+	char	*cmd2;
+}	t_pipex_args;
+```
+## What is a Shell command?
+
+### According to `man bash`:
+source, alias, bg, bind, break, builtin, caller, cd, command, compgen, complete, compopt, continue, declare, typeset, dirs, disown, echo, enable, eval, exec, exit, export, fc, fg, getopts, hash, help, history, jobs, kill, let, local, logout, mapfile, readarray, popd, printf, pushd, pwd, read, readonly, return, set, shift, shopt, suspend, test, times, trap, type, ulimit, umask, unalias, unset, wait, 
+
+### According to `compgen -c`: 
+MY linus box has 7717 commands
 
 # Environment
 
@@ -106,3 +120,25 @@ int	main(int argc, char **argv)
 	}
 }
 ```
+
+### Find a variable in enviromemt
+
+Loops over environ matching var name, returning a apointer to the found var, NJULL oterhwise.
+
+```c
+char	*find_variable(char **environ, char	*var)
+{
+	int			len;
+
+	len = ft_strlen(var);
+	while (*environ != NULL)
+	{
+		result = ft_strnstr(*environ, var, len);
+		if (result)
+			return (*environ);
+	}
+	return (NULL);
+}
+```
+
+
