@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:26:35 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/24 12:25:33 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/02/26 20:13:19 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,6 @@ static char	**de_allocate(char **table, size_t allocated_rows)
 	return (NULL);
 }
 
-char	*arg_val_var(char *var)
-{
-	char	**var_parts;
-	char	*result;
-
-	var_parts = ft_split(var, '=');
-	if (var_parts)
-	{
-		result = var_parts[1];
-		free(var_parts[0]);
-		free(var_parts);
-		return (result);
-	}
-	return (NULL);
-}
 
 char	*arg_fin_com(char *var, char *com) 
 {
