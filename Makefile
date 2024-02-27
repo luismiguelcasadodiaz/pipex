@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/02/21 09:21:22 by luicasad         ###   ########.fr        #
+#    Updated: 2024/02/27 11:26:41 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SRCDIR_PIPEX		= ./src/pipex/
 SRCDIR_PRINT		= ./src/ftpri/
 SRCDIR_LIBFT		= ./src/libft/
 SRCDIR_ARGPA		= ./src/argpa/	
+SRCDIR_ERROR		= ./src/error/	
 
 OBJDIR 			= ./obj/
 INCDIR 			= ./inc/
@@ -77,8 +78,12 @@ NAMELIBARGPA 		= libargpar.a
 PATH_ARGPA 		= $(addprefix $(SRCDIR_ARGPA), $(NAMELIBARGPA))
 LOADLIBARGPA 		= argpar
 
-MYLIBS			= $(NAMELIBPRINTF) $(NAMELIBFT) $(NAMELIBARGPA)
-LLIBS 			= -L$(LIBDIR) -l$(LOADLIBARGPA) -l$(LOADLIBPRINTF) -l$(LOADLIBFT) 
+NAMELIBERROR 		= libfterror.a
+PATH_ERROR 		= $(addprefix $(SRCDIR_ERROR), $(NAMELIBERROR))
+LOADLIBERROR 		= fterror
+
+MYLIBS			= $(NAMELIBPRINTF) $(NAMELIBFT) $(NAMELIBARGPA) $(NAMELIBERROR)
+LLIBS 			= -L$(LIBDIR) -l$(LOADLIBARGPA) -l$(LOADLIBPRINTF) -l$(LOADLIBERROR) -l$(LOADLIBFT) 
 # ============================================================================ #
 #                                 SOURCES                                      #
 # ============================================================================ #
@@ -125,6 +130,7 @@ makelibs: $(MYLIBS)
 $(NAMELIBPRINTF): makelibftprintf $(LIBDIR)$(NAMELIBPRINTF)
 $(NAMELIBFT): 	  makelibft $(LIBDIR)$(NAMELIBFT)
 $(NAMELIBARGPA):  makelibargpa $(LIBDIR)$(NAMELIBARGPA)
+$(NAMELIBERROR):  makeliberror $(LIBDIR)$(NAMELIBERROR)
 
 makelibft: 
 	$(MAKE) -C $(SRCDIR_LIBFT)
@@ -134,6 +140,9 @@ makelibftprintf:
 
 makelibargpa:
 	$(MAKE) -C $(SRCDIR_ARGPA)
+
+makeliberror:
+	$(MAKE) -C $(SRCDIR_ERROR)
 
 # ....................... dependencies construction .......................... #
 #for each c file create its dependency file 
@@ -159,16 +168,16 @@ $(OBJDIR)%.o: $(SRCDIR_PIPEX)%.c $(INCDIR)$(HEADER)
  
 .PHONY: clean
 clean:
-	@echo "========== Cleaning Push_swap objects =============="
+	@echo "========== Cleaning pipex objects =============="
 	rm -f $(OBJS_PIPEX)
 	@echo "========== Cleaning prinf_f objects ================"
 	$(MAKE) -C $(SRCDIR_PRINT)  clean
 	@echo "========== Cleaning libft  objects ================="
 	$(MAKE) -C $(SRCDIR_LIBFT)  clean
-	@echo "========== Cleaning libpss  objects ================="
-	$(MAKE) -C $(SRCDIR_STACK)  clean
-	@echo "========== Cleaning libpss  objects ================="
+	@echo "========== Cleaning argpa  objects ================="
 	$(MAKE) -C $(SRCDIR_ARGPA)  clean
+	@echo "========== Cleaning error  objects ================="
+	$(MAKE) -C $(SRCDIR_ERROR)  clean
 	@echo "========== Cleaning libraries *.a =================="
 	rm -f $(LIBDIR)*
 
@@ -180,23 +189,23 @@ fclean : clean
 	$(MAKE) -C $(SRCDIR_PRINT)  fclean
 	@echo "======= Cleaning libft   objectsand library ========"
 	$(MAKE) -C $(SRCDIR_LIBFT)  fclean
-	@echo "======= Cleaning libft   objectsand library ========"
-	$(MAKE) -C $(SRCDIR_STACK)  fclean
-	@echo "======= Cleaning libft   objectsand library ========"
+	@echo "======= Cleaning argpa   objectsand library ========"
 	$(MAKE) -C $(SRCDIR_ARGPA)  fclean
+	@echo "======= Cleaning error   objectsand library ========"
+	$(MAKE) -C $(SRCDIR_ERROR)  fclean
 
 .PHONY: re
 re: fclean all
-	@echo "========== Rebuilding Push_swap ===================="
+	@echo "========== Rebuilding pipex ===================="
 
 .PHONY: bonus_clean
 bonus_clean:
-	@echo "========== Cleaning CHECKER objects ================"
+	@echo "========== Cleaning pipex bonus objects ================"
 	rm -f $(OBJS_CHECK)
 
 .PHONY: bonus_fclean
 bonus_fclean: bonus_clean
-	@echo "========== Cleaning executable Checker ============="
+	@echo "========== Cleaning executable pipex bonus ============="
 	rm -f $(BONUS)
 norma:
 	$(MAKE) -C $(SRCDIR_PRINT)  norma
@@ -205,7 +214,8 @@ norma:
 	@echo "$(GREEN)========== CHECKING NORME $(NAME) ==============$(DEF_COLOR)"
 	norminette $(SRCDIR_PIPEX) 
 	@echo "$(MAGENTA)========== CHECKING NORME $(BONUS) ==============$(DEF_COLOR)"
-	norminette $(SRCDIR_CHECK)
+	norminette $(SRCDIR_BONUS)
+	norminette $(INCDIR)
 run:
 	valgrind --tool=memcheck --leak-check=yes ./$(NAME)
 bonusrun:

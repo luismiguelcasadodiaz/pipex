@@ -6,11 +6,12 @@
 /*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:01:50 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/26 20:16:18 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:22:44 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_error.h"
 
 /******************************************************************************/
 /**
@@ -39,5 +40,6 @@ char	*arg_val_var(char *var)
 		free(var_parts);
 		return (result);
 	}
+	ft_error_print(ERR001, __func__, __LINE__);
 	return (NULL);
 }

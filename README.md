@@ -17,6 +17,29 @@ I must behave exactly the same as this shell command
 ```bash
 $> < file1 cmd1 | cmd2 > file2
 ```
+
+## Bonus 1
+
+Your program will be executed as follows:
+
+```bash
+$> ./pipex file1 cmd1 cmd2 cmd3 ... cmdn file2
+```
+
+## Bonus 2
+Support « and » when the first parameter is "here_doc".
+
+
+```bash
+$> ./pipex here_doc LIMITER cmd cmd1 file
+```
+
+Should behave like:
+
+```bash
+cmd << LIMITER | cmd1 >> file
+```
+
 # Approach
 
 ## Argument validation
@@ -141,4 +164,6 @@ char	*find_variable(char **environ, char	*var)
 }
 ```
 
+## What I read.
 
+[Here doc](https://linuxize.com/post/bash-heredoc/)

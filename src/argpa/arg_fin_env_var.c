@@ -6,11 +6,13 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 10:11:01 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/24 10:37:36 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:50:31 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_error.h"
+
 
 /******************************************************************************/
 /**
@@ -39,5 +41,6 @@ char	*arg_fin_env_var(char **environ, char	*var)
 			return (*environ);
 		environ++;
 	}
+	ft_error_print(ERR002, __func__, __LINE__);
 	return (NULL);
 }
