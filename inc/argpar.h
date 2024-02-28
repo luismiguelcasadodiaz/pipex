@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 09:21:04 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/26 20:16:17 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/02/28 21:28:31 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int		arg_range_int(char *arg, int *my_int);
 int		arg_digits(char *arg);
 char	*arg_val_var(char *var);
 char	*arg_fin_env_var(char **environ, char *var);
+char	*arg_fin_com(char *var_val, char *com);
 int		arg_is_filename(char *arg, char **environ, t_pipex_args *pip_arg);
 int		arg_is_command(char *arg, char **environ, t_pipex_args *pip_arg);
 int		arg_ok(int argc, char **argv, char **environ, t_pipex_args *pip_arg);

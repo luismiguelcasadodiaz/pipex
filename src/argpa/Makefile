@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 18:16:38 by luicasad          #+#    #+#              #
-#    Updated: 2024/02/26 20:14:12 by luicasad         ###   ########.fr        #
+#    Updated: 2024/02/28 21:29:33 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 MAKEFLAGS += rR
@@ -65,6 +65,7 @@ SRCS	=	show_usage.c \
 			arg_is_command.c \
 			arg_fin_env_var.c \
 			arg_val_var.c \
+			arg_fin_com.c \
 			arg_digi.c \
 			arg_rang.c \
 			arg_pars.c 

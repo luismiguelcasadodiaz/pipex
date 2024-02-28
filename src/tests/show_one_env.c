@@ -6,66 +6,15 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:26:35 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/26 20:13:19 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/02/28 22:29:45 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft.h"
 #include "argpar.h"
+#include "ft_error.h"
 #include <stdio.h>
-
-static char	**de_allocate(char **table, size_t allocated_rows)
-{
-	while (allocated_rows > 0)
-	{
-		free(table[--allocated_rows]);
-	}
-	free(table);
-	return (NULL);
-}
-
-
-char	*arg_fin_com(char *var, char *com) 
-{
-	char	**aux;
-	char	**paths;
-	char	*var_val;
-	char	*command;
-	char	*slash_command;
-	int		len;
-	int		found;
-
-	ft_printf("%s-%s\n", var, com);
-	ft_printf("##################\n");
-	var_val = arg_val_var(var);
-	if (var_val)
-	{
-	paths = ft_split(var_val, ':');
-	slash_command = ft_strjoin("/", com);
-	aux = paths;
-	len = 0;
-	found = 0;
-	while(*paths != NULL)
-	{	
-		command =ft_strjoin(*paths, slash_command);
-		if (!found && !access(command, R_OK))
-		{
-			ft_printf("%s\n", command);
-			found = 1;
-		}
-		free(command);
-		paths++;
-		len++;
-	}
-	free(slash_command);
-	ft_printf("##################\n");
-	aux = de_allocate(aux, len);
-	free(var_val);
-	return ("Test");
-	}
-	return (NULL);
-}
 
 void	show_usage(void)
 {
@@ -74,8 +23,9 @@ void	show_usage(void)
 
 int	main(int argc, char **argv)
 {
-	extern char **environ;
-	char		*result;
+	extern char	**environ;
+	char		*var;
+	char		*var_val;
 	char		*command;
 
 	if (argc != 3)
@@ -83,12 +33,19 @@ int	main(int argc, char **argv)
 		show_usage();
 		return (0);
 	}
-	result = arg_fin_env_var(environ, argv[1]);
-	if (result)
+	var = arg_fin_env_var(environ, argv[1]);
+	if (var)
 	{
-		command = arg_fin_com(result, argv[2]);
+		var_val = arg_val_var(var);
+		if (!var_val)
+			return (-1);
+		command = arg_fin_com(var_val, argv[2]);
+		free(var_val);
 		if (command)
 			ft_printf("La ruta al comando es %s\n", command);
+		else
+			ft_error_print(ERR003, __func__, __LINE__);
+		free(command);
 	}
 	return (0);
 }

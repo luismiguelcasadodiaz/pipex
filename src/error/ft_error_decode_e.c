@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:36:23 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/27 11:05:19 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/02/28 19:28:14 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,7 @@ char	*ft_error_decode_e(int e)
 		return ("Environment variable not found in current environment");
 	if (e == ERR003)
 		return ("The command does not exits in current path");
+	if (e == ERR004)
+		return ("PATH variable value has not char(:)");
 	return ("Unknow error");
 }
