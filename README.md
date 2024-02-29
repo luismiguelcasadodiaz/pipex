@@ -44,21 +44,28 @@ cmd << LIMITER | cmd1 >> file
 
 ## Argument validation
 
+In mandatory part argc is 5. 5 minus pipex commnad minus infile minus outfile i have a two-commands pipe (5 - 3).
+In bonus part argc is n. I have a (n - 3)-commnds pipe.
+
 For file1 check that there are reading permits
 For file2 check that there are writing permits
 
 check that either cmd1 or cmd2 are found in any path.
 
-I use the funcition arg_ok that verifies that four argument, prints all error messages related to such verification.
-If all four arguments are correct, arg_ok returns a struct with the right values to pass to the children processes
+I use the function arg_ok that verifies that four arguments, prints all error messages related to such verification.
+If all four arguments are correct, arg_ok returns a struct with the right values to pass to the children processes.
+The struct holds a all_ok variable that indicates if all filenames and commnads are reachable.
+Also max_cmds and num_cmds help to manage the cmds malloc
 
 ```c
 typedef struct	s_pipex_args
 {
+	int		max_cmds;
+	int		num_cmds;
 	char	*infile;
 	char	*outfile;
-	char	*cmd1;
-	char	*cmd2;
+	char	**cmds;
+	int		all_ok;
 }	t_pipex_args;
 ```
 ## What is a Shell command?
@@ -144,7 +151,7 @@ int	main(int argc, char **argv)
 }
 ```
 
-### Find a variable in enviromemt
+### Find a variable in environmemt
 
 Loops over environ matching var name, returning a apointer to the found var, NJULL oterhwise.
 
@@ -163,6 +170,47 @@ char	*find_variable(char **environ, char	*var)
 	return (NULL);
 }
 ```
+
+### Find a command
+
+Splits value of PATH variable. For each path, joins "/command" and checks if execution permit is possible.
+
+Returns command full path or NULL if there are not execution permits.
+
+```c
+char	*arg_fin_com(char *var_val, char *com)
+{
+	char	**paths;
+	char	*command;
+	char	*result;
+	char	*slash_command;
+	int		len;
+
+	slash_command = ft_strjoin("/", com);
+	len = 0;
+	result = NULL;
+	paths = get_paths(var_val);
+	while (paths[len] != NULL)
+	{
+		command = ft_strjoin(paths[len], slash_command);
+		if (!result && !access(command, X_OK))
+			result = command;
+		len++;
+	}
+	return (result);
+}
+```
+
+### find a file name
+
+my first validation checks if filename has legal characters for a filename...any character except '/'.
+
+Also, user may refer a filename with a relative path such as
+../inc/filename
+inc/filename
+
+Then, if argument has not '/' it is a filename in current folder whose absolute path name start wiht the PWD variabla content
+
 
 ## What I read.
 

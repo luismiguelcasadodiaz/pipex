@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/02/27 11:26:41 by luicasad         ###   ########.fr        #
+#    Updated: 2024/02/29 17:20:48 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ BONUS 			= bonus
 #                                 FOLDERS                                      #
 # ============================================================================ #
 SRCDIR_PIPEX		= ./src/pipex/
+SRCDIR_BONUS		= ./src/bonus/
 SRCDIR_PRINT		= ./src/ftpri/
 SRCDIR_LIBFT		= ./src/libft/
 SRCDIR_ARGPA		= ./src/argpa/	
@@ -91,7 +92,10 @@ LLIBS 			= -L$(LIBDIR) -l$(LOADLIBARGPA) -l$(LOADLIBPRINTF) -l$(LOADLIBERROR) -l
 HEADER		=	pipex.h
 SRCS_PIPEX	= 	execute.c \
 				create.c \
+				destroy.c \
 				show_pipex_args.c \
+				set_command.c \
+				set_file.c \
 				pipex.c
 
 

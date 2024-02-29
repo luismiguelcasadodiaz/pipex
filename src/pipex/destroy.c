@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   show_pipex_args.c                                  :+:      :+:    :+:   */
+/*   destroy.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/20 18:47:06 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/29 16:06:40 by luicasad         ###   ########.fr       */
+/*   Created: 2024/02/29 15:38:36 by luicasad          #+#    #+#             */
+/*   Updated: 2024/02/29 17:27:53 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include "ft_printf.h"
+#include <stdlib.h>
 
-void	show_pipex_args(t_pipex_args args)
+void	destroy(t_pipex_args args)
 {
 	int	i;
 
-	ft_printf("max_cmds %d\n", args.max_cmds);
-	ft_printf("infile %s\n", args.infile);
-	ft_printf("outfile %s\n", args.outfile);
-	i = -1;
-	while (++i < args.max_cmds)
-		ft_printf("cmds[%d] %s\n", i, args.cmds[i]);
-	ft_printf("all_ok %d\n", args.all_ok);
+	free(args.infile);
+	free(args.outfile);
+	i = args.max_cmds;
+	while (--i >= 0)
+		free(args.cmds[i]);
+	free(args.cmds);
+	args.cmds = NULL;
 }

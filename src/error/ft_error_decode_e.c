@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:36:23 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/28 19:28:14 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:38:10 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,11 @@ char	*ft_error_decode_e(int e)
 		return ("The command does not exits in current path");
 	if (e == ERR004)
 		return ("PATH variable value has not char(:)");
+	if (e == ERR005)
+		return ("Memory allocation failed");
+	if (e == ERR006)
+		return ("File not found or wrong r/w permission");
+	if (e == ERR050)
+		return ("t_pipex_args has not available slots for more commands");
 	return ("Unknow error");
 }

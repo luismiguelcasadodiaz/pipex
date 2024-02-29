@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:57:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/21 09:23:19 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:07:06 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,17 @@
 
 int	main(int argc, char **argv)
 {
-	extern char **environ;
+	extern char		**environ;
 	t_pipex_args	pip_arg;
 
-	pip_arg = create();
-	if (arg_ok(argc, argv, environ, &pip_arg))
-		execute(pip_arg);
+	if (argc >= 5)
+	{
+		pip_arg = create(argc - 3);
+		if (arg_ok(argc, argv, environ, &pip_arg))
+			execute(pip_arg);
+		destroy(pip_arg);
+	}
+	else
+		show_usage();
 	return (0);
 }

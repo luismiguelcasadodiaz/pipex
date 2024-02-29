@@ -1,35 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arg_is_command.c                                   :+:      :+:    :+:   */
+/*   show_one_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/20 18:42:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/29 16:04:28 by luicasad         ###   ########.fr       */
+/*   Created: 2024/02/20 14:26:35 by luicasad          #+#    #+#             */
+/*   Updated: 2024/02/28 22:29:45 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_printf.h"
+#include "libft.h"
 #include "argpar.h"
 #include "ft_error.h"
-#include "ft_printf.h"
+#include <stdio.h>
 
-int	arg_is_command(char *arg, char **environ, t_pipex_args *pip_arg)
+void	show_usage(void)
 {
-	char	*var;
-	char	*var_val;
-	char	*command;
+	ft_printf("./show_one_env <BASH_VARIABLE> <command>\n");
+}
 
-	var = arg_fin_env_var(environ, "PATH");
+int	main(int argc, char **argv)
+{
+	extern char	**environ;
+	char		*var;
+	char		*var_val;
+	char		*command;
+
+	if (argc != 3)
+	{
+		show_usage();
+		return (0);
+	}
+	var = arg_fin_env_var(environ, argv[1]);
 	if (var)
 	{
 		var_val = arg_val_var(var);
 		if (!var_val)
 			return (-1);
-		command = arg_fin_com(var_val, arg);
+		command = arg_fin_com(var_val, argv[2]);
 		free(var_val);
-		set_command(pip_arg, command);
+		if (command)
+			ft_printf("La ruta al comando es %s\n", command);
+		else
+			ft_error_print(ERR003, __func__, __LINE__);
+		free(command);
 	}
-	show_pipex_args(*pip_arg);
-	return (pip_arg->all_ok);
+	return (0);
 }

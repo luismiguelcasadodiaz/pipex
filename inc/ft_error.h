@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:52:55 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/28 19:28:30 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:38:00 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 
 enum e_my_errors
 {
-ERR001 = -1,
-ERR002 = -2,
-ERR003 = -3,
-ERR004 = -4,
-ERRnnn = -999
+	ERR001 = -1,
+	ERR002 = -2,
+	ERR003 = -3,
+	ERR004 = -4,
+	ERR005 = -5,
+	ERR006 = -6,
+	ERR050 = -50,
+	ERRnnn = -999
 };
 
 char	*ft_error_str(int e);

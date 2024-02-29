@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arg_fin_com.c                                      :+:      :+:    :+:   */
+/*   arg_fin_file.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/28 21:00:28 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/29 10:35:40 by luicasad         ###   ########.fr       */
+/*   Created: 2024/02/29 16:43:43 by luicasad          #+#    #+#             */
+/*   Updated: 2024/02/29 17:25:34 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 #include "argpar.h"
 #include "ft_error.h"
 #include <unistd.h>
+#include "pipex.h"
 /******************************************************************************/
 /**
-   @file arg_fin_com.c
-   @brief arg_fin_com() finds if command com in any of PATH's paths is 
-   executable. If it is, returns full path, oterhmise NULL
+   @file arg_fin_file.c
+   @brief arg_fin_file() finds if filename is in current directory or if it 
+   is in some folder relative to PWD. Checks access permission accorgingly
+   to data flow direction
 
-   @param[in]  var_val: holds the content of PATH variable after '='
+   @param[in]  var_val: holds the content of PWD variable after '='
    @param[in]      com: the command to locate
 
    @details
@@ -31,42 +33,24 @@
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
-static char	**get_paths(char *var_val)
+char	*arg_fin_file(char *var_val, char *file, int direc)
 {
-	char	**paths;
-
-	paths = ft_split(var_val, ':');
-	if (!paths)
-	{
-		ft_error_print(ERR004, __func__, __LINE__);
-		return (NULL);
-	}
-	return (paths);
-}
-
-char	*arg_fin_com(char *var_val, char *com)
-{
-	char	**paths;
-	char	*command;
+	char	*path;
 	char	*result;
-	char	*slash_command;
-	int		len;
+	char	*slash_file;
+	int		permit;
 
-	slash_command = ft_strjoin("/", com);
-	len = 0;
+	if (direc == PIPEX_INPUT)
+		permit = R_OK;
+	else
+		permit = W_OK;
+	slash_file = ft_strjoin("/", file);
 	result = NULL;
-	paths = get_paths(var_val);
-	while (paths[len] != NULL)
-	{
-		command = ft_strjoin(paths[len], slash_command);
-		if (!result && !access(command, X_OK))
-			result = command;
-		else
-			free(command);
-		free(paths[len]);
-		len++;
-	}
-	free(slash_command);
-	free(paths);
+	path = ft_strjoin(var_val, slash_file);
+	if (!access(path, permit))
+		result = path;
+	else
+		free(path);
+	free(slash_file);
 	return (result);
 }
