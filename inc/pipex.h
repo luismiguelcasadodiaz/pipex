@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:51:53 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/29 17:19:16 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/01 13:26:39 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_H
@@ -14,6 +14,31 @@
 # define PIPEX_INPUT 0
 # define PIPEX_OUTPUT 1
 
+/******************************************************************************/
+/**
+   @file pipex.h
+   @struct s_pipex_args holds absolute paths to files and command used 
+
+   @var  cmd: command name.
+   @var  arg: list of argument ot pass to the command.
+
+
+   @author LMCD (Luis Miguel Casado Díaz)
+ *****************************************************************************/
+typedef struct s_cmd
+{
+	char	*cmd;
+	char	*flg;
+}	t_cmd;
+
+/* ************************************************************************** */
+/* create_cmd() initializes a t_cmd structure.                                */
+/* ************************************************************************** */
+t_cmd			cmd_create(char *cmd, char *flg);
+/* ************************************************************************** */
+/* destroy_cmd() frees memory used by a t_cmd structure.                      */
+/* ************************************************************************** */
+void			cmd_destroy(t_cmd cmd);
 /******************************************************************************/
 /**
    @file pipex.h
@@ -33,10 +58,10 @@ typedef struct s_pipex_args
 {
 	int		max_cmds;
 	int		num_cmds;
+	short	all_ok;
 	char	*infile;
 	char	*outfile;
-	char	**cmds;
-	short	all_ok;
+	t_cmd	**cmds;
 }	t_pipex_args;
 
 /* ************************************************************************** */
@@ -44,7 +69,7 @@ typedef struct s_pipex_args
 /* ************************************************************************** */
 t_pipex_args	create(int max_cmds);
 /* ************************************************************************** */
-/* destroy() initializes a t_pipex_args structure.                            */
+/* destroy() frees memory used by a t_pipex_args structure.                   */
 /* ************************************************************************** */
 void			destroy(t_pipex_args args);
 /* ************************************************************************** */
@@ -54,7 +79,7 @@ void			execute(t_pipex_args pip_arg);
 /* ************************************************************************** */
 /* set_command() assign absolute path to commnad in the right slot            */
 /* ************************************************************************** */
-void			set_command(t_pipex_args *pip_arg, char *command);
+void			set_command(t_pipex_args *pip_arg, t_cmd *command);
 /* ************************************************************************** */
 /* set_file() assign absolute path to file in the right slot                  */
 /* ************************************************************************** */

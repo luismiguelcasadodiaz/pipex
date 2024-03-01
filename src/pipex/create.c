@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 09:18:22 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/29 16:06:24 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/01 13:45:26 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_pipex_args	create(int max_cmds)
 	r.num_cmds = 0;
 	r.infile = NULL;
 	r.outfile = NULL;
-	r.cmds = (char **) malloc(max_cmds * sizeof(char *));
+	r.cmds = (t_cmd **) malloc(max_cmds * sizeof(t_cmd *));
 	if (!r.cmds)
 	{
 		ft_error_print(ERR005, __func__, __LINE__);
@@ -31,7 +31,16 @@ t_pipex_args	create(int max_cmds)
 	}
 	i = -1;
 	while (++i < r.max_cmds)
-		r.cmds[i] = NULL;
+	{
+		r.cmds[i] = (t_cmd *) malloc(sizeof(t_cmd));
+		if (!r.cmds[i])
+		{
+			ft_error_print(ERR005, __func__, __LINE__);
+			exit(-1);
+		}
+		r.cmds[i]->cmd = NULL;
+		r.cmds[i]->flg = NULL;
+	}
 	r.all_ok = 1;
 	return (r);
 }

@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:25:51 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/01 09:32:56 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/01 09:37:59 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	proceso_hijo(int pipes[][2])
 	fclose(salida);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	int	pipes[MAX_PIPES][2];
 
@@ -139,6 +139,9 @@ int	main(void)
 	int 	i;
 	short	exito;
 
+	if (argc !2)
+	{		puts("usage is ./tuberias_pipex <num_proc>\n");
+	}
 	i = -1;
 	exito = 1;
 	while (++i < MAX_PIPES && exito)

@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/02/29 17:20:48 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/01 12:33:00 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,6 +93,8 @@ HEADER		=	pipex.h
 SRCS_PIPEX	= 	execute.c \
 				create.c \
 				destroy.c \
+				cmd_create.c \
+				cmd_destroy.c \
 				show_pipex_args.c \
 				set_command.c \
 				set_file.c \
