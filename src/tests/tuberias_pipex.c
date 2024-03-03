@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tuberias2.c                                        :+:      :+:    :+:   */
+/*   tuberias_pipex.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:25:51 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/01 09:37:59 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/03 10:44:31 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-void	proceso_padre(int pipes[][2])
+void	proceso_padre(int pipes[][2], int count)
 {
 	FILE	*entrada;
 	FILE	*salida;
@@ -51,15 +51,15 @@ void	proceso_padre(int pipes[][2])
 	puts("-- Padre: Empiezo --\n");
 
 	//Cerramos los descriptores de archivo no usados
-	close(pipes[PADRE_HIJO][IN]);
-	close(pipes[HIJO_PADRE][OUT]);
+	close(pipes[count][IN]);
+	close(pipes[count + 1][OUT]);
 
 	//identificamos los descriptores que usará el padre
 	printf("-- Padre: Descriptores (%d, %d) --\n",
-		pipes[PADRE_HIJO][OUT], pipes[HIJO_PADRE][IN]);
+		pipes[count][OUT], pipes[count + 1][IN]);
 
 	// Abrimos la salida hacia el hijo
-	salida = fdopen(pipes[PADRE_HIJO][OUT], "w");
+	salida = fdopen(pipes[count][OUT], "w");
 	if (!salida)
 	{
 		puts("-- Padre: Fallo en la apertura --\n");
@@ -70,7 +70,7 @@ void	proceso_padre(int pipes[][2])
 	puts("-- Padre: Tuberias preparadas -- \n"); 
 
 	//Enviamos el dato que debe operar el hijo
-	if (fputs("24", salida) == EOF)
+	if (fputs("2", salida) == EOF)
 	{
 		puts("-- Padre: Fallo al escribir --\n");
 		return ;
@@ -80,7 +80,7 @@ void	proceso_padre(int pipes[][2])
 	puts("-- Padre: Envido el dato --\n");
 
 	// Abrimos la tubería para recoger el dato del hijo
-	entrada = fdopen(pipes[HIJO_PADRE][IN], "r");
+	entrada = fdopen(pipes[count + 1][IN], "r");
 	//Leemos el resultado
 	fgets(resultado, MAX_LENGTH, entrada);
 	// y lo mostramos
@@ -89,7 +89,7 @@ void	proceso_padre(int pipes[][2])
 	fclose(entrada);
 }
 
-void	proceso_hijo(int pipes[][2])
+void	proceso_hijo(int pipes[][2], int count)
 {
 	FILE	*entrada;
 	FILE	*salida;
@@ -97,14 +97,14 @@ void	proceso_hijo(int pipes[][2])
 	puts("-- Hijo: Empiezo --\n");
 
 	//Cerramos los descriptores de archivo no usados
-	close(pipes[PADRE_HIJO][OUT]);
-	close(pipes[HIJO_PADRE][IN]);
+	close(pipes[count - 1][OUT]);
+	close(pipes[count][IN]);
 
 	//identificamos los descriptores que usará el padre
 	printf("-- Hijo: Descriptores (%d, %d) --\n",
-		pipes[PADRE_HIJO][IN], pipes[HIJO_PADRE][OUT]);
+		pipes[count - 1][IN], pipes[count][OUT]);
 	//Abrimos la tubería para leer del padre
-	entrada = fdopen(pipes[PADRE_HIJO][IN], "r");
+	entrada = fdopen(pipes[count - 1][IN], "r");
 	if (!entrada)
 	{
 		puts("-- Hijo: Fallo en la apertura --\n");
@@ -138,10 +138,12 @@ int	main(int argc, char **argv)
 	pid_t PID;
 	int 	i;
 	short	exito;
+	int		num_proc;
 
-	if (argc !2)
+	if (argc !=2)
 	{		puts("usage is ./tuberias_pipex <num_proc>\n");
 	}
+	num_proc = atoi(argv[1]);
 	i = -1;
 	exito = 1;
 	while (++i < MAX_PIPES && exito)
@@ -154,10 +156,15 @@ int	main(int argc, char **argv)
 		printf("Fallo al crear la ddtuberia %d\n", i);
 		return (-1);
 	}
-	PID = fork();
-	if (PID)
-		proceso_padre(pipes);
-	else
-		proceso_hijo(pipes);
+	i = 0;
+	while (i < (num_proc -1))
+	{
+		PID = fork();
+		if (PID)
+			proceso_padre(pipes, i);
+		else
+			proceso_hijo(pipes, i + 1);
+		i++;
+	}
 	return (0);
 }

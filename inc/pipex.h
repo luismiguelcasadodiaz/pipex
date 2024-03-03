@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:51:53 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/01 13:26:39 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/03 21:24:08 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_H
@@ -22,23 +22,28 @@
    @var  cmd: command name.
    @var  arg: list of argument ot pass to the command.
 
+   @details
+   A pipex argument like "ls -al" will be separated in two parts, the command
+   "ls" and the flags " -al". please notice the whitspace.
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
 typedef struct s_cmd
 {
 	char	*cmd;
-	char	*flg;
+	char	**flg;
+	int		fd_i;
+	int		fd_o;
 }	t_cmd;
 
 /* ************************************************************************** */
 /* create_cmd() initializes a t_cmd structure.                                */
 /* ************************************************************************** */
-t_cmd			cmd_create(char *cmd, char *flg);
+t_cmd			*cmd_create(char *cmd, char **flg);
 /* ************************************************************************** */
 /* destroy_cmd() frees memory used by a t_cmd structure.                      */
 /* ************************************************************************** */
-void			cmd_destroy(t_cmd cmd);
+void			cmd_destroy(t_cmd *cmd);
 /******************************************************************************/
 /**
    @file pipex.h
@@ -75,11 +80,11 @@ void			destroy(t_pipex_args args);
 /* ************************************************************************** */
 /*                                                                            */
 /* ************************************************************************** */
-void			execute(t_pipex_args pip_arg);
+void			execute(t_pipex_args pip_arg, char **env);
 /* ************************************************************************** */
 /* set_command() assign absolute path to commnad in the right slot            */
 /* ************************************************************************** */
-void			set_command(t_pipex_args *pip_arg, t_cmd *command);
+void			set_command(t_pipex_args *pip_arg, char *cmd, char **flg);
 /* ************************************************************************** */
 /* set_file() assign absolute path to file in the right slot                  */
 /* ************************************************************************** */

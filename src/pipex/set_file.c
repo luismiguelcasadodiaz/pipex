@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:25:34 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/29 16:38:40 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/02 12:29:03 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@
  *****************************************************************************/
 void	set_file(t_pipex_args *pip_arg, char *filename, int direc)
 {
-		if (direc == PIPEX_INPUT)
-			pip_arg->infile = filename;
-		else
-			pip_arg->outfile = filename;
-		pip_arg->all_ok = pip_arg->all_ok && (filename != NULL);
-		if (!filename)
-			ft_error_print(ERR006, __func__, __LINE__);
+	if (direc == PIPEX_INPUT)
+		pip_arg->infile = filename;
+	else
+		pip_arg->outfile = filename;
+	pip_arg->all_ok = pip_arg->all_ok && (filename != NULL);
+	if (!filename)
+		ft_error_print(ERR006, __func__, __LINE__);
 }

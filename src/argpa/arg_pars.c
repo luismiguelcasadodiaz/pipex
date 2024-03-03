@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:56:34 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/29 16:40:59 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/02 11:08:14 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int	arg_ok(int argc, char **argv, char **environ, t_pipex_args *pip_arg)
 	int	i;
 
 	all_ok = 1;
-	all_ok = all_ok && arg_is_filename(argv[1], environ, pip_arg, PIPEX_INPUT);
+	all_ok = all_ok && \
+			arg_is_filename(argv[1], environ, pip_arg, PIPEX_INPUT);
 	if (!all_ok)
 		return (0);
 	i = 2;
@@ -59,7 +60,8 @@ int	arg_ok(int argc, char **argv, char **environ, t_pipex_args *pip_arg)
 		if (!all_ok)
 			return (0);
 	}
-	all_ok = all_ok && arg_is_filename(argv[argc - 1], environ, pip_arg, PIPEX_OUTPUT);
+	all_ok = all_ok && \
+			arg_is_filename(argv[argc - 1], environ, pip_arg, PIPEX_OUTPUT);
 	if (!all_ok)
 		return (0);
 	return (all_ok);
