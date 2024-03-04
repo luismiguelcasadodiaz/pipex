@@ -1,36 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.h                                         :+:      :+:    :+:   */
+/*   ft_error_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/27 09:52:55 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/04 19:24:24 by luicasad         ###   ########.fr       */
+/*   Created: 2024/03/04 19:11:01 by luicasad          #+#    #+#             */
+/*   Updated: 2024/03/04 19:19:10 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_ERROR_H
-# define FT_ERROR_H
+#include "ft_error.h"
+#include <stdlib.h>
 
-enum e_my_errors
+void	ft_error_exit(int e, const char *f, int l)
 {
-	ERR001 = -1,
-	ERR002 = -2,
-	ERR003 = -3,
-	ERR004 = -4,
-	ERR005 = -5,
-	ERR006 = -6,
-	ERR007 = -7,
-	ERR008 = -8,
-	ERR020 = -20,
-	ERR050 = -50,
-	ERR051 = -51,
-	ERRnnn = -999
-};
-
-char	*ft_error_str(int e);
-char	*ft_error_decode_e(int e);
-void	ft_error_print(int e, const char *f, int l);
-void	ft_error_exit(int e, const char *f, int l);
-#endif
+	ft_error_print(e, f, l);
+	exit(EXIT_FAILURE);
+}

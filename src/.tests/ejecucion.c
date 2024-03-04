@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:33:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/17 09:36:31 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:51:11 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int	main()
+int	main(void)
 {
-	pid_t	PID;
-	char *parametros[] = {"ls", "-thal", NULL};
+	pid_t	pid;
+	char	*parametros[] = {"ls", "-thal", NULL};
 
-	//Creamos el proceso nuevo
-	PID = fork();
-
-	if (PID != -1) // Si no hay error
-		if (!PID)  // Si soy el hijo
+	pid = fork();
+	if (pid != -1)
+		if (!pid)
 		{
 			execvp("ls", parametros);
-			// Si llegamos a esta sentencia...
-			//No se ha substituido la imagen del hijo
 			puts("Fallo en el proceso hijo\n");
 			exit(EXIT_FAILURE);
 		}
-		else  // Si soy el padre
+		else
 		{
 			printf("%d Padre\n", getpid());
-			printf("%d Hijo \n", PID);
+			printf("%d Hijo \n", pid);
 		}
 	else
 		puts("Fallo en el fork\n");

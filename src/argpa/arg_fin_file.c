@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:43:43 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/29 17:25:34 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/04 22:11:32 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
    to data flow direction
 
    @param[in]  var_val: holds the content of PWD variable after '='
-   @param[in]      com: the command to locate
+   @param[in]     file: the file to locate
 
    @details
-   Splits var_val by ':'. 
-   Joins to each path the command and test if can access the composition.
-   if command is accesible and executable save it as result.
-   Frees each invalid path.
+   Joins to PWD "/file".
+   Make the hypothesys that the file has not access permision so returns NULL.
+   for infile checks it is readable.
+   for outfile checks it is writable
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
@@ -38,19 +38,27 @@ char	*arg_fin_file(char *var_val, char *file, int direc)
 	char	*path;
 	char	*result;
 	char	*slash_file;
-	int		permit;
 
-	if (direc == PIPEX_INPUT)
+	slash_file = ft_strjoin("/", file);
+	path = ft_strjoin(var_val, slash_file);
+	result = NULL;
+	if ((direc == PIPEX_INPUT) && !access(path, R_OK))
+		result = path;
+	else if ((direc == PIPEX_OUTPUT) && !access(path, W_OK))
+		result = path;
+	else if ((direc == PIPEX_OUTPUT) && access(path, F_OK))
+		result = path;
+	else
+		free(path);
+	/*if (direc == PIPEX_INPUT)
 		permit = R_OK;
 	else
 		permit = W_OK;
-	slash_file = ft_strjoin("/", file);
-	result = NULL;
-	path = ft_strjoin(var_val, slash_file);
 	if (!access(path, permit))
 		result = path;
 	else
 		free(path);
+	*/
 	free(slash_file);
 	return (result);
 }

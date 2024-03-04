@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:36:23 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/04 09:24:03 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:29:58 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ char	*ft_error_decode_e(int e)
 		return ("Memory allocation failed");
 	if (e == ERR006)
 		return ("File not found or wrong r/w permission");
+	if (e == ERR007)
+		return ("dup() failed");
+	if (e == ERR008)
+		return ("open() failed");
 	if (e == ERR020)
 		return ("Fork() failed");
 	if (e == ERR050)

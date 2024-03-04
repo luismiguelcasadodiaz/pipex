@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:37:38 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/04 10:13:53 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/04 22:37:27 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@
    @file arg_is_filename.c
    @brief arg_is_filename() finds filename and checks access permission.
 
-   @param[in]  arg: the pipex argument to verify if its command is executable.
+   @param[in]  arg: the pipex argument to verify if it is an accessible file
    @param[in]  env: the enviroment where to check.
-   @param[out] pip_arg : the pipex structur to keep the executable command wiht
-   	the flags
+   @param[out] pip_arg : the pipex structure to keep the file name path
    @param[in]  direc: the direction the data flows (read/write)
 
    @returns

@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:56:34 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/02 11:08:14 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/04 22:37:44 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,20 @@
 /* ************************************************************************** */
 /*.<*                                                                        .*/
 /*.@file arg_pars.c                                                          .*/
-/*.@brief arg_ok()i if arguments as unique integers that pushes into stacks. .*/
+/*.@brief arg_ok() checks if pipex arguments are accesible or executable   . .*/
 /*.                                                                          .*/
 /*.@param[in] argc: number of arguments to verify.          .                .*/
-/*.@param[in] argv: table  of arguments to verifi .                          .*/
+/*.@param[in] argv: table  of arguments to verify .                          .*/
+/*.@param[in] environ: environment to find PAHT and PWD variables            .*/
+/*.@param[in] pip_arg: struct that keep checking result                      .*/
 /*.                                                                          .*/
-/*.@returns a stack with first argument on the top when all arguments are    .*/
-/*.  ok. Otherwise returns NULL.                                             .*/
+/*.@returns all_ok that reports with 1 that all arguments are accesible or   .*/
+/*.  ejecutable- Otherwise retunrs 0.                                        .*/
 /*.                                                                          .*/
 /*.@details                                                                  .*/
-/*.Creates a stack 'c' to keep the arguments                                 .*/
 /*.                                                                          .*/
 /*.Set the hypothesis all arguments are ok (all_ok = 1)                      .*/
 /*.                                                                          .*/
-/*.Loops over the table of arguments verifing requirements:                  .*/
-/*. 1.- The argument represents an integer.                                  .*/
-/*. 2.- The integer fits in a  "int" type.                                   .*/
-/*. 3.- The integer is not in the stack.                                     .*/
-/*.                                                                          .*/
-/*. if the argument satisfy all 3 requirements, it is pushed into the stack. .*/
-/*.                                                                          .*/
-/*.After processing all the table, if all arguments passed requirements,     .*/
-/*.the arguments order in the stack is reversed to have first argument on    .*/
-/*.stack's top and returns it. Otherwise returns NULL                        .*/
 /*.                                                                          .*/
 /*./author LMCD (Luis Miguel Casado Diaz)                                    .*/
 /*.>*                                                                        .*/
