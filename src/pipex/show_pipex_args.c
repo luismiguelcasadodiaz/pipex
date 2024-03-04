@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:06 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/03 18:15:20 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/04 13:37:18 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	show_pipex_args(t_pipex_args args)
 {
 	int	i;
-	int j;
+	int	j;
 
 	ft_printf("max_cmds %d\n", args.max_cmds);
 	ft_printf("infile %s\n", args.infile);

@@ -6,13 +6,15 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:51:53 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/03 21:24:08 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/04 09:51:06 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_H
 # define PIPEX_H
 # define PIPEX_INPUT 0
 # define PIPEX_OUTPUT 1
+# define READ 0
+# define WRITE 1
 
 /******************************************************************************/
 /**

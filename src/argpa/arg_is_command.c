@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:42:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/03 15:53:39 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/04 13:05:39 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@
  *****************************************************************************/
 static void	split_cmd(char *var_val, char *arg, char **cmd, char ***flg)
 {
+	*flg = ft_split(arg, ' ');
+	*cmd = arg_fin_com(var_val, *flg[0]);
+}
 /*	int		arg_len;
 	int		flg_len;
 	char	*arg_cmd;
@@ -62,10 +65,6 @@ static void	split_cmd(char *var_val, char *arg, char **cmd, char ***flg)
 		*flg = "";
 	}
 	*flg = ft_strjoin(*flg, "");*/
-
-	*flg = ft_split(arg, ' ');
-	*cmd = arg_fin_com(var_val, *flg[0]);
-}
 
 /******************************************************************************/
 /**
@@ -106,6 +105,6 @@ int	arg_is_command(char *arg, char **env, t_pipex_args *pip_arg)
 		set_command(pip_arg, arg_cmd, arg_flags);
 		free(var_val);
 	}
-	show_pipex_args(*pip_arg);
 	return (pip_arg->all_ok);
 }
+	//show_pipex_args(*pip_arg);
