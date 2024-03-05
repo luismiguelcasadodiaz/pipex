@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:36:23 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/04 18:29:58 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/05 13:26:21 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_error_decode_e(int e)
 	if (e == ERR001)
 		return ("Environment variable has not char(=)");
 	if (e == ERR002)
-		return ("Environment variable not found in current environment");
+		return ("No such file or directory or Permission denied");
 	if (e == ERR003)
 		return ("The command does not exits in current path");
 	if (e == ERR004)
@@ -25,10 +25,12 @@ char	*ft_error_decode_e(int e)
 	if (e == ERR005)
 		return ("Memory allocation failed");
 	if (e == ERR006)
-		return ("File not found or wrong r/w permission");
+		return ("Environment variable not found in current environment");
 	if (e == ERR007)
 		return ("dup() failed");
 	if (e == ERR008)
+		return ("Permission denied");
+	if (e == ERR010)
 		return ("open() failed");
 	if (e == ERR020)
 		return ("Fork() failed");
@@ -36,5 +38,7 @@ char	*ft_error_decode_e(int e)
 		return ("t_pipex_args has not available slots for more commands");
 	if (e == ERR051)
 		return ("execve() failed execution. Check flags used with command");
+	if (e == ERR127)
+		return ("command not found");
 	return ("Unknow error");
 }

@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 18:16:38 by luicasad          #+#    #+#              #
-#    Updated: 2024/02/29 16:53:17 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/05 11:08:53 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 MAKEFLAGS += rR
@@ -61,7 +61,8 @@ HEADS		=	-I$(INCDIR)
 # ============================================================================ #
 HEADER	=	argpar.h
 SRCS	=	show_usage.c \
-			arg_is_filename.c \
+			arg_is_in_file.c \
+			arg_is_ou_file.c \
 			arg_is_command.c \
 			arg_fin_env_var.c \
 			arg_val_var.c \

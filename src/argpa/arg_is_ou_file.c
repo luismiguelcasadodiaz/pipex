@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arg_is_filename.c                                  :+:      :+:    :+:   */
+/*   arg_is_ou_file.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:37:38 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 10:48:25 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/05 13:01:15 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "argpar.h"
-#include "ft_printf.h"
+#include "pipex.h"
+#include "ft_error.h"
+#include <unistd.h>
 
 /******************************************************************************/
 /**
-   @file arg_is_filename.c
-   @brief arg_is_filename() finds filename and checks access permission.
+   @file arg_is_ou_file.c
+   @brief arg_is_ou_file() finds filename and checks access permission.
 
    @param[in]  arg: the pipex argument to verify if it is an accessible file
    @param[in]  env: the enviroment where to check.
    @param[out] pip_arg : the pipex structure to keep the file name path
-   @param[in]  direc: the direction the data flows (read/write)
 
    @returns
    The all_ok flag of the Pipex structure that reports if till now pipex will
@@ -29,29 +31,35 @@
 
    @details
    Find the PWD in the enviroment and gets its value.
-   verifies wiht the help of arg_fin_file() if filename exists and if has the
+   if the file does not exist, is not a problem, it fill be created later.
+   if the file exists checks write permits
    right access permission.
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
-int	arg_is_filename(char *arg, char **env, t_pipex_args *pip_arg, int direc)
+int	arg_is_ou_file(char *file, char **env, t_pipex_args *pip_arg)
 {
 	char	*var;
 	char	*var_val;
 	char	*path;
+	char	*slash_file;
 
+	pip_arg->outfile = NULL;
 	var = arg_fin_env_var(env, "PWD");
 	if (var)
 	{
 		var_val = arg_val_var(var);
 		if (!var_val)
 			return (-1);
-		path = arg_fin_file(var_val, arg, direc);
+		slash_file = ft_strjoin("/", file);
+		path = ft_strjoin(var_val, slash_file);
+		if (!access(path, F_OK) && access(path, W_OK))
+			ft_error_exit(ERR008, __func__, __LINE__);
+		pip_arg->outfile = path;
+		free(slash_file);
 		free(var_val);
-		set_file(pip_arg, path, direc);
-		if (!path)
-			exit(1);
 	}
+	pip_arg->all_ok = pip_arg->all_ok && (pip_arg->outfile != NULL);
 	return (pip_arg->all_ok);
 }
 //	show_pipex_args(*pip_arg);

@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:43:43 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/04 22:11:32 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/05 10:04:46 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,12 @@ char	*arg_fin_file(char *var_val, char *file, int direc)
 	else if ((direc == PIPEX_OUTPUT) && access(path, F_OK))
 		result = path;
 	else
+	{
 		free(path);
+	}
+	free(slash_file);
+	return (result);
+}
 	/*if (direc == PIPEX_INPUT)
 		permit = R_OK;
 	else
@@ -59,6 +64,3 @@ char	*arg_fin_file(char *var_val, char *file, int direc)
 	else
 		free(path);
 	*/
-	free(slash_file);
-	return (result);
-}

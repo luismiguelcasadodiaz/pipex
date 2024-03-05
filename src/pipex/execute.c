@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/04 22:33:42 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/05 13:00:58 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	cmd_0(t_pipex_args args, char **env, int apipe[])
 		ft_error_exit(ERR007, __func__, __LINE__);
 	args.cmds[0]->fd_i = open(args.infile, O_RDONLY);
 	if (args.cmds[0]->fd_i == -1)
-		ft_error_exit(ERR008, __func__, __LINE__);
+		ft_error_exit(ERR010, __func__, __LINE__);
 	error = dup2(args.cmds[0]->fd_i, 0);
 	if (error == -1)
 		ft_error_exit(ERR007, __func__, __LINE__);
@@ -49,9 +49,10 @@ void	father(t_pipex_args args, char **env, int apipe[], int pid)
 	waitpid(pid, &error, 0);
 	if (!error)
 	{
-		args.cmds[idx]->fd_o = open(args.outfile, O_TRUNC | O_WRONLY | O_CREAT, 0664);
+		args.cmds[idx]->fd_o = open(args.outfile, \
+				O_TRUNC | O_WRONLY | O_CREAT, 0664);
 		if (args.cmds[idx]->fd_o == -1)
-			ft_error_exit(ERR008, __func__, __LINE__);
+			ft_error_exit(ERR010, __func__, __LINE__);
 		dup2(args.cmds[idx]->fd_o, 1);
 		if (error == -1)
 			ft_error_exit(ERR007, __func__, __LINE__);
