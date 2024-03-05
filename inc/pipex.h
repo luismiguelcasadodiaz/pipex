@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:51:53 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/04 09:51:06 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/05 20:56:06 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_H
@@ -15,6 +15,8 @@
 # define PIPEX_OUTPUT 1
 # define READ 0
 # define WRITE 1
+# define KO 0
+# define OK 1
 
 /******************************************************************************/
 /**
@@ -34,6 +36,7 @@ typedef struct s_cmd
 {
 	char	*cmd;
 	char	**flg;
+	int		ok;
 	int		fd_i;
 	int		fd_o;
 }	t_cmd;
@@ -86,7 +89,7 @@ void			execute(t_pipex_args pip_arg, char **env);
 /* ************************************************************************** */
 /* set_command() assign absolute path to commnad in the right slot            */
 /* ************************************************************************** */
-void			set_command(t_pipex_args *pip_arg, char *cmd, char **flg);
+void			set_command(t_pipex_args *pip_arg, char *c, char **f, char *a);
 /* ************************************************************************** */
 /* set_file() assign absolute path to file in the right slot                  */
 /* ************************************************************************** */

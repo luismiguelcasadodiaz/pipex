@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:36:23 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 13:26:21 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/06 00:24:39 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ char	*ft_error_decode_e(int e)
 	if (e == ERR010)
 		return ("open() failed");
 	if (e == ERR020)
-		return ("Fork() failed");
+		return ("fork() failed");
+	if (e == ERR021)
+		return ("pipe() failed");
 	if (e == ERR050)
 		return ("t_pipex_args has not available slots for more commands");
 	if (e == ERR051)

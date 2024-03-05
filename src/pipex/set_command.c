@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 12:29:00 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 13:26:57 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/05 20:53:27 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,19 @@
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
-void	set_command(t_pipex_args *pip_arg, char *cmd, char **flg)
+void	set_command(t_pipex_args *pip_arg, char *cmd, char **flg, char *arg)
 {
 	if (pip_arg->num_cmds < pip_arg->max_cmds)
 	{
-		pip_arg->cmds[pip_arg->num_cmds]->cmd = cmd;
+		pip_arg->cmds[pip_arg->num_cmds]->ok = (cmd != NULL);
+		if (pip_arg->cmds[pip_arg->num_cmds]->ok)
+			pip_arg->cmds[pip_arg->num_cmds]->cmd = cmd;
+		else
+			pip_arg->cmds[pip_arg->num_cmds]->cmd = arg;
 		pip_arg->cmds[pip_arg->num_cmds++]->flg = flg;
 		pip_arg->all_ok = pip_arg->all_ok && (cmd != NULL);
-		if (!cmd)
-			ft_error_exit(ERR127, __func__, __LINE__);
+		//if (!cmd)
+		//	ft_error_exit(ERR127, __func__, __LINE__);
 	}
 	else
 		ft_error_print(ERR050, __func__, __LINE__);

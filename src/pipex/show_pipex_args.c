@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:06 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/04 13:37:18 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/05 20:58:18 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ void	show_pipex_args(t_pipex_args args)
 			while (args.cmds[i]->flg[j] != NULL)
 				ft_printf("%s ", args.cmds[i]->flg[j++]);
 		}
+		ft_printf("fd_i=%d ", args.cmds[i]->fd_i);
+		ft_printf("fd_o=%d ", args.cmds[i]->fd_o);
+		ft_printf("ok=%d ", args.cmds[i]->ok);
 		ft_printf("\n");
 	}
 	ft_printf("all_ok %d\n", args.all_ok);

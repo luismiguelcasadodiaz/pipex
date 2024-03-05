@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:57:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 09:22:25 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/05 19:39:50 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	main(int argc, char **argv)
 	if (argc == 5)
 	{
 		pip_arg = create(argc - 3);
-		if (arg_ok(argc, argv, environ, &pip_arg))
-			execute(pip_arg, environ);
+		arg_ok(argc, argv, environ, &pip_arg);
+		execute(pip_arg, environ);
 		destroy(pip_arg);
 	}
 	else

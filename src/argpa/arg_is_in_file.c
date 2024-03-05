@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:37:38 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 12:28:36 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/05 20:24:39 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,31 +36,26 @@
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
-int	arg_is_in_file(char *file, char **env, t_pipex_args *pip_arg)
+void	arg_is_in_file(char *file, char *pwd, t_pipex_args *pip_arg)
 {
-	char	*var;
-	char	*var_val;
-	char	*path;
+	char	*pwd_val;
+	char	*file_path;
 	char	*slash_file;
 
 	pip_arg->infile = NULL;
-	var = arg_fin_env_var(env, "PWD");
-	if (var)
+	pwd_val = arg_val_var(pwd);
+	if (pwd_val)
 	{
-		var_val = arg_val_var(var);
-		if (!var_val)
-			return (-1);
 		slash_file = ft_strjoin("/", file);
-		path = ft_strjoin(var_val, slash_file);
-		if (access(path, F_OK))
+		file_path = ft_strjoin(pwd_val, slash_file);
+		if (access(file_path, F_OK))
 			ft_error_exit(ERR002, __func__, __LINE__);
-		if (access(path, R_OK))
+		if (access(file_path, R_OK))
 			ft_error_exit(ERR002, __func__, __LINE__);
-		pip_arg->infile = path;
+		pip_arg->infile = file_path;
 		free(slash_file);
-		free(var_val);
+		free(pwd_val);
+		pip_arg->all_ok = pip_arg->all_ok && (pip_arg->infile != NULL);
+		show_pipex_args(*pip_arg);
 	}
-	pip_arg->all_ok = pip_arg->all_ok && (pip_arg->infile != NULL);
-	return (pip_arg->all_ok);
 }
-//	show_pipex_args(*pip_arg);

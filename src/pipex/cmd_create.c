@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:26:56 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/03 15:49:40 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/05 20:42:48 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,8 @@ t_cmd	*cmd_create(char *cmd, char **flg)
 	}
 	r->cmd = cmd;
 	r->flg = flg;
+	r->ok = KO;
+	r->fd_i = -1;
+	r->fd_o = -1;
 	return (r);
 }

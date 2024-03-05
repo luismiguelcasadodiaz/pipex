@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 21:00:28 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/29 10:35:40 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/05 20:50:15 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
-static char	**get_paths(char *var_val)
+static char	**get_paths(char *path_val)
 {
 	char	**paths;
 
-	paths = ft_split(var_val, ':');
+	paths = ft_split(path_val, ':');
 	if (!paths)
 	{
 		ft_error_print(ERR004, __func__, __LINE__);
@@ -44,7 +44,7 @@ static char	**get_paths(char *var_val)
 	return (paths);
 }
 
-char	*arg_fin_com(char *var_val, char *com)
+char	*arg_fin_com(char *path_val, char *com)
 {
 	char	**paths;
 	char	*command;
@@ -55,7 +55,7 @@ char	*arg_fin_com(char *var_val, char *com)
 	slash_command = ft_strjoin("/", com);
 	len = 0;
 	result = NULL;
-	paths = get_paths(var_val);
+	paths = get_paths(path_val);
 	while (paths[len] != NULL)
 	{
 		command = ft_strjoin(paths[len], slash_command);

@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:42:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/04 13:05:39 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/05 20:56:46 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
+/*
+
 static void	split_cmd(char *var_val, char *arg, char **cmd, char ***flg)
 {
 	*flg = ft_split(arg, ' ');
 	*cmd = arg_fin_com(var_val, *flg[0]);
 }
-/*	int		arg_len;
+	int		arg_len;
 	int		flg_len;
 	char	*arg_cmd;
 
@@ -87,24 +89,19 @@ static void	split_cmd(char *var_val, char *arg, char **cmd, char ***flg)
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
-int	arg_is_command(char *arg, char **env, t_pipex_args *pip_arg)
+void	arg_is_command(char *arg, char *path, t_pipex_args *pip_arg)
 {
-	char	*var_val;
+	char	*path_val;
 	char	*arg_cmd;
 	char	**arg_flags;
 
-	var_val = arg_fin_env_var(env, "PATH");
-	if (var_val)
+	path_val = arg_val_var(path);
+	if (path_val)
 	{
-		var_val = arg_val_var(var_val);
-		if (!var_val)
-			return (-1);
-		arg_cmd = NULL;
-		arg_flags = NULL;
-		split_cmd(var_val, arg, &arg_cmd, &arg_flags);
-		set_command(pip_arg, arg_cmd, arg_flags);
-		free(var_val);
+		arg_flags = ft_split(arg, ' ');
+		arg_cmd = arg_fin_com(path_val, arg_flags[0]);
+		set_command(pip_arg, arg_cmd, arg_flags, arg);
+		free(path_val);
 	}
-	return (pip_arg->all_ok);
+	show_pipex_args(*pip_arg);
 }
-	//show_pipex_args(*pip_arg);

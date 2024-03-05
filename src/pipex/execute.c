@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 13:00:58 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/06 00:47:17 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,32 @@ void	cmd_0(t_pipex_args args, char **env, int apipe[])
 	error = dup2(args.cmds[0]->fd_i, 0);
 	if (error == -1)
 		ft_error_exit(ERR007, __func__, __LINE__);
-	execve(args.cmds[0]->cmd, args.cmds[0]->flg, env);
-	ft_error_exit(ERR051, __func__, __LINE__);
+	if (args.cmds[0]->ok)
+		execve(args.cmds[0]->cmd, args.cmds[0]->flg, env);
+	ft_error_exit(ERR127, __func__, __LINE__);
 }
 
+void	cmd_1(t_pipex_args args, char **env, int apipe[])
+{
+	int	idx;
+	int	error;
+
+	idx = args.max_cmds -1;
+	close(apipe[WRITE]);
+	error = dup2(apipe[READ], 1);
+	if (error == -1)
+		ft_error_exit(ERR007, __func__, __LINE__);
+	args.cmds[idx]->fd_o = open(args.outfile, \
+				O_TRUNC | O_WRONLY | O_CREAT, 0664);
+	if (args.cmds[idx]->fd_o == -1)
+		ft_error_exit(ERR010, __func__, __LINE__);
+	error = dup2(args.cmds[idx]->fd_o, 1);
+	if (error == -1)
+		ft_error_exit(ERR007, __func__, __LINE__);
+	if (args.cmds[idx]->ok)
+		execve(args.cmds[idx]->cmd, args.cmds[idx]->flg, env);
+	ft_error_exit(ERR127, __func__, __LINE__);
+}
 void	father(t_pipex_args args, char **env, int apipe[], int pid)
 {
 	int	idx;
@@ -66,14 +88,31 @@ void	father(t_pipex_args args, char **env, int apipe[], int pid)
 void	execute(t_pipex_args args, char **env)
 {
 	int		pfd[2];
-	pid_t	pid;
+	pid_t	pid1;
+	pid_t	pid2;
+	int		error;
 
-	pipe(pfd);
-	pid = fork();
-	if (pid < 0)
+	error = pipe(pfd);
+	if (error < 0)
+		ft_error_exit(ERR021, __func__, __LINE__);
+	pid1 = fork();
+	if (pid1 < 0)
 		ft_error_exit(ERR020, __func__, __LINE__);
-	else if (pid == 0)
+	if (pid1 == 0)
 		cmd_0(args, env, pfd);
 	else
-		father(args, env, pfd, pid);
+	{
+		pid2 = fork();
+		if (pid2 < 0)
+			ft_error_exit(ERR020, __func__, __LINE__);
+		if (pid2 == 0)
+			cmd_1(args, env, pfd);
+		else
+		{
+			waitpid(pid1, &error, 0);
+			close(args.cmds[0]->fd_i);
+			waitpid(pid2, &error, 0);
+			close(args.cmds[args.max_cmds - 1]->fd_o);
+		}
+	}
 }
