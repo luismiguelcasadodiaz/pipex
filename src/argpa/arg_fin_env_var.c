@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 10:11:01 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 11:41:50 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/06 20:21:18 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ char	*arg_fin_env_var(char **environ, char	*var)
 			return (*environ);
 		environ++;
 	}
-	ft_error_print(ERR006, __func__, __LINE__);
+	//ft_error_print(ERR006, __func__, __LINE__);
 	return (NULL);
 }

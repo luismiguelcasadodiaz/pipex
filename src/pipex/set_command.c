@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 12:29:00 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 20:53:27 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:29:08 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ void	set_command(t_pipex_args *pip_arg, char *cmd, char **flg, char *arg)
 			pip_arg->cmds[pip_arg->num_cmds]->cmd = arg;
 		pip_arg->cmds[pip_arg->num_cmds++]->flg = flg;
 		pip_arg->all_ok = pip_arg->all_ok && (cmd != NULL);
-		//if (!cmd)
-		//	ft_error_exit(ERR127, __func__, __LINE__);
 	}
 	else
 		ft_error_print(ERR050, __func__, __LINE__);

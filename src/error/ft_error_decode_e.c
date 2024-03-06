@@ -6,14 +6,14 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:36:23 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/06 09:03:30 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:41:35 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_error.h"
 #include "libft.h"
 
-char	*ft_error_decode_e(int e)
+static	char	*decode_000_010(int e)
 {
 	if (e == ERR001)
 		return ("Environment variable has not char(=)");
@@ -33,6 +33,13 @@ char	*ft_error_decode_e(int e)
 		return ("Permission denied");
 	if (e == ERR010)
 		return ("open() failed");
+	return (ft_strjoin("Unknow error ", ft_itoa(e)));
+}
+
+char	*ft_error_decode_e(int e)
+{
+	if ((-10 <= e) && (e <= 0))
+		return (decode_000_010(e));
 	if (e == ERR020)
 		return ("fork() failed");
 	if (e == ERR021)

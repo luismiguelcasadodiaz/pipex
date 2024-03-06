@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 09:13:08 by luicasad          #+#    #+#             */
-/*   Updated: 2023/12/10 08:54:19 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:12:17 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef FT_PRINTF_H
@@ -23,7 +23,7 @@
 #  define MY_ULL_MAX ULONG_LONG_MAX
 # endif
 
-# define FD 1
+# define FD 2
 
 ssize_t	ft_write_c(char c);
 ssize_t	ft_write_str(char *str);
