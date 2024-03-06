@@ -6,11 +6,12 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:36:23 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/06 00:24:39 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/06 09:03:30 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_error.h"
+#include "libft.h"
 
 char	*ft_error_decode_e(int e)
 {
@@ -42,5 +43,5 @@ char	*ft_error_decode_e(int e)
 		return ("execve() failed execution. Check flags used with command");
 	if (e == ERR127)
 		return ("command not found");
-	return ("Unknow error");
+	return (ft_strjoin("Unknow error ", ft_itoa(e)));
 }

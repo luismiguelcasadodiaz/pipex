@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:37:38 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 20:25:09 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:01:15 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@ void	arg_is_ou_file(char *file, char *pwd, t_pipex_args *pip_arg)
 		free(slash_file);
 		free(pwd_val);
 		pip_arg->all_ok = pip_arg->all_ok && (pip_arg->outfile != NULL);
-		show_pipex_args(*pip_arg);
 	}
 }
+		//show_pipex_args(*pip_arg);

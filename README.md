@@ -211,6 +211,15 @@ inc/filename
 
 Then, if argument has not '/' it is a filename in current folder whose absolute path name start wiht the PWD variabla content
 
+### The command and execve
+The call to execve requires a null-terminated list of arguments
+
+Said that, "grep -n printf" transforms easily into a list of strings args ={"grep", "-n", "printf", NULL} wiht the help of  ft_plit and white space. 
+
+In the same way, "tr 'a' 'e'", also fits into execve without problems.
+
+It is not the case with, "tr 'a' ''", that substitutes a by ' if passed as {"tr", "'a'", "'", NULL}
+It is not the case wiht, "tr 'a' ' '", that does not execute if passed as {"tr",  "'a'", "'", "'", NULL}
 
 ## What I read.
 

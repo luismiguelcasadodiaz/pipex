@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:37:38 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 20:24:39 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:00:58 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,6 @@ void	arg_is_in_file(char *file, char *pwd, t_pipex_args *pip_arg)
 		free(slash_file);
 		free(pwd_val);
 		pip_arg->all_ok = pip_arg->all_ok && (pip_arg->infile != NULL);
-		show_pipex_args(*pip_arg);
 	}
 }
+		//show_pipex_args(*pip_arg);
