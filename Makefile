@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/07 09:45:41 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/07 16:26:25 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -141,6 +141,10 @@ $(NAMELIBPRINTF): makelibftprintf $(LIBDIR)$(NAMELIBPRINTF)
 $(NAMELIBFT): 	  makelibft $(LIBDIR)$(NAMELIBFT)
 $(NAMELIBARGPA):  makelibargpa $(LIBDIR)$(NAMELIBARGPA)
 $(NAMELIBERROR):  makeliberror $(LIBDIR)$(NAMELIBERROR)
+
+-lft:makelibft
+-lftprintf:makelibftprintf
+-largpar:makelibargpa
 
 makelibft: 
 	$(MAKE) -C $(SRCDIR_LIBFT)

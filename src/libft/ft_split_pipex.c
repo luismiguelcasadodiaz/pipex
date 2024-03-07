@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_split_pipex.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:02:55 by luicasad          #+#    #+#             */
-/*   Updated: 2023/10/12 14:15:51 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/07 22:35:08 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -89,27 +89,27 @@ static char	**de_allocate(char **table, size_t allocated_rows)
 /*                                                                            */
 /* ************************************************************************** */
 
-static void set_flag(short *in_quote, char c)
+static void	set_flag(short *in_quote, char c)
 {
-    if (!*in_quote && (c == 34 || c == 39))
-        *in_quote = 1;
-    else if(*in_quote && (c == 34 || c == 39))
-        *in_quote = 0;
+	if (!*in_quote && (c == 34 || c == 39))
+		*in_quote = 1;
+	else if (*in_quote && (c == 34 || c == 39))
+		*in_quote = 0;
 }
 
 static size_t	word_count(char const *s, char c)
 {
 	size_t	counter;
 	short	in_word;
-    short   in_quote;
+	short	in_quote;
 
 	in_quote = 0;
-    counter = 0;
+	counter = 0;
 	in_word = 0;
 	while (*s)
 	{
-        set_flag(&in_quote, *s);
-        if (!in_quote && *s == c)
+		set_flag(&in_quote, *s);
+		if (!in_quote && *s == c)
 			in_word = 0;
 		else if (!in_word)
 		{
@@ -153,23 +153,27 @@ static char	**split(char const *s, char c, char **result)
 	size_t	j;
 	char	*buf;
 	size_t	word_counter;
-    short   in_quote;
+	short	in_quote;
 
 	word_counter = 0;
 	i = 0;
 	while (s[i] != '\0')
 	{
 		j = i;
-        set_flag(&in_quote, s[j]);
-        if (!in_quote)
-		    while (s[j] != '\0' && s[j] != c)
-			    j++;
-        else
-        {
-            while (s[j] != '\0' && in_quote)
-                set_flag(&in_quote, s[j++]);
-        }
-        if (j != i)
+		set_flag(&in_quote, s[j]);
+		if (!in_quote)
+			while (s[j] != '\0' && s[j] != c)
+				j++;
+		else
+		{
+			set_flag(&in_quote, s[j++]);
+			while (s[j] != '\0' && !(s[j] == 34 || s[j] == 39))
+			{
+				j++;
+			}
+			j++;
+		}
+		if (j != i)
 		{
 			buf = ft_substr(s, i, (j - i));
 			if (buf == NULL)

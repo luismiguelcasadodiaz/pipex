@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:37:38 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/07 09:06:57 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/07 19:51:28 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	arg_is_ou_file(char *file, char *pwd, t_pipex_args *pip_arg)
 		slash_file = ft_strjoin("/", file);
 		file_path = ft_strjoin(pwd_val, slash_file);
 		if (!access(file_path, F_OK) && access(file_path, W_OK))
-			ft_error_print(ERR008, __func__, __LINE__);
+			ft_error_print(errno, __func__, __LINE__);
 		pip_arg->outfile = file_path;
 		free(slash_file);
 		free(pwd_val);
