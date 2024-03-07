@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:42:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/06 20:36:40 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/07 10:36:08 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ void	arg_is_command(char *arg, char *path, t_pipex_args *pip_arg)
 	path_val = arg_val_var(path);
 	if (path_val)
 	{
-		arg_flags = ft_split(arg, ' ');
-		if (arg_flags[0][0] == '/')
+		arg_flags = ft_split_pipex(arg, ' ');
+		if (arg_flags[0][0] == '/' || arg_flags[0][0] == '.')
 			set_command(pip_arg, arg_flags[0], arg_flags, arg);
 		else
 		{

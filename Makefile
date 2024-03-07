@@ -6,13 +6,17 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/06 09:32:34 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/07 09:45:41 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #Here, rR is equivalent to --no-builtin-rules --no-builtin-variables.
 #MAKEFLAGS += rR
 #$(foreach x,$(filter-out .% MAKE% SHELL CURDIR,$(.VARIABLES)) MAKEINFO,$(if $(filter default,$(origin $x)),$(eval override undefine $x)))
+# ============================================================================ #
+#                                 SHELL                                        #
+# ============================================================================ #
+#SHELL			=	/usr/bin/bash
 # ============================================================================ #
 #                                 COLORS                                       #
 # ============================================================================ #
@@ -161,7 +165,7 @@ makeliberror:
     rm -f $@.$$$$
 # .......................... targets construction ............................ #
 $(NAME): Makefile  $(OBJS_PIPEX) -l$(LOADLIBFT) -l$(LOADLIBPRINTF) -l$(LOADLIBARGPA) 
-	@echo "$(GREEN)========== GATHERING PUSH_SWAP OBJECTS =============$(DEF_COLOR)"
+	@echo "$(GREEN)========== GATHERING PIPEX OBJECTS =============$(DEF_COLOR)"
 	$(CC) $(LFLGS) $(OBJS_PIPEX) -o $@ $(LLIBS)
 
 #$(BONUS): Makefile $(OBJS_CHECK) -l$(LOADLIBFT) -l$(LOADLIBPRINTF) -l$(LOADLIBSS) -l$(LOADLIBARGPA) 
@@ -169,7 +173,7 @@ $(NAME): Makefile  $(OBJS_PIPEX) -l$(LOADLIBFT) -l$(LOADLIBPRINTF) -l$(LOADLIBAR
 #	$(CC) $(LFLGS) $(OBJS_CHECK) -o $@ $(LLIBS)
 # .......................... objects construction ............................ #
 $(OBJDIR)%.o: $(SRCDIR_PIPEX)%.c $(INCDIR)$(HEADER)
-	@echo "$(GREEN)========== COMPILING PUSH_SWAP FILES ===============$(DEF_COLOR)"
+	@echo "$(GREEN)========== COMPILING PIPEX FILES ===============$(DEF_COLOR)"
 	$(CC) $(CFLGS) $< -o $@ $(HEADS)  
  
 .PHONY: clean
@@ -217,6 +221,7 @@ norma:
 	$(MAKE) -C $(SRCDIR_PRINT)  norma
 	$(MAKE) -C $(SRCDIR_LIBFT)  norma
 	$(MAKE) -C $(SRCDIR_ARGPA)  norma
+	$(MAKE) -C $(SRCDIR_ERROR)  norma
 	@echo "$(GREEN)========== CHECKING NORME $(NAME) ==============$(DEF_COLOR)"
 	norminette $(SRCDIR_PIPEX) 
 	@echo "$(MAGENTA)========== CHECKING NORME $(BONUS) ==============$(DEF_COLOR)"

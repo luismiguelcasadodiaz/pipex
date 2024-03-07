@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:43:45 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 11:44:55 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/07 09:10:06 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,22 @@ void	ft_error_print(int e, const char *f, int l)
 	char	*text;
 
 	linn = ft_itoa(l);
-	func = ft_strjoin(f, ":");
 	line = ft_strjoin(linn, "-> ");
-	loca = ft_strjoin(func, line);
-	text = ft_strjoin(loca, ft_error_str(e));
-	perror(text);
 	free(linn);
+	func = ft_strjoin(f, ":");
+	loca = ft_strjoin(func, line);
 	free(func);
 	free(line);
+	linn = ft_itoa(e);
+	line = ft_strjoin(" [error ", linn);
+	free(linn);
+	linn = ft_strjoin(loca, line);
 	free(loca);
+	free(line);
+	loca = ft_strjoin(linn, "] ");
+	free(linn);
+	text = ft_strjoin(loca, ft_error_str(e));
+	free(loca);
+	perror(text);
 	free(text);
 }

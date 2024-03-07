@@ -6,13 +6,14 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/06 20:15:27 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/07 09:42:35 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include "ft_printf.h"
 #include "ft_error.h"
+#include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -24,14 +25,14 @@ void	cmd_0(t_pipex_args args, char **env, int apipe[])
 
 	args.cmds[0]->fd_i = open(args.infile, O_RDONLY);
 	if (args.cmds[0]->fd_i == -1)
-		ft_error_exit(ERR010, __func__, __LINE__);
+		ft_error_exit(errno, __func__, __LINE__);
 	error = dup2(args.cmds[0]->fd_i, 0);
 	if (error == -1)
-		ft_error_exit(ERR007, __func__, __LINE__);
+		ft_error_exit(errno, __func__, __LINE__);
 	close(apipe[READ]);
 	error = dup2(apipe[WRITE], 1);
 	if (error == -1)
-		ft_error_exit(ERR007, __func__, __LINE__);
+		ft_error_exit(errno, __func__, __LINE__);
 	if (args.cmds[0]->ok)
 		execve(args.cmds[0]->cmd, args.cmds[0]->flg, env);
 	close(args.cmds[0]->fd_i);
@@ -48,14 +49,14 @@ void	cmd_1(t_pipex_args args, char **env, int apipe[])
 	args.cmds[idx]->fd_o = open(args.outfile, \
 				O_TRUNC | O_WRONLY | O_CREAT, 0664);
 	if (args.cmds[idx]->fd_o == -1)
-		ft_error_exit(ERR001, __func__, __LINE__);
+		ft_error_exit(errno, __func__, __LINE__);
 	error = dup2(args.cmds[idx]->fd_o, 1);
 	if (error == -1)
-		ft_error_exit(ERR007, __func__, __LINE__);
+		ft_error_exit(errno, __func__, __LINE__);
 	close(apipe[WRITE]);
 	error = dup2(apipe[READ], 0);
 	if (error == -1)
-		ft_error_exit(ERR007, __func__, __LINE__);
+		ft_error_exit(errno, __func__, __LINE__);
 	if (args.cmds[idx]->ok)
 		execve(args.cmds[idx]->cmd, args.cmds[idx]->flg, env);
 	close(args.cmds[idx]->fd_i);
@@ -72,17 +73,17 @@ void	father(t_pipex_args args, char **env, int apipe[], int pid)
 	close(apipe[WRITE]);
 	error = dup2(apipe[READ], 0);
 	if (error == -1)
-		ft_error_exit(ERR007, __func__, __LINE__);
+		ft_error_exit(errno, __func__, __LINE__);
 	waitpid(pid, &error, 0);
 	if (!error)
 	{
 		args.cmds[idx]->fd_o = open(args.outfile, \
 				O_TRUNC | O_WRONLY | O_CREAT, 0664);
 		if (args.cmds[idx]->fd_o == -1)
-			ft_error_exit(ERR010, __func__, __LINE__);
+			ft_error_exit(errno, __func__, __LINE__);
 		dup2(args.cmds[idx]->fd_o, 1);
 		if (error == -1)
-			ft_error_exit(ERR007, __func__, __LINE__);
+			ft_error_exit(errno, __func__, __LINE__);
 		execve(args.cmds[idx]->cmd, args.cmds[idx]->flg, env);
 		ft_error_exit(ERR051, __func__, __LINE__);
 	}
