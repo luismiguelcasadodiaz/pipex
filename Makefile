@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/07 16:26:25 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/08 11:57:17 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,12 +61,12 @@ vpath %.a $(LIBDIR)
 #                               COMPILER SETUP                                 #
 # ============================================================================ #
 CC 				= cc
-WRNFL			= -Wall -Wextra -Werror -fsanitize=address
+WRNFL			= -Wall -Wextra -Werror #-fsanitize=address
 DBGFL			= -g3
 CFLGS			= $(DBGFL) $(WRNFL) -c
 HEADS			= -I$(INCDIR)
 #LFLGS 			= -Wl,-v
-LFLGS 			= -fsanitize=address
+LFLGS 			= #-fsanitize=address
 
 # ============================================================================ #
 #                              LIBRARIES SETUP                                 #

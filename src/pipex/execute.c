@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/07 22:17:15 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/08 13:36:24 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 
-void	my_close(int fd)
-{
-	if (close(fd))
-		ft_error_exit(errno, __func__, __LINE__);
-}
-
 void	cmd_0(t_pipex_args args, char **env, int apipe[])
 {
 	int	error;
@@ -35,15 +29,13 @@ void	cmd_0(t_pipex_args args, char **env, int apipe[])
 	error = dup2(args.cmds[0]->fd_i, 0);
 	if (error == -1)
 		ft_error_exit(errno, __func__, __LINE__);
-	my_close(apipe[READ]);
+	close(apipe[READ]);
 	error = dup2(apipe[WRITE], 1);
 	if (error == -1)
 		ft_error_exit(errno, __func__, __LINE__);
 	if (args.cmds[0]->ok)
 		execve(args.cmds[0]->cmd, args.cmds[0]->flg, env);
-	my_close(args.cmds[0]->fd_i);
-	my_close(args.cmds[0]->fd_o);
-	ft_error_exit(errno, __func__, __LINE__);
+	ft_error_exit(127, __func__, __LINE__);
 }
 
 void	cmd_1(t_pipex_args args, char **env, int apipe[])
@@ -59,15 +51,13 @@ void	cmd_1(t_pipex_args args, char **env, int apipe[])
 	error = dup2(args.cmds[idx]->fd_o, 1);
 	if (error == -1)
 		ft_error_exit(errno, __func__, __LINE__);
-	my_close(apipe[WRITE]);
+	close(apipe[WRITE]);
 	error = dup2(apipe[READ], 0);
 	if (error == -1)
 		ft_error_exit(errno, __func__, __LINE__);
 	if (args.cmds[idx]->ok)
 		execve(args.cmds[idx]->cmd, args.cmds[idx]->flg, env);
-	my_close(args.cmds[idx]->fd_i);
-	my_close(args.cmds[idx]->fd_o);
-	ft_error_exit(errno, __func__, __LINE__);
+	ft_error_exit(127, __func__, __LINE__);
 }
 /*
 void	father(t_pipex_args args, char **env, int apipe[], int pid)
@@ -117,4 +107,6 @@ void	execute(t_pipex_args args, char **env)
 		waitpid(pid1, &error, 0);
 		cmd_1(args, env, pfd);
 	}
+	close(pfd[0]);
+	close(pfd[1]);
 }

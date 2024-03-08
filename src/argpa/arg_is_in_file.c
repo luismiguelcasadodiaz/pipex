@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:37:38 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/07 19:53:54 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/08 13:34:22 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ void	arg_is_in_file(char *file, char *pwd, t_pipex_args *pip_arg)
 	{
 		slash_file = ft_strjoin("/", file);
 		file_path = ft_strjoin(pwd_val, slash_file);
-		if (access(file_path, F_OK))
-			ft_error_print(errno, __func__, __LINE__);
-		if (access(file_path, R_OK))
-			ft_error_print(errno, __func__, __LINE__);
 		pip_arg->infile = file_path;
 		free(slash_file);
 		free(pwd_val);
 		pip_arg->all_ok = pip_arg->all_ok && (pip_arg->infile != NULL);
 	}
 }
+		//if (access(file_path, F_OK))
+		//	ft_error_print(errno, __func__, __LINE__);
+		//if (access(file_path, R_OK))
+		//	ft_error_print(errno, __func__, __LINE__);
 		//show_pipex_args(*pip_arg);
