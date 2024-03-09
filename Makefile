@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/08 11:57:17 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/09 13:07:38 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -168,7 +168,7 @@ makeliberror:
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
     rm -f $@.$$$$
 # .......................... targets construction ............................ #
-$(NAME): Makefile  $(OBJS_PIPEX) -l$(LOADLIBFT) -l$(LOADLIBPRINTF) -l$(LOADLIBARGPA) 
+$(NAME): Makefile  $(OBJS_PIPEX) -l$(LOADLIBFT) -l$(LOADLIBPRINTF) -l$(LOADLIBARGPA) -l$(LOADLIBERROR) 
 	@echo "$(GREEN)========== GATHERING PIPEX OBJECTS =============$(DEF_COLOR)"
 	$(CC) $(LFLGS) $(OBJS_PIPEX) -o $@ $(LLIBS)
 

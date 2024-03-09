@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:52:55 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/06 00:24:04 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/09 13:29:15 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ enum e_my_errors
 	ERR021 = -21,
 	ERR050 = -50,
 	ERR051 = -51,
+	ERR126 = -126,
 	ERR127 = -127,
 	ERRnnn = -999
 };
@@ -35,5 +36,6 @@ enum e_my_errors
 char	*ft_error_str(int e);
 char	*ft_error_decode_e(int e);
 void	ft_error_print(int e, const char *f, int l);
+char	*ft_error_text(int e, const char *f, int l);
 void	ft_error_exit(int e, const char *f, int l);
 #endif

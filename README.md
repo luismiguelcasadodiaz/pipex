@@ -250,3 +250,24 @@ It is not the case wiht, "tr 'a' ' '", that does not execute if passed as {"tr",
 ## What I read.
 
 [Here doc](https://linuxize.com/post/bash-heredoc/)
+
+## What i Learnt
+
+### Leaks checking
+
+The usual `leaks --atExit -- ./pipex .... ` method to check leaks does not work when the program to check uses redirections.
+I used Valgring instead with --trace-children=yes flag.
+
+I discovered that grep command had leaks.
+
+
+Abel taught me about grep -v to invert match and `norminette | greo -v OK || echo "Norma OK" '
+
+the enviromente variable $SHLV tell how did is the bash you are running.
+
+`git remote get-url --all origin` shows the cloud origin of my repository
+
+`env -i` ignores the enviroment
+
+
+By default

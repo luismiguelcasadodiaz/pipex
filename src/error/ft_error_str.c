@@ -6,12 +6,13 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:21:12 by luicasad          #+#    #+#             */
-/*   Updated: 2024/02/27 12:47:58 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/09 13:48:07 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_error.h"
 #include <string.h>
+#include <stdio.h>
 /******************************************************************************/
 /**
    @file ft_error_str.c
@@ -29,6 +30,7 @@
 
 char	*ft_error_str(int e)
 {
+	//printf("EL ERRROR QUE BUSCO ES %d", e);
 	if (ERRnnn <= e && e <= ERR001)
 		return (ft_error_decode_e(e));
 	else

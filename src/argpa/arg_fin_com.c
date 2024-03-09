@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 21:00:28 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 20:50:15 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/09 15:25:48 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,29 @@ char	*arg_fin_com(char *path_val, char *com)
 	char	*slash_command;
 	int		len;
 
-	slash_command = ft_strjoin("/", com);
-	len = 0;
 	result = NULL;
-	paths = get_paths(path_val);
-	while (paths[len] != NULL)
+	if (com[0] != '/' && com[0] != '.')
 	{
-		command = ft_strjoin(paths[len], slash_command);
-		if (!result && !access(command, X_OK))
-			result = command;
-		else
-			free(command);
-		free(paths[len]);
-		len++;
+		slash_command = ft_strjoin("/", com);
+		len = 0;
+		paths = get_paths(path_val);
+		while (paths[len] != NULL)
+		{
+			command = ft_strjoin(paths[len], slash_command);
+			if (!result && !access(command, X_OK))
+				result = command;
+			else
+				free(command);
+			free(paths[len]);
+			len++;
+		}
+		free(slash_command);
+		free(paths);
 	}
-	free(slash_command);
-	free(paths);
+	else
+	{
+		if (!access(com, X_OK))
+			result = com;
+	}
 	return (result);
 }

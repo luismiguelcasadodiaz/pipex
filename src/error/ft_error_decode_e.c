@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:36:23 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/06 18:41:35 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/09 13:55:25 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static	char	*decode_000_010(int e)
 	if (e == ERR001)
 		return ("Environment variable has not char(=)");
 	if (e == ERR002)
-		return ("No such file or directory or Permission denied");
+		return ("No sach file or directory or Permission denied");
 	if (e == ERR003)
 		return ("The command does not exits in current path");
 	if (e == ERR004)
@@ -48,6 +48,8 @@ char	*ft_error_decode_e(int e)
 		return ("t_pipex_args has not available slots for more commands");
 	if (e == ERR051)
 		return ("execve() failed execution. Check flags used with command");
+	if (e == ERR126)
+		return ("Permission denied");
 	if (e == ERR127)
 		return ("command not found");
 	return (ft_strjoin("Unknow error ", ft_itoa(e)));

@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:51:53 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 20:56:06 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/09 16:58:54 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_H
@@ -35,8 +35,10 @@
 typedef struct s_cmd
 {
 	char	*cmd;
+	char	*cli;
 	char	**flg;
 	int		ok;
+	int		is_X;
 	int		fd_i;
 	int		fd_o;
 }	t_cmd;
@@ -89,7 +91,7 @@ void			execute(t_pipex_args pip_arg, char **env);
 /* ************************************************************************** */
 /* set_command() assign absolute path to commnad in the right slot            */
 /* ************************************************************************** */
-void			set_command(t_pipex_args *pip_arg, char *c, char **f, char *a);
+void			set_command(t_pipex_args *pip_arg, char *cli, char *c, char **f, char *a);
 /* ************************************************************************** */
 /* set_file() assign absolute path to file in the right slot                  */
 /* ************************************************************************** */

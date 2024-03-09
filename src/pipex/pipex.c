@@ -6,13 +6,14 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:57:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/08 13:28:46 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/09 16:13:02 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include "argpar.h"
 #include <stdlib.h>
+#include "ft_error.h"
 
 int	main(int argc, char **argv)
 {
