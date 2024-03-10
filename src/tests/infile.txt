@@ -270,33 +270,4 @@ the enviromente variable $SHLV tell how did is the bash you are running.
 `env -i` ignores the enviroment
 
 
-### Sanitizer
-The -fno-omit-frame-pointer flag in GCC tells the compiler to not omit the frame pointer (FP) during function call optimization.
-
-Frame Pointer (FP):
-
-The FP is a CPU register that typically stores the address of the current function's stack frame.
-
-The stack frame is a temporary memory area allocated on the stack for each function call. It holds local variables, function arguments, and housekeeping information.
-
-Modern compilers often perform optimizations to improve code efficiency.
-
-One optimization involves omitting (not generating) the frame pointer instruction in some situations.
-
-While omitting the FP can be beneficial, there are situations where it's crucial to have it:
-
--Debugging: Debuggers rely on the FP to walk the call stack, stepping through function calls and examining local variables. Without the FP, debugging becomes significantly more challenging or even impossible.
-
--Exception Handling: Some exception handling mechanisms (like catching signals) use the FP to unwind the call stack and restore program state after an exception. Omitting the FP can disrupt this process.
-
--Backtraces: Tools like AddressSanitizer (ASan) or profilers might rely on the FP to generate stack traces for error reporting or performance analysis.
-
-You'd typically use -fno-omit-frame-pointer when:
-
--You need to debug your program effectively.
-
--You're using exception handling or profiling tools that rely on the FP.
-
--You're encountering issues with ASan or other tools requiring the FP for proper operation. (My problem was Loop Printing "AddressSanitizer:DEADLYSIGNAL":)
-
-
+By default

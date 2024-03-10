@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/09 13:07:38 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/10 00:18:43 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ vpath %.a $(LIBDIR)
 #                               COMPILER SETUP                                 #
 # ============================================================================ #
 CC 				= cc
-WRNFL			= -Wall -Wextra -Werror #-fsanitize=address
+WRNFL			= -Wall -Wextra -Werror #-fsanitize=address -fno-omit-frame-pointer
 DBGFL			= -g3
 CFLGS			= $(DBGFL) $(WRNFL) -c
 HEADS			= -I$(INCDIR)
@@ -145,6 +145,7 @@ $(NAMELIBERROR):  makeliberror $(LIBDIR)$(NAMELIBERROR)
 -lft:makelibft
 -lftprintf:makelibftprintf
 -largpar:makelibargpa
+-lfterror:makeliberror
 
 makelibft: 
 	$(MAKE) -C $(SRCDIR_LIBFT)

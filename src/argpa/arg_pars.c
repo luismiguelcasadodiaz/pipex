@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:56:34 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 20:57:39 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/10 01:23:55 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,15 @@
 void	arg_ok(int argc, char **argv, char **environ, t_pipex_args *pip_arg)
 {
 	int		i;
-	char	*var_pwd;
-	char	*var_path;
 
-	var_pwd = arg_fin_env_var(environ, "PWD");
-	var_path = arg_fin_env_var(environ, "PATH");
-	if (var_pwd && var_path)
+	pip_arg->pwd = arg_fin_env_var(environ, "PWD");
+	pip_arg->path = arg_fin_env_var(environ, "PATH");
+	if (pip_arg->pwd && pip_arg->path)
 	{
-		arg_is_in_file(argv[1], var_pwd, pip_arg);
+		arg_is_in_file(argv[1], pip_arg);
 		i = 2;
 		while (i < argc - 1)
-			arg_is_command(argv[i++], var_path, pip_arg);
-		arg_is_ou_file(argv[argc - 1], var_pwd, pip_arg);
+			arg_is_command(argv[i++], pip_arg);
+		arg_is_ou_file(argv[argc - 1], pip_arg);
 	}
 }

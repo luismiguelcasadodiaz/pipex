@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 12:29:00 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/09 16:03:58 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/10 00:14:22 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
-void	set_command(t_pipex_args *pip_arg, char *cli, char *cmd, char **flg, char *arg)
+void	set_command(t_pipex_args *pip_arg,  char *cmd, char **flg, char *arg)
 {
 	if (pip_arg->num_cmds < pip_arg->max_cmds)
 	{
-		pip_arg->cmds[pip_arg->num_cmds]->cli = cli;
+		pip_arg->cmds[pip_arg->num_cmds]->cli = flg[0];
 		pip_arg->cmds[pip_arg->num_cmds]->ok = (cmd != NULL);
 		if (pip_arg->cmds[pip_arg->num_cmds]->ok)
 			pip_arg->cmds[pip_arg->num_cmds]->cmd = cmd;

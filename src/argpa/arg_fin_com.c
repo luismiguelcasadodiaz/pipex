@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 21:00:28 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/09 15:25:48 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/10 01:32:20 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,37 +44,52 @@ static char	**get_paths(char *path_val)
 	return (paths);
 }
 
-char	*arg_fin_com(char *path_val, char *com)
+
+char	*arg_fin_com(char *com, t_pipex_args *p)
 {
 	char	**paths;
 	char	*command;
 	char	*result;
 	char	*slash_command;
 	int		len;
+	char	*path_val;
 
-	result = NULL;
-	if (com[0] != '/' && com[0] != '.')
+	path_val = arg_val_var(p->path);
+	if (path_val)
 	{
-		slash_command = ft_strjoin("/", com);
-		len = 0;
-		paths = get_paths(path_val);
-		while (paths[len] != NULL)
+		result = NULL;
+		if (com[0] != '/' && com[0] != '.')
 		{
-			command = ft_strjoin(paths[len], slash_command);
-			if (!result && !access(command, X_OK))
-				result = command;
-			else
-				free(command);
-			free(paths[len]);
-			len++;
+			slash_command = ft_strjoin("/", com);
+			len = 0;
+			paths = get_paths(path_val);
+			while (paths[len] != NULL)
+			{
+				command = ft_strjoin(paths[len], slash_command);
+				if (!result && !access(command, R_OK))
+				{
+					result = command;
+					p->cmds[p->num_cmds]->ok = OK;
+					p->cmds[p->num_cmds]->is_X = !access(command, X_OK);
+				}
+				else
+					free(command);
+				free(paths[len]);
+				len++;
+			}
+			free(slash_command);
+			free(paths);
 		}
-		free(slash_command);
-		free(paths);
-	}
-	else
-	{
-		if (!access(com, X_OK))
-			result = com;
+		else
+		{
+			if (!access(com, R_OK))
+				{
+					result = com;
+					p->cmds[p->num_cmds]->ok = OK;
+					p->cmds[p->num_cmds]->is_X = !access(com, X_OK);
+				}
+				result = com;
+		}
 	}
 	return (result);
 }

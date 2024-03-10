@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:42:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/09 16:00:41 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/10 01:31:42 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,24 +89,13 @@ static void	split_cmd(char *var_val, char *arg, char **cmd, char ***flg)
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
-void	arg_is_command(char *arg, char *path, t_pipex_args *pip_arg)
+void	arg_is_command(char *arg,  t_pipex_args *pip_arg)
 {
-	char	*path_val;
 	char	*arg_cmd;
 	char	**arg_flags;
 
-	path_val = arg_val_var(path);
-	if (path_val)
-	{
-		arg_flags = ft_split_pipex(arg, ' ');
-		//if (arg_flags[0][0] == '/' || arg_flags[0][0] == '.')
-		//	set_command(pip_arg, arg_flags[0], arg_flags, arg);
-		//else
-		//{
-			arg_cmd = arg_fin_com(path_val, arg_flags[0]);
-			set_command(pip_arg, arg_flags[0], arg_cmd, arg_flags, arg);
-		//}
-		free(path_val);
-	}
+	arg_flags = ft_split_pipex(arg, ' ');
+	arg_cmd = arg_fin_com(arg_flags[0], pip_arg);
+	set_command(pip_arg, arg_cmd, arg_flags, arg);
 }
 	//show_pipex_args(*pip_arg);

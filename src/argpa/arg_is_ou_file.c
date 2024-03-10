@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:37:38 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/09 12:26:19 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/10 01:14:27 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,20 @@
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
-void	arg_is_ou_file(char *file, char *pwd, t_pipex_args *pip_arg)
+void	arg_is_ou_file(char *file, t_pipex_args *pip_arg)
 {
 	char	*pwd_val;
 	char	*file_path;
 	char	*slash_file;
 
 	pip_arg->outfile = NULL;
-	pwd_val = arg_val_var(pwd);
+	pwd_val = arg_val_var(pip_arg->pwd);
 	if (pwd_val)
 	{
 		slash_file = ft_strjoin("/", file);
 		file_path = ft_strjoin(pwd_val, slash_file);
-		//if (!access(file_path, F_OK) && access(file_path, W_OK))
-		//	ft_error_print(errno, __func__, __LINE__);
 		pip_arg->outfile = file_path;
+		pip_arg->ou_arg = file;
 		free(slash_file);
 		free(pwd_val);
 		pip_arg->all_ok = pip_arg->all_ok && (pip_arg->outfile != NULL);

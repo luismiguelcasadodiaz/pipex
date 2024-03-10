@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:57:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/09 16:13:02 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/10 00:52:36 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(int argc, char **argv)
 	{
 		pip_arg = create(argc - 3);
 		arg_ok(argc, argv, environ, &pip_arg);
+		show_pipex_args(pip_arg);
 		execute(pip_arg, environ);
 		destroy(pip_arg);
 		return (EXIT_SUCCESS);
