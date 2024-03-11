@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:21:12 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/09 13:48:07 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/11 12:30:27 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 
 char	*ft_error_str(int e)
 {
-	//printf("EL ERRROR QUE BUSCO ES %d", e);
 	if (ERRnnn <= e && e <= ERR001)
 		return (ft_error_decode_e(e));
 	else

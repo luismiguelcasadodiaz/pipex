@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/10 00:49:52 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/11 16:47:00 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,74 +21,36 @@
 #include <sys/wait.h>
 #include <stdio.h>
 
-void	my_perror(char *a, char *b)
+static void	my_perror(char *a, char *b)
 {
-	char *j;
+	char	*j;
+	char	*i;
 
-	j = ft_strjoin(a, b);
-	perror(j);
-	free(j);
-}
 
-/*
-void	cmd_0(t_pipex_args args, char **env, int apipe[])
-{
-	int	error;
-
-	args.cmds[0]->fd_i = open(args.infile, O_RDONLY);
-	if (args.cmds[0]->fd_i == -1)
-		ft_error_print(errno, __func__, __LINE__);
+	if (b)
+	{
+		j = ft_strjoin(a, b);
+		i = ft_strjoin("pipex: ", j);
+		ft_printf("%s\n", i);
+		free(j);
+		free(i);
+	}
 	else
 	{
-		error = dup2(args.cmds[0]->fd_i, 0);
-		if (error == -1)
-			ft_error_exit(127, __func__, __LINE__);
-		close(apipe[READ]);
-		error = dup2(apipe[WRITE], 1);
-		if (error == -1)
-			ft_error_exit(errno, __func__, __LINE__);
-		if (args.cmds[0]->ok)
-			execve(args.cmds[0]->cmd, args.cmds[0]->flg, env);
-		ft_error_exit(126, __func__, __LINE__);
+		j = ft_strjoin("pipex: ", a);
+		perror(j);
+		free(j);
 	}
-	exit(EXIT_FAILURE);
 }
 
-void	cmd_1(t_pipex_args args, char **env, int apipe[])
-{
-	int	idx;
-	int	error;
-
-	idx = args.max_cmds -1;
-	args.cmds[idx]->fd_o = open(args.outfile, \
-				O_TRUNC | O_WRONLY | O_CREAT, 0664);
-	if (args.cmds[idx]->fd_o == -1)
-		ft_error_print(errno, __func__, __LINE__);
-	else
-	{
-		error = dup2(args.cmds[idx]->fd_o, 1);
-		if (error == -1)
-			ft_error_exit(errno, __func__, __LINE__);
-		close(apipe[WRITE]);
-		error = dup2(apipe[READ], 0);
-		if (error == -1)
-			ft_error_exit(errno, __func__, __LINE__);
-		if (args.cmds[idx]->ok)
-			execve(args.cmds[idx]->cmd, args.cmds[idx]->flg, env);
-		ft_error_exit(ERR127, __func__, __LINE__);
-	}
-	exit(EXIT_FAILURE);
-}
-
-
-*/
-
- 
-void	cmd_0(t_pipex_args args, char **env, int apipe[])
+static void	cmd_0(t_pipex_args args, char **env, int apipe[])
 {
 	args.cmds[0]->fd_i = open(args.infile, O_RDONLY);
 	if (args.cmds[0]->fd_i == -1)
-		my_perror("Pipex: ", args.infile);
+	{
+		my_perror(args.in_arg, NULL);
+		exit(1);
+	}
 	else
 	{
 		if (dup2(args.cmds[0]->fd_i, 0) == -1)
@@ -101,24 +63,29 @@ void	cmd_0(t_pipex_args args, char **env, int apipe[])
 			else
 			{
 				execve(args.cmds[0]->cmd, args.cmds[0]->flg, env);
-				//if (!args.cmds[0]->ok)
-				//	my_perror("command not found ", args.cmds[0]->cli);
-				//else if (!args.cmds[0]->is_X)
-				//	my_perror("permission denied ", args.cmds[0]->cli);
+				if (!args.cmds[0]->ok)
+					my_perror(args.cmds[0]->cli, ": command not found");
+				else if (!args.cmds[0]->is_x)
+					my_perror(args.cmds[0]->cli, ": permission denied");
 			}
 		}
 	}
 }
 
-void	cmd_1(t_pipex_args args, char **env, int apipe[])
+static void	cmd_1(t_pipex_args args, char **env, int apipe[])
 {
 	int	idx;
+	int	error;
 
+	error = 0;
 	idx = args.max_cmds -1;
 	args.cmds[idx]->fd_o = open(args.outfile, \
 				O_TRUNC | O_WRONLY | O_CREAT, 0664);
 	if (args.cmds[idx]->fd_o == -1)
-		my_perror("Pipex: ", args.outfile);
+	{
+		my_perror("P1pex: ", args.ou_arg);
+		exit(1);
+	}
 	else
 	{
 		if (dup2(args.cmds[idx]->fd_o, idx) == -1)
@@ -129,45 +96,28 @@ void	cmd_1(t_pipex_args args, char **env, int apipe[])
 			if (dup2(apipe[READ], 0) == -1)
 				perror("Error dup outfile ");
 			else
-			{
 				execve(args.cmds[idx]->cmd, args.cmds[idx]->flg, env);
-				//if (!args.cmds[idx]->ok)
-				//	my_perror("command not found ", args.cmds[idx]->cli);
-				//else if (!args.cmds[0]->is_X)
-				//	my_perror("permission denied ", args.cmds[0]->cli);
-			}
 		}
 	}
 }
 
-/*
-void	cmd_1(t_pipex_args args, char **env, int apipe[])
+static int	set_exit_error(t_pipex_args args)
 {
-	int	idx;
 	int	error;
 
-	idx = args.max_cmds -1;
-	args.cmds[idx]->fd_o = open(args.outfile, \
-				O_TRUNC | O_WRONLY | O_CREAT, 0664);
-	if (args.cmds[idx]->fd_o == -1)
-		perror("outfile ");
-	else
+	error = -1;
+	if (!args.cmds[args.max_cmds -1]->ok)
 	{
-		error = dup2(args.cmds[idx]->fd_o, 1);
-		if (error == -1)
-			ft_error_exit(errno, __func__, __LINE__);
-		close(apipe[WRITE]);
-		error = dup2(apipe[READ], 0);
-		if (error == -1)
-			ft_error_exit(errno, __func__, __LINE__);
-		if (args.cmds[idx]->ok)
-			execve(args.cmds[idx]->cmd, args.cmds[idx]->flg, env);
-		ft_error_exit(ERR127, __func__, __LINE__);
+		error = 127;
+		my_perror(args.cmds[args.max_cmds -1]->cli, ": command not found");
 	}
-	exit(EXIT_FAILURE);
+	else if (!args.cmds[args.max_cmds -1]->is_x)
+	{
+		error = 126;
+		my_perror(args.cmds[args.max_cmds -1]->cli, ": permission denied");
+	}
+	return (error);
 }
-*/
-
 
 void	execute(t_pipex_args args, char **env)
 {
@@ -186,12 +136,8 @@ void	execute(t_pipex_args args, char **env)
 	else
 	{
 		waitpid(pid1, &error, 0);
-		if (error)
-			my_perror("Pipex ", args.cmds[0]->cli);
 		cmd_1(args, env, pfd);
-		if (errno)
-			my_perror("Pipex: ", args.cmds[args.num_cmds - 1]->cli);
-		exit(errno);
+		exit(set_exit_error(args));
 	}
 	close(pfd[0]);
 	close(pfd[1]);

@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/10 00:18:43 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/11 12:33:17 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,12 +61,12 @@ vpath %.a $(LIBDIR)
 #                               COMPILER SETUP                                 #
 # ============================================================================ #
 CC 				= cc
-WRNFL			= -Wall -Wextra -Werror #-fsanitize=address -fno-omit-frame-pointer
+WRNFL			= -Wall -Wextra -Werror -fsanitize=address -fno-omit-frame-pointer
 DBGFL			= -g3
 CFLGS			= $(DBGFL) $(WRNFL) -c
 HEADS			= -I$(INCDIR)
 #LFLGS 			= -Wl,-v
-LFLGS 			= #-fsanitize=address
+LFLGS 			= -fsanitize=address
 
 # ============================================================================ #
 #                              LIBRARIES SETUP                                 #
@@ -100,7 +100,6 @@ SRCS_PIPEX	= 	execute.c \
 				cmd_create.c \
 				cmd_destroy.c \
 				show_pipex_args.c \
-				set_command.c \
 				set_file.c \
 				pipex.c
 

@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 09:18:22 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/03 13:55:25 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/11 14:04:05 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ t_pipex_args	create(int max_cmds)
 	r.max_cmds = max_cmds;
 	r.num_cmds = 0;
 	r.infile = NULL;
+	r.free_infile = 0;
 	r.outfile = NULL;
+	r.free_outfile = 0;
 	r.cmds = (t_cmd **) malloc(max_cmds * sizeof(t_cmd *));
 	if (!r.cmds)
 	{

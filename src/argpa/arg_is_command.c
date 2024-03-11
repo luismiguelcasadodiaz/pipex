@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:42:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/10 01:31:42 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/11 15:34:36 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,64 +18,10 @@
 /******************************************************************************/
 /**
    @file arg_is_command.c
-   @brief create_the_command() finds if command com in any of PATH's paths is 
-   executable. If it is, returns full path, oterhmise NULL
-
-   @param[in]  var_val: holds the content of PATH variable after '='
-   @param[in]      com: the command to locate
-
-   @returns
-   A structure with the absolute path to the command, or NULL it not found and
-   the text including the command's flags.
-
-   @details
-   Checks if there are flags in the command by finding the first whitespace, 
-   to isolate the command name and to look for the command executable with
-   the help of arg_fin_com().
-
-   ATTENTION HERE. ft_strchr does not allocates memory but ft_substr does.
-   ir order to treat equally both variables of t_cmd struct I call ft_strjoin
-   that does allocates memory.
-
-   @author LMCD (Luis Miguel Casado Díaz)
- *****************************************************************************/
-/*
-
-static void	split_cmd(char *var_val, char *arg, char **cmd, char ***flg)
-{
-	*flg = ft_split(arg, ' ');
-	*cmd = arg_fin_com(var_val, *flg[0]);
-}
-	int		arg_len;
-	int		flg_len;
-	char	*arg_cmd;
-
-	if (!cmd)
-		cmd = NULL;
-	arg_len = ft_strlen(arg);
-	*flg = ft_strchr(arg, ' ');
-	if (*flg)
-	{
-		flg_len = ft_strlen(*flg);
-		arg_cmd = ft_substr(arg, 0, arg_len - flg_len);
-		*cmd = arg_fin_com(var_val, arg_cmd);
-		free(arg_cmd);
-	}
-	else
-	{
-		*cmd = arg_fin_com(var_val, arg);
-		*flg = "";
-	}
-	*flg = ft_strjoin(*flg, "");*/
-
-/******************************************************************************/
-/**
-   @file arg_is_command.c
    @brief arg_is_command() finds if command com in any of PATH's paths is 
    executable. If it is, returns full path, oterhmise NULL
 
    @param[in]  arg: the pipex argument to verify if its command is executable.
-   @param[in]  env: the enviroment where to check.
    @param[out] pip_arg : the pipex structur to keep the executable command wiht
    	the flags
 
@@ -89,13 +35,23 @@ static void	split_cmd(char *var_val, char *arg, char **cmd, char ***flg)
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
-void	arg_is_command(char *arg,  t_pipex_args *pip_arg)
+void	arg_is_command(char *arg, t_pipex_args *pip_arg)
 {
 	char	*arg_cmd;
 	char	**arg_flags;
 
 	arg_flags = ft_split_pipex(arg, ' ');
 	arg_cmd = arg_fin_com(arg_flags[0], pip_arg);
-	set_command(pip_arg, arg_cmd, arg_flags, arg);
+	if (pip_arg->num_cmds < pip_arg->max_cmds)
+	{
+		pip_arg->cmds[pip_arg->num_cmds]->cmd = arg_cmd;
+		pip_arg->cmds[pip_arg->num_cmds]->cli = arg_flags[0];
+		pip_arg->cmds[pip_arg->num_cmds++]->flg = arg_flags;
+		pip_arg->all_ok = pip_arg->all_ok && \
+						pip_arg->cmds[pip_arg->num_cmds]->ok && \
+						pip_arg->cmds[pip_arg->num_cmds]->is_x;
+	}
+	else
+		ft_error_print(ERR050, __func__, __LINE__);
 }
-	//show_pipex_args(*pip_arg);
+	//show_pipex_args(*pip_arg);	

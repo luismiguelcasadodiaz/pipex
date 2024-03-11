@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:26:56 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/09 16:59:41 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/11 11:53:55 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_cmd	*cmd_create(char *cmd, char **flg)
 	r->cli = cmd;
 	r->flg = flg;
 	r->ok = KO;
-	r->is_X = 0;
+	r->is_x = 0;
 	r->fd_i = -1;
 	r->fd_o = -1;
 	return (r);
