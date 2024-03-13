@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/11 16:47:00 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:05:08 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void	my_perror(char *a, char *b)
 {
 	char	*j;
 	char	*i;
-
 
 	if (b)
 	{

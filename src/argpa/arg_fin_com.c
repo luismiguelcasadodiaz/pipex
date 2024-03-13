@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 21:00:28 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/11 12:31:54 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:46:28 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static void	my_help(char *com, t_pipex_args *p, char **result, char *path_val)
 	}
 	free(slash_command);
 	free(paths);
+	free(path_val);
 }
 
 // checks commands starting by any character in PATH 
