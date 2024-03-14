@@ -179,7 +179,7 @@ int	main(int argc, char **argv)
 
 ### Find a variable in environmemt
 
-Loops over environ matching var name, returning a apointer to the found var, NJULL oterhwise.
+Loops over environ matching var name, returning a pointer to the found var, NJULL otherhwise.
 
 ```c
 char	*find_variable(char **environ, char	*var)
@@ -227,51 +227,57 @@ char	*arg_fin_com(char *var_val, char *com)
 }
 ```
 
-### find a file name
+### Find a file name
 
-my first validation checks if filename has legal characters for a filename...any character except '/'.
+my first validation checks if the filename has legal characters for a filename...any character except '/'.
 
-Also, user may refer a filename with a relative path such as
+Also, users may refer to a filename with a relative path such as
 ../inc/filename
 inc/filename
+./filename
 
-Then, if argument has not '/' it is a filename in current folder whose absolute path name start wiht the PWD variabla content
+Then, if the filename does not begin with '/' it is a filename relative to the PWD whose absolute path name starts with the PWD variable content. otherwise it is an absolute path.
+It the filename does not contains ´/´, i have to look for it in PATH
 
 ### The command and execve
-The call to execve requires a null-terminated list of arguments
+The call to execve() requires a null-terminated list of arguments
 
-Said that, "grep -n printf" transforms easily into a list of strings args ={"grep", "-n", "printf", NULL} wiht the help of ft_plit and white space. 
+Said that, "grep -n printf" transforms easily into a list of strings args ={"grep", "-n", "printf", NULL} with the help of ft_plit and white space. 
 
-In the same way, "tr 'a' 'e'", also fits into execve without problems.
+In the same way, "tr 'a' 'e'", also fits into execve() without problems.
 
 It is not the case with, "tr 'a' ''", that substitutes a by ' if passed as {"tr", "'a'", "'", NULL}
-It is not the case wiht, "tr 'a' ' '", that does not execute if passed as {"tr", "'a'", "'", "'", NULL}
+It is not the case with, "tr 'a' ' '", that do not execute if passed as {"tr", "'a'", "'", "'", NULL}
 
 ## What I read.
 
 [Here doc](https://linuxize.com/post/bash-heredoc/)
 
-## What i Learnt
+## What I Learnt
 
 ### Leaks checking
 
 The usual `leaks --atExit -- ./pipex .... ` method to check leaks does not work when the program to check uses redirections.
 I used Valgring instead with --trace-children=yes flag.
 
-I discovered that grep command had leaks.
+I discovered that the grep command had leaks.
+
+### Opened file descriptors
+
+Thank you to Unai, I will use --track-fds=yes flag with Valgrind in the future.
 
 
 Abel taught me about grep -v to invert match and `norminette | greo -v OK || echo "Norma OK" '
 
-the enviromente variable $SHLV tell how did is the bash you are running.
+the environment variable $SHLV tells how deep is the bash you are running.
 
 `git remote get-url --all origin` shows the cloud origin of my repository
 
-`env -i` ignores the enviroment
+`env -i` ignores the environment
 
 
 ### Sanitizer
-The -fno-omit-frame-pointer flag in GCC tells the compiler to not omit the frame pointer (FP) during function call optimization.
+The -fno-omit-frame-pointer flag tells  the GCC compiler not ommit the frame pointer (FP) during function call optimization.
 
 Frame Pointer (FP):
 
@@ -287,7 +293,7 @@ While omitting the FP can be beneficial, there are situations where it's crucial
 
 -Debugging: Debuggers rely on the FP to walk the call stack, stepping through function calls and examining local variables. Without the FP, debugging becomes significantly more challenging or even impossible.
 
--Exception Handling: Some exception handling mechanisms (like catching signals) use the FP to unwind the call stack and restore program state after an exception. Omitting the FP can disrupt this process.
+-Exception Handling: Some exception handling mechanisms (like catching signals) use the FP to unwind the call stack and restore the programm state after an exception. Omitting the FP can disrupt this process.
 
 -Backtraces: Tools like AddressSanitizer (ASan) or profilers might rely on the FP to generate stack traces for error reporting or performance analysis.
 
