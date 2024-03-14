@@ -54,8 +54,8 @@ check that either cmd1 or cmd2 are found in any path.
 
 I use the function arg_ok that verifies those four arguments, prints all error messages related to such verification.
 If all four arguments are correct, arg_ok returns a struct with the right values to pass to the children processes.
-The struct holds a all_ok variable that indicates if all filenames and commnads are reachable.
-Also max_cmds and num_cmds help to manage the cmds malloc
+The struct holds a all_ok variable that indicates if all filenames and commands are reachable.
+Also, max_cmds and num_cmds help to manage the cmds malloc
 
 ```c
 typedef struct	s_pipex_args
@@ -74,7 +74,7 @@ typedef struct	s_pipex_args
 source, alias, bg, bind, break, builtin, caller, cd, command, compgen, complete, compopt, continue, declare, typeset, dirs, disown, echo, enable, eval, exec, exit, export, fc, fg, getopts, hash, help, history, jobs, kill, let, local, logout, mapfile, readarray, popd, printf, pushd, pwd, read, readonly, return, set, shift, shopt, suspend, test, times, trap, type, ulimit, umask, unalias, unset, wait, 
 
 ### According to `compgen -c`: 
-MY linus box has 7717 commands
+MY linux box has 7717 commands
 ### Allowed functions
 
 There are 18 allowed functions for Pipex. All of them belong to the set of 51 functions allowed in minishell. I summarize them here. It is work in advance to understand minishell.
@@ -95,7 +95,7 @@ There are 18 allowed functions for Pipex. All of them belong to the set of 51 fu
 |unistd.h|dup|The  dup()  system call allocates a new file descriptor(unused lowest-numbered) that refers to the same open file description as the descriptor oldfd.After a successful return, the old and new file descriptors may be used interchangeably.  Since the two file descriptors refer to the same open file description, they share  file offset and file status flags |
 |unistd.h|dup2| The  dup2()  system  call performs the same task as dup(), but instead of using the lowest‐numbered unused file descriptor, it uses the file descriptor number specified in newfd.  In other words, the file descriptor newfd is adjusted so that it now refers to the same open file description as oldfd.  If the file descriptor newfd was previously open, it is closed silently (no error reported) before being reused. on success returns the new file descriptor. On error returns -1 and errno indicates the error.|
 |unistd.h|execve|execve()  executes  the program referred to by pathname, that can be a binary executable or a script starting with a shebang line. This causes the program that is currently being run by the calling process to be replaced with a new program, with newly initialized stack, heap, and (initialized and uninitialized) data segments.<br>execve()  does  not return on success, and the text, initialized data, uninitialized data (bss), and stack of the calling process are overwritten according to the contents of the newly loaded program. on error, -1 is returned and errno indicates the error. |
-|unistd.h|fork| fork() creates a new process by duplicating the calling process.  The new process is referred to as the child process.  The calling process is referred to as the parent process.The child inherits copies of the parent’s set of open file descriptors.  Each file descriptor in the child refers to the same open file description (see open(2)) as the corre‐ sponding file descriptor in the parent.  On  success,  the  PID of the child process is returned in the parent, and 0 is returned in the child.  On failure, -1 is returned in the parent, no child process is created, and errno is set to indicate the error. |
+|unistd.h|fork| fork() creates a new process by duplicating the calling process.  The new process is referred to as the child process.  The calling process is referred to as the parent process.The child inherits copies of the parent’s set of open file descriptors.  Each file descriptor in the child refers to the same open file description (see open(2)) as the corresponding file descriptor in the parent.  On  success,  the  PID of the child process is returned in the parent, and 0 is returned in the child.  On failure, -1 is returned in the parent, no child process is created, and errno is set to indicate the error. |
 |unistd.h|pipe| pipe()  creates  a  pipe, a unidirectional data channel that can be used for interprocess communication.  The array pipefd is used to return two file descriptors referring to the ends of the pipe.  pipefd[0] refers to the read end of the pipe.  pipefd[1] refers to the write end of the pipe.  Data written to the write end of the pipe  is  buffered  by  the kernel until it is read from the read end of the pipe.|
 |unistd.h|read| read() attempts to read up to count bytes from file descriptor fd into the buffer starting at buf.If count is zero, read() may detect error EISDIR to check that fd is a directory. on success, the number of bytes read is returned.|
 |unistd.h|unlink|unlink() deletes a name from the filesystem.  If that name was the last link to a file and no processes have the file open, the file is deleted and the space it was using is made available for reuse.  |
