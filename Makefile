@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/11 17:36:27 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/15 10:44:05 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -232,7 +232,7 @@ norma:
 	norminette $(SRCDIR_BONUS)
 	norminette $(INCDIR)
 run:
-	valgrind --tool=memcheck --leak-check=yes ./$(NAME)
+	valgrind --tool=memcheck --leak-check=full --track-origins=yes --track-fds=yes --trace-children=yes ./$(NAME) $(var)
 bonusrun:
 	valgrind --tool=memcheck --leak-check=yes ./$(BONUS)
 bonusrung:
