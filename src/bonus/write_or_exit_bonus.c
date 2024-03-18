@@ -6,11 +6,11 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 11:22:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 11:59:13 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 12:38:10 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 #include "ft_error.h"
 #include <stdio.h>
 #include <stdlib.h>

@@ -6,12 +6,11 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 11:57:26 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 16:19:03 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-#include "ft_printf.h"
+#include "pipex_bonus.h"
 #include "ft_error.h"
 #include "libft.h"
 #include <errno.h>
@@ -21,22 +20,43 @@
 #include <sys/wait.h>
 #include <stdio.h>
 
-static void	cmd_0(t_pipex_args args, char **env, int apipe[])
+static void pipe_or_exit(t_pipex_args args, int idx)
+{
+	if (pipe(args.cmds[idx]->pfd) < 0)
+		ft_error_exit(ERR021, __func__, __LINE__);
+
+}
+
+static void	close_pipes(t_pipex_args args)
+{
+	int i;
+
+	i = 0;
+	while (i < args.num_cmds)
+	{
+		close(args.cmds[i]->pfd[0]);
+		close(args.cmds[i]->pfd[1]);
+		i++;
+	}
+}
+
+static void	cmd_0(t_pipex_args args, char **env)
 {
 	read_or_exit(args, 0);
+	pipe_or_exit(args, 0);
 	if (dup2(args.cmds[0]->fd_i, 0) == -1)
 		perror("Error dup infile");
 	else
 	{
-		close(apipe[READ]);
-		if (dup2(apipe[WRITE], 1) == -1)
+		close(args.cmds[0]->pfd[READ]);
+		if (dup2(args.cmds[0]->pfd[WRITE], 1) == -1)
 			perror("Error dup outfile ");
 		else
 		{
 			close(args.cmds[0]->fd_i);
-			close(apipe[WRITE]);
+			close(args.cmds[0]->pfd[WRITE]);
 			execve(args.cmds[0]->cmd, args.cmds[0]->flg, env);
-			if (!args.cmds[0]->ok)
+			if (!args.cmds[0]->is_r)
 				my_perror(args.cmds[0]->cli, ": command not found");
 			else if (!args.cmds[0]->is_x)
 				my_perror(args.cmds[0]->cli, ": permission denied");
@@ -44,36 +64,37 @@ static void	cmd_0(t_pipex_args args, char **env, int apipe[])
 	}
 }
 
-static void	cmd_1(t_pipex_args args, char **env, int apipe[])
+static void	cmd_1(t_pipex_args args, char **env)
 {
 	int	idx;
 
+
 	idx = args.max_cmds -1;
 	write_or_exit(args, idx);
+	pipe_or_exit(args, idx);
 	if (dup2(args.cmds[idx]->fd_o, idx) == -1)
 		perror("Error dup infile");
 	else
 	{
 		close(args.cmds[idx]->fd_o);
-		close(apipe[WRITE]);
-		if (dup2(apipe[READ], 0) == -1)
+		close(args.cmds[idx]->pfd[WRITE]);
+		if (dup2(args.cmds[idx]->pfd[READ], 0) == -1)
 			perror("Error dup outfile ");
 		else
 		{
-			close(apipe[READ]);
+			close(args.cmds[idx]->pfd[READ]);
 			execve(args.cmds[idx]->cmd, args.cmds[idx]->flg, env);
 		}
 	}
 }
 
-static int	set_exit_error(t_pipex_args args, int pfd[])
+static int	set_exit_error(t_pipex_args args)
 {
 	int	error;
 
-	close(pfd[0]);
-	close(pfd[1]);
+	close_pipes(args);
 	error = -1;
-	if (!args.cmds[args.max_cmds -1]->ok)
+	if (!args.cmds[args.max_cmds -1]->is_r)
 	{
 		error = 127;
 		my_perror(args.cmds[args.max_cmds -1]->cli, ": command not found");
@@ -85,27 +106,21 @@ static int	set_exit_error(t_pipex_args args, int pfd[])
 	}
 	return (error);
 }
-
 void	execute(t_pipex_args args, char **env)
 {
-	int		pfd[2];
-	pid_t	pid1;
-	int		error;
+	int	error;
 
-	error = pipe(pfd);
-	if (error < 0)
-		ft_error_exit(ERR021, __func__, __LINE__);
+	pid_t	pid1;
 	pid1 = fork();
 	if (pid1 < 0)
 		ft_error_exit(errno, __func__, __LINE__);
 	if (pid1 == 0)
-		cmd_0(args, env, pfd);
+		cmd_0(args, env);
 	else
 	{
 		waitpid(pid1, &error, 0);
-		cmd_1(args, env, pfd);
-		exit(set_exit_error(args, pfd));
+		cmd_1(args, env);
+		exit(set_exit_error(args));
 	}
-	close(pfd[0]);
-	close(pfd[1]);
+	close_pipes(args);
 }

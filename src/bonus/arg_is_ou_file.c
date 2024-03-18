@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arg_is_in_file.c                                   :+:      :+:    :+:   */
+/*   arg_is_ou_file.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:37:38 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 13:35:53 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 15:52:11 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "argpar.h"
+#include "pipex_bonus.h"
 #include "ft_error.h"
 #include <unistd.h>
 
 /******************************************************************************/
 /**
-   @file arg_is_in_file.c
-   @brief arg_is_in_file() finds filename and checks access permission.
+   @file arg_is_ou_file.c
+   @brief arg_is_ou_file() finds filename and checks access permission.
 
    @param[in]  arg: the pipex argument to verify if it is an accessible file
    @param[in]  env: the enviroment where to check.
@@ -30,38 +30,36 @@
 
    @details
    Find the PWD in the enviroment and gets its value.
-   If the file does not exists or has not read permit, Exits
-   assing path to infile to the pipex struct
+   if the file does not exist, is not a problem, it fill be created later.
+   if the file exists checks write permits
+   right access permission.
 
    @author LMCD (Luis Miguel Casado Díaz)
  *****************************************************************************/
-void	arg_is_in_file(char *file, t_pipex_args *pip_arg)
+void	arg_is_ou_file(char *file, t_pipex_args *pip_arg)
 {
 	char	*pwd_val;
 	char	*file_path;
 	char	*slash_file;
 
-	pip_arg->infile = NULL;
+	pip_arg->outfile = NULL;
 	pwd_val = arg_val_var(pip_arg->pwd);
 	if (pwd_val)
 	{
+		pip_arg->free_outfile = 1;
 		if (file[0] != '/')
 		{
 			slash_file = ft_strjoin("/", file);
 			file_path = ft_strjoin(pwd_val, slash_file);
 			free(pwd_val);
 			free(slash_file);
-			pip_arg->free_infile = 1;
+			pip_arg->free_outfile = 1;
 		}
 		else
 			file_path = file;
-		pip_arg->infile = file_path;
-		pip_arg->in_arg = file;
+		pip_arg->outfile = file_path;
+		pip_arg->ou_arg = file;
 		pip_arg->all_ok = pip_arg->all_ok && (pip_arg->infile != NULL);
 	}
 }
-		//if (access(file_path, F_OK))
-		//	ft_error_print(errno, __func__, __LINE__);
-		//if (access(file_path, R_OK))
-		//	ft_error_print(errno, __func__, __LINE__);
 		//show_pipex_args(*pip_arg);

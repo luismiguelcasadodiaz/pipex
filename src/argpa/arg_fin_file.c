@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:43:43 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/05 10:04:46 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 13:36:46 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "argpar.h"
 #include "ft_error.h"
 #include <unistd.h>
-#include "pipex.h"
 /******************************************************************************/
 /**
    @file arg_fin_file.c

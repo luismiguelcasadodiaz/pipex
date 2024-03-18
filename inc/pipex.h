@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:51:53 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 11:21:27 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 14:17:11 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_H
@@ -37,7 +37,7 @@ typedef struct s_cmd
 	char	*cmd;
 	char	*cli;
 	char	**flg;
-	int		ok;
+	int		is_r;
 	int		is_x;
 	int		fd_i;
 	int		fd_o;

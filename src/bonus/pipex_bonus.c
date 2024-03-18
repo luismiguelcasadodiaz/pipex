@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:57:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/13 13:22:24 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 15:53:01 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-#include "argpar.h"
+#include "pipex_bonus.h"
 #include <stdlib.h>
 #include "ft_error.h"
 

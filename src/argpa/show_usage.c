@@ -6,12 +6,11 @@
 /*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:19:38 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/02 12:26:11 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 13:36:46 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "pipex.h"
 
 void	show_usage(void)
 {

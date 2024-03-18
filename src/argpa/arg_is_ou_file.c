@@ -6,13 +6,12 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:37:38 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/11 15:34:45 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 13:36:07 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "argpar.h"
-#include "pipex.h"
 #include "ft_error.h"
 #include <unistd.h>
 

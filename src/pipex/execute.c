@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 11:53:46 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 14:19:32 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	cmd_0(t_pipex_args args, char **env, int apipe[])
 			close(args.cmds[0]->fd_i);
 			close(apipe[WRITE]);
 			execve(args.cmds[0]->cmd, args.cmds[0]->flg, env);
-			if (!args.cmds[0]->ok)
+			if (!args.cmds[0]->is_r)
 				my_perror(args.cmds[0]->cli, ": command not found");
 			else if (!args.cmds[0]->is_x)
 				my_perror(args.cmds[0]->cli, ": permission denied");
@@ -73,7 +73,7 @@ static int	set_exit_error(t_pipex_args args, int pfd[])
 	close(pfd[0]);
 	close(pfd[1]);
 	error = -1;
-	if (!args.cmds[args.max_cmds -1]->ok)
+	if (!args.cmds[args.max_cmds -1]->is_r)
 	{
 		error = 127;
 		my_perror(args.cmds[args.max_cmds -1]->cli, ": command not found");
