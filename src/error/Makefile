@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 18:16:38 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/10 00:21:12 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/18 11:45:40 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #MAKEFLAGS += rR
@@ -64,7 +64,8 @@ HEADER	=	ft_error.h
 SRCS	=	ft_error_str.c \
 			ft_error_decode_e.c \
 			ft_error_exit.c \
-			ft_error_print.c 
+			ft_error_print.c \
+			my_perror.c
 
 # Generate a list of object files by replacing .c with .o
 #

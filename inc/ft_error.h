@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:52:55 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/09 13:29:15 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 11:46:24 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,5 @@ char	*ft_error_decode_e(int e);
 void	ft_error_print(int e, const char *f, int l);
 char	*ft_error_text(int e, const char *f, int l);
 void	ft_error_exit(int e, const char *f, int l);
+void	my_perror(char *a, char *b);
 #endif
