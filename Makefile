@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/18 16:22:15 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/18 18:35:42 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -124,14 +124,14 @@ SRCS_BONUS	= 	execute_bonus.c \
 				show_pipex_args_bonus.c \
 				set_file_bonus.c \
 				pipex_bonus.c \
-				arg_find_point_slash.c \
-				arg_fin_com.c \
-				arg_fin_env_var.c \
-				arg_is_command.c \
-				arg_is_in_file.c \
-				arg_is_ou_file.c \
-				arg_val_var.c \
-				arg_ok.c
+				arg_find_point_slash_bonus.c \
+				arg_fin_com_bonus.c \
+				arg_fin_env_var_bonus.c \
+				arg_is_command_bonus.c \
+				arg_is_in_file_bonus.c \
+				arg_is_ou_file_bonus.c \
+				arg_val_var_bonus.c \
+				arg_ok_bonus.c
 
 FILE_BONUS = $(addprefix $(SRCDIR_BONUS), $(SRCS_BONUS))
 

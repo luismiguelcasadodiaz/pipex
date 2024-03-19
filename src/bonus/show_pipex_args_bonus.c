@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:06 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 14:23:43 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 19:18:58 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	show_pipex_args(t_pipex_args args)
 	i = -1;
 	while (++i < args.max_cmds)
 	{
-		ft_printf("cli %s --> cmds[%d] %s flgs: ", \
+		ft_printf("cli %s \t\t--> cmds[%d] %s \tflgs: ", \
 				args.cmds[i]->cli, i, args.cmds[i]->cmd);
 		if (args.cmds[i]->flg)
 		{
@@ -32,10 +32,12 @@ void	show_pipex_args(t_pipex_args args)
 			while (args.cmds[i]->flg[j] != NULL)
 				ft_printf("%s ", args.cmds[i]->flg[j++]);
 		}
-		ft_printf("fd_i=%d ", args.cmds[i]->fd_i);
-		ft_printf("fd_o=%d ", args.cmds[i]->fd_o);
 		ft_printf("R_OK=%d ", args.cmds[i]->is_r);
 		ft_printf("X_OK=%d ", args.cmds[i]->is_x);
+		ft_printf("fd_i=%d ", args.cmds[i]->fd_i);
+		ft_printf("fd_o=%d ", args.cmds[i]->fd_o);
+		ft_printf("pipe[0]=%d ", args.cmds[i]->pfd[READ]);
+		ft_printf("pipe[1]=%d ", args.cmds[i]->pfd[WRITE]);
 		ft_printf("\n");
 	}
 	ft_printf("all_ok %d\n", args.all_ok);

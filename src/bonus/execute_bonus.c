@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 16:19:03 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 23:33:20 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,6 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <stdio.h>
-
-static void pipe_or_exit(t_pipex_args args, int idx)
-{
-	if (pipe(args.cmds[idx]->pfd) < 0)
-		ft_error_exit(ERR021, __func__, __LINE__);
-
-}
 
 static void	close_pipes(t_pipex_args args)
 {
@@ -43,18 +36,19 @@ static void	close_pipes(t_pipex_args args)
 static void	cmd_0(t_pipex_args args, char **env)
 {
 	read_or_exit(args, 0);
-	pipe_or_exit(args, 0);
 	if (dup2(args.cmds[0]->fd_i, 0) == -1)
 		perror("Error dup infile");
 	else
 	{
 		close(args.cmds[0]->pfd[READ]);
-		if (dup2(args.cmds[0]->pfd[WRITE], 1) == -1)
+		if (dup2(args.cmds[1]->pfd[READ], 1) == -1)
 			perror("Error dup outfile ");
 		else
 		{
 			close(args.cmds[0]->fd_i);
 			close(args.cmds[0]->pfd[WRITE]);
+			//close_pipes(args);
+			show_pipex_args(args);
 			execve(args.cmds[0]->cmd, args.cmds[0]->flg, env);
 			if (!args.cmds[0]->is_r)
 				my_perror(args.cmds[0]->cli, ": command not found");
@@ -71,18 +65,19 @@ static void	cmd_1(t_pipex_args args, char **env)
 
 	idx = args.max_cmds -1;
 	write_or_exit(args, idx);
-	pipe_or_exit(args, idx);
-	if (dup2(args.cmds[idx]->fd_o, idx) == -1)
+	if (dup2(args.cmds[idx]->fd_o, 1) == -1)
 		perror("Error dup infile");
 	else
 	{
 		close(args.cmds[idx]->fd_o);
 		close(args.cmds[idx]->pfd[WRITE]);
-		if (dup2(args.cmds[idx]->pfd[READ], 0) == -1)
+		if (dup2(args.cmds[0]->pfd[WRITE], 0) == -1)
 			perror("Error dup outfile ");
 		else
 		{
 			close(args.cmds[idx]->pfd[READ]);
+			//close_pipes(args);
+			show_pipex_args(args);
 			execve(args.cmds[idx]->cmd, args.cmds[idx]->flg, env);
 		}
 	}

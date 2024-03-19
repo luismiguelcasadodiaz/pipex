@@ -252,6 +252,7 @@ It is not the case with, "tr 'a' ' '", that do not execute if passed as {"tr", "
 ## What I read.
 
 [Here doc](https://linuxize.com/post/bash-heredoc/)
+[Multiple Pipes](https://www.youtube.com/watch?v=NkfIUo_Qq4c)
 
 ## What I Learnt
 
@@ -305,4 +306,47 @@ You'd typically use -fno-omit-frame-pointer when:
 
 -You're encountering issues with ASan or other tools requiring the FP for proper operation. (My problem was Loop Printing "AddressSanitizer:DEADLYSIGNAL":)
 
+initial      - fd[0][0]     - fd[1][0]     - fd[2][0]     - fd[3][0]
+            |0|            |1|            |2|            |3|
+status       - fd[0][1]     - fd[1][1]     - fd[2][1]     - fd[3][1]
 
+----------------------------------------------------------------------
+fork -1      - fd[0][0]     - fd[1][0]X    - fd[2][0]X    - fd[3][0]X
+            |0|            |1|            |2|            |3|
+cmd 0        - fd[0][1]X    - fd[1][1]     - fd[2][1]X    - fd[3][1]X
+
+          dup(infile  ,0)
+		  dup(fd[1][1],1)
+          close(infile  )
+		  close(fd[1][1])
+		  execve()
+----------------------------------------------------------------------
+fork -2      - fd[0][0]X    - fd[1][0]     - fd[2][0]X    - fd[3][0]X
+            |0|            |1|            |2|            |3|
+cmd 1        - fd[0][1]X    - fd[1][1]X    - fd[2][1]     - fd[3][1]X
+
+                         dup(fd[1][0],0)  [i][0]
+		                 dup(fd[2][1],1)  [i+1][1]
+                         close(fd[1][0])
+		                 close(fd[2][1])
+		                 execve()
+----------------------------------------------------------------------
+fork -3      - fd[0][0]X    - fd[1][0]X    - fd[2][0]     - fd[3][0]X
+            |0|            |1|            |2|            |3|
+cmd 2        - fd[0][1]X    - fd[1][1]X    - fd[2][1]X    - fd[3][1] 
+
+                                        dup(fd[2][0],0)
+		                                dup(fd[3][1],1)
+                                        close(fd[2][0])
+		                                close(fd[3][1])
+		                 				execve()
+----------------------------------------------------------------------
+fork -4      - fd[0][0]X    - fd[1][0]X    - fd[2][0]X    - fd[3][0] 
+            |0|            |1|            |2|            |3|
+cmd 3        - fd[0][1]X    - fd[1][1]X    - fd[2][1]X    - fd[3][1]X
+
+                                                       dup(fd[3][0],0)
+		                                               dup(outfile ,1)
+                                                       close(fd[3][0])
+		                                               close(outfile )
+		                 				               execve()
