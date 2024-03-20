@@ -325,8 +325,7 @@ Each child process closes its not used file descriptor.
 |-------------|------------------|------------------|------------------|------------------|
 |fork 1       |cmd[0]->fd[0][0]  |cmd[1]->fd[1][0]X |cmd[2]->fd[2][0]X |cmd[3]->fd[3][0]X |
 |             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]  |cmd[2]->fd[2][1]X |cmd[3]->fd[3][1]X |
-|-------------|------------------|------------------|------------------|------------------|
-|             |dup(infile  ,0)   |                  |                  |                  |
+|             |dup(*infile*  ,0) |                  |                  |                  |
 |		      |dup(fd[1][1],1)   |                  |                  |                  |
 |             |close(infile  )   |                  |                  |                  |
 |		      |close(fd[1][1])   |                  |                  |                  |
@@ -334,7 +333,6 @@ Each child process closes its not used file descriptor.
 |-------------|------------------|------------------|------------------|------------------|
 |fork 2       |cmd[0]->fd[0][0]X |cmd[1]->fd[1][0]  |cmd[2]->fd[2][0]X |cmd[3]->fd[3][0]X |
 |             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]X |cmd[2]->fd[2][1]  |cmd[3]->fd[3][1]X |
-|-------------|------------------|------------------|------------------|------------------|
 |             |                  |dup(fd[1][0],0)   |[i][0]            |                  |
 |		      |                  |dup(fd[2][1],1)   |[i+1][1]          |                  |
 |             |                  |close(fd[1][0])   |                  |                  |
@@ -343,7 +341,6 @@ Each child process closes its not used file descriptor.
 |-------------|------------------|------------------|------------------|------------------|
 |fork 3       |cmd[0]->fd[0][0]X |cmd[1]->fd[1][0]X |cmd[2]->fd[2][0]  |cmd[3]->fd[3][0]X |
 |             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]X |cmd[2]->fd[2][1]X |cmd[3]->fd[3][1]  |
-|-------------|------------------|------------------|------------------|------------------|
 |             |                  |                  |dup(fd[2][0],0)   |                  |
 |		      |                  |                  |dup(fd[3][1],1)   |                  |
 |             |                  |                  |close(fd[2][0])   |                  |
@@ -352,9 +349,10 @@ Each child process closes its not used file descriptor.
 |-------------|------------------|------------------|------------------|------------------|
 |fork 4       |cmd[0]->fd[0][0]X |cmd[1]->fd[1][0]X |cmd[2]->fd[2][0]X |cmd[3]->fd[3][0]  |
 |             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]X |cmd[2]->fd[2][1]X |cmd[3]->fd[3][1]X |
-|-------------|------------------|------------------|------------------|------------------|
 |             |                  |                  |                  |dup(fd[3][0],0)   |
-|		      |                  |                  |                  |dup(outfile ,1)   |
+|		      |                  |                  |                  |dup(*outfile* ,1) |
 |             |                  |                  |                  |close(fd[3][0])   |
-|		      |                  |                  |                  |close(outfile )   |
+|		      |                  |                  |                  |close(*outfile* ) |
 |		      |           	     |			        |                  |execve()          |
+
+Child process has to be aware if executes the first, last or a middle command. Parent process communicates the child's rol in pipex struct variable. 

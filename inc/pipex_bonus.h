@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:51:53 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 16:21:36 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:20:01 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_BONUS_H
@@ -61,11 +61,18 @@ void			cmd_destroy(t_cmd *cmd);
    @struct s_pipex_args holds absolute paths to files and command used 
 
    @var  max_cmds: number of commands in pipe, comes from argc minus 3.
-   @var  num_cmds: number of commands verified wiht accesible absolute path.
-   @var    infile: verified and accesible absolute path for infile.
-   @var   outfile: verified and accesible absolute path for outfile.
-   @var    **cmds: array of verified and accesible absolute paths to commands
+   @var  num_cmds: number of commands with verified  absolute path.
+   @var	 exe_cmds: number of executed commands
    @var    all_ok: indicates if all files and commands are ok = 1.
+   @var      path: Holds PATH enviromental var 
+   @var       pwd: Holdes PWD enviromental var
+   @var    in_arg: infile filename passed in CLI
+   @var    infile: Path to infile.
+   @var	  free_in: Flag. If 1 frees a strjoined infile (not starting by '/')
+   @var    ou_arg: oitfile filename passed in CLI
+   @var   outfile: path to outfile.
+   @var	  free_ou: Flag. If 1 frees a strjoined outfile (not starting by '/')
+   @var    **cmds: array of strucutures holding commands variables
 
 
    @author LMCD (Luis Miguel Casado Díaz)
@@ -74,15 +81,16 @@ typedef struct s_pipex_args
 {
 	int		max_cmds;
 	int		num_cmds;
+	int		exe_cmds;
 	short	all_ok;
 	char	*path;
 	char	*pwd;
-	char	*infile;
-	int		free_infile;
 	char	*in_arg;
-	char	*outfile;
-	int		free_outfile;
+	char	*infile;
+	int		free_in;
 	char	*ou_arg;
+	char	*outfile;
+	int		free_ou;
 	t_cmd	**cmds;
 }	t_pipex_args;
 

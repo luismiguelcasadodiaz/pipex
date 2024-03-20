@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:37:38 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 15:51:48 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:15:03 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
    @file arg_is_in_file.c
    @brief arg_is_in_file() finds filename and checks access permission.
 
-   @param[in]  arg: the pipex argument to verify if it is an accessible file
-   @param[in]  env: the enviroment where to check.
+   @param[in]  file: the pipex argument to verify if it is an accessible file
    @param[out] pip_arg : the pipex structure to keep the file name path
 
    @returns
@@ -51,7 +50,7 @@ void	arg_is_in_file(char *file, t_pipex_args *pip_arg)
 			file_path = ft_strjoin(pwd_val, slash_file);
 			free(pwd_val);
 			free(slash_file);
-			pip_arg->free_infile = 1;
+			pip_arg->free_in = 1;
 		}
 		else
 			file_path = file;
@@ -60,8 +59,3 @@ void	arg_is_in_file(char *file, t_pipex_args *pip_arg)
 		pip_arg->all_ok = pip_arg->all_ok && (pip_arg->infile != NULL);
 	}
 }
-		//if (access(file_path, F_OK))
-		//	ft_error_print(errno, __func__, __LINE__);
-		//if (access(file_path, R_OK))
-		//	ft_error_print(errno, __func__, __LINE__);
-		//show_pipex_args(*pip_arg);

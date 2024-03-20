@@ -51,5 +51,10 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# generic outputfiles
+tirame
 
+#project executables
+pipex
+bonus
 

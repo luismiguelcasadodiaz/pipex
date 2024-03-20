@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 15:38:36 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 12:37:02 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:14:38 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	destroy(t_pipex_args args)
 {
 	int	i;
 
-	if (args.free_infile)
+	if (args.free_in)
 		free(args.infile);
-	if (args.free_outfile)
+	if (args.free_ou)
 		free(args.outfile);
 	i = args.max_cmds;
 	while (--i >= 0)
