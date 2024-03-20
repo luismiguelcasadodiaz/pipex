@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/11 17:36:27 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/18 11:50:28 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,6 +99,8 @@ SRCS_PIPEX	= 	execute.c \
 				destroy.c \
 				cmd_create.c \
 				cmd_destroy.c \
+				read_or_exit.c \
+				write_or_exit.c \
 				show_pipex_args.c \
 				set_file.c \
 				pipex.c
@@ -109,6 +111,24 @@ FILE_PIPEX = $(addprefix $(SRCDIR_PIPEX), $(SRCS_PIPEX))
 OBJS_PIPEX = $(addprefix $(OBJDIR), $(SRCS_PIPEX:.c=.o))
 
 DEPE_PIPEX = $(addprefix $(OBJDIR), $(SRCS_PIPEX:.c=.d))
+
+HEADER_BON	=	pipex_bonus.h
+SRCS_BONUS	= 	execute_bonus.c \
+				create_bonus.c \
+				destroy_bonus.c \
+				cmd_create_bonus.c \
+				cmd_destroy_bonus.c \
+				read_or_exit_bonus.c \
+				write_or_exit_bonus.c \
+				show_pipex_args_bonus.c \
+				set_file_bonus.c \
+				pipex_bonus.c
+
+FILE_BONUS = $(addprefix $(SRCDIR_BONUS), $(SRCS_BONUS))
+
+OBJS_BONUS = $(addprefix $(OBJDIR), $(SRCS_BONUS:.c=.o))
+
+DEPE_BONUS = $(addprefix $(OBJDIR), $(SRCS_BONUS:.c=.d))
 
 #$(info source files $(SRCS_PIPEX))
 #$(info source paths $(FILE_PIPEX))
@@ -123,8 +143,8 @@ all: makedirs makelibs $(NAME)
 -include $(DEPE_PIPEX)
 
 
-#bonus: makedirs makelibs $(BONUS)
-#-include $(DEPE_CHECK)
+bonus: makedirs makelibs $(BONUS)
+-include $(DEPE_BONUS)
 # .......................... directories creation ............................ #
 
 makedirs:
@@ -172,14 +192,18 @@ $(NAME): Makefile  $(OBJS_PIPEX) -l$(LOADLIBFT) -l$(LOADLIBPRINTF) -l$(LOADLIBAR
 	@echo "$(GREEN)========== GATHERING PIPEX OBJECTS =============$(DEF_COLOR)"
 	$(CC) $(LFLGS) $(OBJS_PIPEX) -o $@ $(LLIBS)
 
-#$(BONUS): Makefile $(OBJS_CHECK) -l$(LOADLIBFT) -l$(LOADLIBPRINTF) -l$(LOADLIBSS) -l$(LOADLIBARGPA) 
-#	@echo "$(MAGENTA)========== GATHERING CHECKER OBJECTS ===============$(DEF_COLOR)"
-#	$(CC) $(LFLGS) $(OBJS_CHECK) -o $@ $(LLIBS)
+$(BONUS): Makefile $(OBJS_BONUS) -l$(LOADLIBFT) -l$(LOADLIBPRINTF) -l$(LOADLIBARGPA) -l$(LOADLIBERROR)  
+	@echo "$(MAGENTA)========== GATHERING CHECKER OBJECTS ===============$(DEF_COLOR)"
+	$(CC) $(LFLGS) $(OBJS_BONUS) -o $@ $(LLIBS)
 # .......................... objects construction ............................ #
 $(OBJDIR)%.o: $(SRCDIR_PIPEX)%.c $(INCDIR)$(HEADER)
 	@echo "$(GREEN)========== COMPILING PIPEX FILES ===============$(DEF_COLOR)"
 	$(CC) $(CFLGS) $< -o $@ $(HEADS)  
  
+$(OBJDIR)%.o: $(SRCDIR_BONUS)%.c $(INCDIR)$(HEADER_BON)
+	@echo "$(GREEN)========== COMPILING BONUS FILES ===============$(DEF_COLOR)"
+	$(CC) $(CFLGS) $< -o $@ $(HEADS)  
+
 .PHONY: clean
 clean:
 	@echo "========== Cleaning pipex objects =============="
@@ -232,8 +256,8 @@ norma:
 	norminette $(SRCDIR_BONUS)
 	norminette $(INCDIR)
 run:
-	valgrind --tool=memcheck --leak-check=yes ./$(NAME)
+	valgrind -s --tool=memcheck --leak-check=full --track-origins=yes --track-fds=yes --trace-children=yes ./$(NAME) $(VAR)
 bonusrun:
-	valgrind --tool=memcheck --leak-check=yes ./$(BONUS)
+	valgrind -s --tool=memcheck --leak-check=full --track-origins=yes --track-fds=yes --trace-children=yes ./$(BONUS) $(VAR)
 bonusrung:
 	valgrind --tool=massif --stacks=yes ./$(BONUS)

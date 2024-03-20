@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:51:53 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 11:21:27 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/18 11:51:19 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 # define PIPEX_INPUT 0
 # define PIPEX_OUTPUT 1
 # define READ 0
@@ -91,11 +91,9 @@ t_pipex_args	create(int max_cmds);
 /* ************************************************************************** */
 void			destroy(t_pipex_args args);
 /* ************************************************************************** */
-/* execute() forks and control child processes                                */
+/*                                                                            */
 /* ************************************************************************** */
 void			execute(t_pipex_args pip_arg, char **env);
-void			read_or_exit(t_pipex_args args, int idx);
-void			write_or_exit(t_pipex_args args, int idx);
 /* ************************************************************************** */
 /* set_file() assign absolute path to file in the right slot                  */
 /* ************************************************************************** */
