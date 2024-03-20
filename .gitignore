@@ -52,9 +52,9 @@ Mkfile.old
 dkms.conf
 
 # generic outputfiles
-tirame
+./tirame
 
 #project executables
-pipex
-bonus
+./pipex
+./bonus
 

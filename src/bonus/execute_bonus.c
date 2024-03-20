@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 23:33:20 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/20 12:26:40 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,39 @@ static void	cmd_1(t_pipex_args args, char **env)
 	}
 }
 
+static void	cmd_n(t_pipex_args args, char **env)
+{
+	if (args.exe_cmds == 0)
+	{
+		read_or_exit(args, 0);
+		if (dup2(args.cmds[0]->fd_i, 0) == -1)
+			perror("Error dup infile");
+	}
+	if (args.exe_cmds == args.max_cmds - 1)
+	{
+		write_or_exit(args, 0);
+		if (dup2(args.cmds[idx]->fd_o, 1) == -1)
+			perror("Error dup infile");
+	}
+	{
+		close(args.cmds[0]->pfd[READ]);
+		if (dup2(args.cmds[1]->pfd[READ], 1) == -1)
+			perror("Error dup outfile ");
+		else
+		{
+			close(args.cmds[0]->fd_i);
+			close(args.cmds[0]->pfd[WRITE]);
+			//close_pipes(args);
+			show_pipex_args(args);
+			execve(args.cmds[0]->cmd, args.cmds[0]->flg, env);
+			if (!args.cmds[0]->is_r)
+				my_perror(args.cmds[0]->cli, ": command not found");
+			else if (!args.cmds[0]->is_x)
+				my_perror(args.cmds[0]->cli, ": permission denied");
+		}
+	}
+}
+
 static int	set_exit_error(t_pipex_args args)
 {
 	int	error;
@@ -106,16 +139,31 @@ void	execute(t_pipex_args args, char **env)
 	int	error;
 
 	pid_t	pid1;
-	pid1 = fork();
-	if (pid1 < 0)
-		ft_error_exit(errno, __func__, __LINE__);
-	if (pid1 == 0)
-		cmd_0(args, env);
-	else
+	while (args.exe_cmds < args.max_cmds)
 	{
-		waitpid(pid1, &error, 0);
-		cmd_1(args, env);
-		exit(set_exit_error(args));
+		pid1 = fork();
+		if (pid1 < 0)
+			ft_error_exit(errno, __func__, __LINE__);
+		if (pid1 == 0)
+			cmd_n(args, env);
+		else
+			waitpid(pid1, &error, 0);
+		args.exe_cmds++;
 	}
 	close_pipes(args);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
