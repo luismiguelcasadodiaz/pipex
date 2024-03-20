@@ -306,47 +306,55 @@ You'd typically use -fno-omit-frame-pointer when:
 
 -You're encountering issues with ASan or other tools requiring the FP for proper operation. (My problem was Loop Printing "AddressSanitizer:DEADLYSIGNAL":)
 
-initial      - fd[0][0]     - fd[1][0]     - fd[2][0]     - fd[3][0]
-            |0|            |1|            |2|            |3|
-status       - fd[0][1]     - fd[1][1]     - fd[2][1]     - fd[3][1]
 
-----------------------------------------------------------------------
-fork -1      - fd[0][0]     - fd[1][0]X    - fd[2][0]X    - fd[3][0]X
-            |0|            |1|            |2|            |3|
-cmd 0        - fd[0][1]X    - fd[1][1]     - fd[2][1]X    - fd[3][1]X
+## Pipes, and Forks for the bonus part
 
-          dup(infile  ,0)
-		  dup(fd[1][1],1)
-          close(infile  )
-		  close(fd[1][1])
-		  execve()
-----------------------------------------------------------------------
-fork -2      - fd[0][0]X    - fd[1][0]     - fd[2][0]X    - fd[3][0]X
-            |0|            |1|            |2|            |3|
-cmd 1        - fd[0][1]X    - fd[1][1]X    - fd[2][1]     - fd[3][1]X
+The mandatory project, for two pocesses, requires only one pipe. I declared such pipe in the pipex struct.
 
-                         dup(fd[1][0],0)  [i][0]
-		                 dup(fd[2][1],1)  [i+1][1]
-                         close(fd[1][0])
-		                 close(fd[2][1])
-		                 execve()
-----------------------------------------------------------------------
-fork -3      - fd[0][0]X    - fd[1][0]X    - fd[2][0]     - fd[3][0]X
-            |0|            |1|            |2|            |3|
-cmd 2        - fd[0][1]X    - fd[1][1]X    - fd[2][1]X    - fd[3][1] 
+For the bonus project I moved the pipe into the cmd struct. Each command will have its own pipe.
 
-                                        dup(fd[2][0],0)
-		                                dup(fd[3][1],1)
-                                        close(fd[2][0])
-		                                close(fd[3][1])
-		                 				execve()
-----------------------------------------------------------------------
-fork -4      - fd[0][0]X    - fd[1][0]X    - fd[2][0]X    - fd[3][0] 
-            |0|            |1|            |2|            |3|
-cmd 3        - fd[0][1]X    - fd[1][1]X    - fd[2][1]X    - fd[3][1]X
+The parent process will setup all the pipes. Then the numbers of file descriptors existing before the forking party are:
+2 times the commands numbre read in the command line, plus 2 descriptor for the infile and outfile.
 
-                                                       dup(fd[3][0],0)
-		                                               dup(outfile ,1)
-                                                       close(fd[3][0])
-		                                               close(outfile )
-		                 				               execve()
+Each child process closes its not used file descriptor.
+
+|comment      |cmd[0]            |cmd[1]            |cmd[2]            |cmd[3]            |
+|-------------|------------------|------------------|------------------|------------------|
+|initial      |cmd[0]->fd[0][0]  |cmd[1]->fd[1][0]  |cmd[2]->fd[2][0]  |cmd[3]->fd[3][0]  |
+|status       |cmd[0]->fd[0][1]  |cmd[1]->fd[1][1]  |cmd[2]->fd[2][1]  |cmd[3]->fd[3][1]  |
+|-------------|------------------|------------------|------------------|------------------|
+|fork 1       |cmd[0]->fd[0][0]  |cmd[1]->fd[1][0]X |cmd[2]->fd[2][0]X |cmd[3]->fd[3][0]X |
+|             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]  |cmd[2]->fd[2][1]X |cmd[3]->fd[3][1]X |
+|-------------|------------------|------------------|------------------|------------------|
+|             |dup(infile  ,0)   |                  |                  |                  |
+|		      |dup(fd[1][1],1)   |                  |                  |                  |
+|             |close(infile  )   |                  |                  |                  |
+|		      |close(fd[1][1])   |                  |                  |                  |
+|		      |execve()          |                  |                  |                  |
+|-------------|------------------|------------------|------------------|------------------|
+|fork 2       |cmd[0]->fd[0][0]X |cmd[1]->fd[1][0]  |cmd[2]->fd[2][0]X |cmd[3]->fd[3][0]X |
+|             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]X |cmd[2]->fd[2][1]  |cmd[3]->fd[3][1]X |
+|-------------|------------------|------------------|------------------|------------------|
+|             |                  |dup(fd[1][0],0)   |[i][0]            |                  |
+|		      |                  |dup(fd[2][1],1)   |[i+1][1]          |                  |
+|             |                  |close(fd[1][0])   |                  |                  |
+|		      |                  |close(fd[2][1])   |                  |                  |
+|		      |                  |execve()          |                  |                  |
+|-------------|------------------|------------------|------------------|------------------|
+|fork 3       |cmd[0]->fd[0][0]X |cmd[1]->fd[1][0]X |cmd[2]->fd[2][0]  |cmd[3]->fd[3][0]X |
+|             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]X |cmd[2]->fd[2][1]X |cmd[3]->fd[3][1]  |
+|-------------|------------------|------------------|------------------|------------------|
+|             |                  |                  |dup(fd[2][0],0)   |                  |
+|		      |                  |                  |dup(fd[3][1],1)   |                  |
+|             |                  |                  |close(fd[2][0])   |                  |
+|		      |                  |                  |close(fd[3][1])   |                  |
+|		      |           	     |		            |execve()          |                  |
+|-------------|------------------|------------------|------------------|------------------|
+|fork 4       |cmd[0]->fd[0][0]X |cmd[1]->fd[1][0]X |cmd[2]->fd[2][0]X |cmd[3]->fd[3][0]  |
+|             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]X |cmd[2]->fd[2][1]X |cmd[3]->fd[3][1]X |
+|-------------|------------------|------------------|------------------|------------------|
+|             |                  |                  |                  |dup(fd[3][0],0)   |
+|		      |                  |                  |                  |dup(outfile ,1)   |
+|             |                  |                  |                  |close(fd[3][0])   |
+|		      |                  |                  |                  |close(outfile )   |
+|		      |           	     |			        |                  |execve()          |
