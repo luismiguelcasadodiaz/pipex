@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/18 18:35:42 by luicasad         ###   ########.fr        #
+#    Updated: 2024/03/25 13:31:03 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -119,8 +119,7 @@ SRCS_BONUS	= 	execute_bonus.c \
 				destroy_bonus.c \
 				cmd_create_bonus.c \
 				cmd_destroy_bonus.c \
-				read_or_exit_bonus.c \
-				write_or_exit_bonus.c \
+				open_or_exit_bonus.c \
 				show_pipex_args_bonus.c \
 				set_file_bonus.c \
 				pipex_bonus.c \
@@ -267,6 +266,6 @@ norma:
 run:
 	valgrind -s --tool=memcheck --leak-check=full --track-origins=yes --track-fds=yes --trace-children=yes ./$(NAME) $(VAR)
 bonusrun:
-	valgrind -s --tool=memcheck --leak-check=full --track-origins=yes --track-fds=yes --trace-children=yes ./$(BONUS) $(VAR)
+	valgrind -s --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes ./$(BONUS) $(VAR)
 bonusrung:
 	valgrind --tool=massif --stacks=yes ./$(BONUS)

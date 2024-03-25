@@ -52,9 +52,15 @@ Mkfile.old
 dkms.conf
 
 # generic outputfiles
-./tirame
+./tirame*
+tirame*
 
 #project executables
 ./pipex
+pipex
 ./bonus
+bonus
 
+infile.txt
+outfile.txt
+*.swp

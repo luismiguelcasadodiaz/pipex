@@ -46,7 +46,7 @@ void	arg_is_ou_file(char *file, t_pipex_args *pip_arg)
 	pwd_val = arg_val_var(pip_arg->pwd);
 	if (pwd_val)
 	{
-		pip_arg->free_outfile = 1;
+		pip_arg->free_ou = 1;
 		if (file[0] != '/')
 		{
 			slash_file = ft_strjoin("/", file);

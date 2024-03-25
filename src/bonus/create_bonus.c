@@ -12,6 +12,7 @@
 
 #include "pipex_bonus.h"
 #include <stdlib.h>
+#include <unistd.h>
 #include "ft_error.h"
 
 t_pipex_args	create(int max_cmds)
@@ -36,5 +37,8 @@ t_pipex_args	create(int max_cmds)
 	while (++i < r.max_cmds)
 		r.cmds[i] = cmd_create(NULL, NULL);
 	r.all_ok = 1;
+	//i = -1;
+	//while (++i < (r.max_cmds - 1))
+	//	dup2(r.cmds[i]->pfd[1], r.cmds[i + 1]->pfd[0]);
 	return (r);
 }

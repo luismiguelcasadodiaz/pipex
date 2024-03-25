@@ -6,11 +6,12 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:51:53 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/20 11:20:01 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/25 18:27:51 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_BONUS_H
 # define PIPEX_BONUS_H
+# include <unistd.h>
 # define PIPEX_INPUT 0
 # define PIPEX_OUTPUT 1
 # define READ 0
@@ -40,6 +41,7 @@ typedef struct s_cmd
 	char	*cmd;
 	char	*cli;
 	char	**flg;
+	pid_t	pid;
 	int		is_r;
 	int		is_x;
 	int		fd_i;
@@ -106,8 +108,7 @@ void			destroy(t_pipex_args args);
 /* execute() forks and control child processes                                */
 /* ************************************************************************** */
 void			execute(t_pipex_args pip_arg, char **env);
-void			read_or_exit(t_pipex_args args, int idx);
-void			write_or_exit(t_pipex_args args, int idx);
+void			open_or_exit(t_pipex_args args);
 /* ************************************************************************** */
 /* set_file() assign absolute path to file in the right slot                  */
 /* ************************************************************************** */
