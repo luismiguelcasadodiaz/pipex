@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 09:18:22 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/20 11:31:22 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/28 10:32:27 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ t_pipex_args	create(int max_cmds)
 	while (++i < r.max_cmds)
 		r.cmds[i] = cmd_create(NULL, NULL);
 	r.all_ok = 1;
+	return (r);
+}
 	//i = -1;
 	//while (++i < (r.max_cmds - 1))
 	//	dup2(r.cmds[i]->pfd[1], r.cmds[i + 1]->pfd[0]);
-	return (r);
-}

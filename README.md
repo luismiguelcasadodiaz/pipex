@@ -253,6 +253,7 @@ It is not the case with, "tr 'a' ' '", that do not execute if passed as {"tr", "
 
 [Here doc](https://linuxize.com/post/bash-heredoc/)
 [Multiple Pipes](https://www.youtube.com/watch?v=NkfIUo_Qq4c)
+[Simulating pipe](https://www.youtube.com/watch?v=6xbLgZpOBi8)
 
 ## What I Learnt
 
@@ -306,7 +307,21 @@ You'd typically use -fno-omit-frame-pointer when:
 
 -You're encountering issues with ASan or other tools requiring the FP for proper operation. (My problem was Loop Printing "AddressSanitizer:DEADLYSIGNAL":)
 
+### Debugger
 
+It is nos simple task debug a multiprocess program. `gdb` command has some options that help:
+
+show detach-on-fork
+show follow-fork-mode
+show follow-exec-mode
+
+Shows default status variables that we have to switch when we debug a multiprocess program
+
+set detach-on-fork   (on|off)
+set follow-fork-mode (parent | child)
+set follow-exec-mode (new | same)
+
+Use catch (fork | exec) to set a `catchpoint/breakpoint`
 ## Pipes, and Forks for the bonus part
 
 The mandatory project, for two pocesses, requires only one pipe. I declared such pipe in the pipex struct.
@@ -317,42 +332,43 @@ The parent process will setup all the pipes. Then the numbers of file descriptor
 2 times the commands numbre read in the command line, plus 2 descriptor for the infile and outfile.
 
 Each child process closes its not used file descriptor.
+Keep in mind, in this table, that each fork communicates vertically with previous one.
 
 |comment      |cmd[0]            |cmd[1]            |cmd[2]            |cmd[3]            |
 |-------------|------------------|------------------|------------------|------------------|
 |initial      |cmd[0]->fd[0][0]  |cmd[1]->fd[1][0]  |cmd[2]->fd[2][0]  |cmd[3]->fd[3][0]  |
 |status       |cmd[0]->fd[0][1]  |cmd[1]->fd[1][1]  |cmd[2]->fd[2][1]  |cmd[3]->fd[3][1]  |
 |-------------|------------------|------------------|------------------|------------------|
-|fork 1       |cmd[0]->fd[0][0]  |cmd[1]->fd[1][0]X |cmd[2]->fd[2][0]X |cmd[3]->fd[3][0]X |
-|             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]  |cmd[2]->fd[2][1]X |cmd[3]->fd[3][1]X |
+|fork 1       |cmd[0]->fd[0][0]X |cmd[1]->fd[1][0]X |cmd[2]->fd[2][0]X |cmd[3]->fd[3][0]X |
+|             |cmd[0]->fd[0][1]  |cmd[1]->fd[1][1]X |cmd[2]->fd[2][1]X |cmd[3]->fd[3][1]X |
 |             |dup(*infile*  ,0) |                  |                  |                  |
-|		      |dup(fd[1][1],1)   |                  |                  |                  |
+|	          |dup(fd[1][1],1)   |                  |                  |                  |
 |             |close(infile  )   |                  |                  |                  |
-|		      |close(fd[1][1])   |                  |                  |                  |
-|		      |execve()          |                  |                  |                  |
+|	          |close(fd[1][1])   |                  |                  |                  |
+|	          |execve()          |                  |                  |                  |
 |-------------|------------------|------------------|------------------|------------------|
-|fork 2       |cmd[0]->fd[0][0]X |cmd[1]->fd[1][0]  |cmd[2]->fd[2][0]X |cmd[3]->fd[3][0]X |
+|fork 2       |cmd[0]->fd[0][0]  |cmd[1]->fd[1][0]X |cmd[2]->fd[2][0]X |cmd[3]->fd[3][0]X |
+|             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]  |cmd[2]->fd[2][1]X |cmd[3]->fd[3][1]X |
+|             |                  |dup(fd[0][0],0)   |[i][0]            |                  |
+|	          |                  |dup(fd[1][1],1)   |[i+1][1]          |                  |
+|             |                  |close(fd[0][0])   |                  |                  |
+|	          |                  |close(fd[1][1])   |                  |                  |
+|	          |                  |execve()          |                  |                  |
+|-------------|------------------|------------------|------------------|------------------|
+|fork 3       |cmd[0]->fd[0][0]X |cmd[1]->fd[1][0]  |cmd[2]->fd[2][0]X |cmd[3]->fd[3][0]X |
 |             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]X |cmd[2]->fd[2][1]  |cmd[3]->fd[3][1]X |
-|             |                  |dup(fd[1][0],0)   |[i][0]            |                  |
-|		      |                  |dup(fd[2][1],1)   |[i+1][1]          |                  |
-|             |                  |close(fd[1][0])   |                  |                  |
-|		      |                  |close(fd[2][1])   |                  |                  |
-|		      |                  |execve()          |                  |                  |
+|             |                  |                  |dup(fd[1][0],0)   |                  |
+|	          |                  |                  |dup(fd[2][1],1)   |                  |
+|             |                  |                  |close(fd[1][0])   |                  |
+|	          |                  |                  |close(fd[2][1])   |                  |
+|	          |                  |	                |execve()          |                  |
 |-------------|------------------|------------------|------------------|------------------|
-|fork 3       |cmd[0]->fd[0][0]X |cmd[1]->fd[1][0]X |cmd[2]->fd[2][0]  |cmd[3]->fd[3][0]X |
-|             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]X |cmd[2]->fd[2][1]X |cmd[3]->fd[3][1]  |
-|             |                  |                  |dup(fd[2][0],0)   |                  |
-|		      |                  |                  |dup(fd[3][1],1)   |                  |
-|             |                  |                  |close(fd[2][0])   |                  |
-|		      |                  |                  |close(fd[3][1])   |                  |
-|		      |           	     |		            |execve()          |                  |
-|-------------|------------------|------------------|------------------|------------------|
-|fork 4       |cmd[0]->fd[0][0]X |cmd[1]->fd[1][0]X |cmd[2]->fd[2][0]X |cmd[3]->fd[3][0]  |
+|fork 4       |cmd[0]->fd[0][0]X |cmd[1]->fd[1][0]X |cmd[2]->fd[2][0]  |cmd[3]->fd[3][0]X |
 |             |cmd[0]->fd[0][1]X |cmd[1]->fd[1][1]X |cmd[2]->fd[2][1]X |cmd[3]->fd[3][1]X |
 |             |                  |                  |                  |dup(fd[3][0],0)   |
-|		      |                  |                  |                  |dup(*outfile* ,1) |
+|	          |                  |                  |                  |dup(*outfile* ,1) |
 |             |                  |                  |                  |close(fd[3][0])   |
-|		      |                  |                  |                  |close(*outfile* ) |
-|		      |           	     |			        |                  |execve()          |
+|	          |                  |                  |                  |close(*outfile* ) |
+|	          |                  |                  |                  |execve()          |
 
 Child process has to be aware if executes the first, last or a middle command. Parent process communicates the child's rol in pipex struct variable. 

@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:51:53 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/25 18:27:51 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/03/28 09:45:04 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_BONUS_H
@@ -120,12 +120,13 @@ void			show_pipex_args(t_pipex_args args);
 /* ************************************************************************** */
 /* arg_ok() checks argument sent to pipex                                     */
 /* ************************************************************************** */
-void	arg_ok(int argc, char **argv, char **environ, t_pipex_args *pip_arg);
-char	*arg_val_var(char *var);
-char	*arg_fin_env_var(char **environ, char *var);
-void	arg_is_in_file(char *arg, t_pipex_args *pip_arg);
-void	arg_is_ou_file(char *arg, t_pipex_args *pip_arg);
-char	*arg_fin_com(char *com, t_pipex_args *pip_arg);
-void	arg_is_command(char *arg, t_pipex_args *pip_arg);
-char    *arg_find_point_slash(char *com, t_pipex_args *p);
+void			arg_ok(int argc, \
+			char **argv, char **environ, t_pipex_args *pip_arg);
+char			*arg_val_var(char *var);
+char			*arg_fin_env_var(char **environ, char *var);
+void			arg_is_in_file(char *arg, t_pipex_args *pip_arg);
+void			arg_is_ou_file(char *arg, t_pipex_args *pip_arg);
+char			*arg_fin_com(char *com, t_pipex_args *pip_arg);
+void			arg_is_command(char *arg, t_pipex_args *pip_arg);
+char			*arg_find_point_slash(char *com, t_pipex_args *p);
 #endif
