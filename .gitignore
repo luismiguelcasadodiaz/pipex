@@ -56,10 +56,6 @@ dkms.conf
 tirame*
 
 #project executables
-./pipex
-pipex
-./bonus
-bonus
 
 infile.txt
 outfile.txt

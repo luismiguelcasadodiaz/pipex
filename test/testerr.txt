@@ -1,0 +1,6 @@
+max_cmds 2
+infile /dev/random
+outfile /home/luicasad/Documentos/c/cursus/circle3/pipex/test/pipexout.txt
+cli cat --> cmds[0] /usr/bin/cat fd_i=-1 fd_o=-1 R_OK=1 X_OK=1 
+cli head --> cmds[1] /usr/bin/head -1 fd_i=-1 fd_o=-1 R_OK=1 X_OK=1 
+all_ok 0
