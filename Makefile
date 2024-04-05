@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/25 13:31:03 by luicasad         ###   ########.fr        #
+#    Updated: 2024/04/03 09:29:52 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -247,7 +247,7 @@ re: fclean all
 .PHONY: bonus_clean
 bonus_clean:
 	@echo "========== Cleaning pipex bonus objects ================"
-	rm -f $(OBJS_CHECK)
+	rm -f $(OBJS_BONUS)
 
 .PHONY: bonus_fclean
 bonus_fclean: bonus_clean

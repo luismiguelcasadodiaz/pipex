@@ -60,3 +60,4 @@ tirame*
 infile.txt
 outfile.txt
 *.swp
+.DS_Store
