@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/04/05 13:54:48 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/08 09:37:21 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	close_pipes(t_pipex_args args)
 		i++;
 	}
 }
-/*
+/*  
 static void	close_mine_pipes(t_pipex_args args)
 {
 	if (args.exe_cmds != args.num_cmds)
@@ -73,7 +73,7 @@ static void	close_mine_pipes(t_pipex_args args)
 	if (args.exe_cmds != 0)
 		my_close(args.exe_cmds, args.cmds[args.exe_cmds - 1]->pfd[READ], __func__, __LINE__);
 }
-*/
+  */
 static void	close_pipes_but_mine(t_pipex_args args)
 {
 	int	i;
@@ -122,87 +122,6 @@ static void	close_pipes_but_mine(t_pipex_args args)
 	fprintf(stderr, "%s\n", "]");
 }
 
-	/*
-	while (i < args.exe_cmds)
-	{
-		my_close(args.cmds[i]->pfd[0]);
-		my_close(args.cmds[i]->pfd[1]);
-		printf("%d,%d,", args.cmds[i]->pfd[0], args.cmds[i]->pfd[1]);
-		i++;
-	}
-	
-	//dup2(args.cmds[i]->pfd[READ], 0);
-	//my_close(args.cmds[i]->pfd[READ]);
-	my_close(args.cmds[i]->pfd[WRITE]);
-	fprintf(stderr,"%d,", args.cmds[i]->pfd[WRITE]);
-	i++;
-	
-	my_close(args.cmds[i]->pfd[READ]);
-	//dup2(args.cmds[i]->pfd[WRITE], 1);
-	//my_close(args.cmds[i]->pfd[WRITE]);
-	fprintf(stderr,"%d,", args.cmds[i]->pfd[READ]);
-	i++;
-	
-	while (i < args.num_cmds)
-	{
-		fprintf(stderr,"%d,%d,", args.cmds[i]->pfd[0], args.cmds[i]->pfd[1]);
-		my_close(args.cmds[i]->pfd[0]);
-		my_close(args.cmds[i]->pfd[1]);
-		i++;
-	}
-*/
-
-/*
-static void	cmd_0(t_pipex_args args, char **env)
-{
-
-	read_or_exit(args, 0);
-	if (dup2(args.cmds[0]->fd_i, 0) == -1)
-		perror("Error dup infile");
-	else
-	{
-		close(args.cmds[0]->pfd[READ]);
-		if (dup2(args.cmds[1]->pfd[READ], 1) == -1)
-			perror("Error dup outfile ");
-		else
-		{
-			close(args.cmds[0]->fd_i);
-			close(args.cmds[0]->pfd[WRITE]);
-			//close_pipes(args);
-			show_pipex_args(args);
-			execve(args.cmds[0]->cmd, args.cmds[0]->flg, env);
-			if (!args.cmds[0]->is_r)
-				my_perror(args.cmds[0]->cli, ": command not found");
-			else if (!args.cmds[0]->is_x)
-				my_perror(args.cmds[0]->cli, ": permission denied");
-		}
-	}
-}
-*/
-
-/*
-static void	cmd_1(t_pipex_args args, char **env)
-{ int	idx;
-	idx = args.max_cmds -1;
-	write_or_exit(args, idx);
-	if (dup2(args.cmds[idx]->fd_o, 1) == -1)
-		perror("Error dup infile");
-	else
-	{
-		close(args.cmds[idx]->fd_o);
-		close(args.cmds[idx]->pfd[WRITE]);
-		if (dup2(args.cmds[0]->pfd[WRITE], 0) == -1)
-			perror("Error dup outfile ");
-		else
-		{
-			close(args.cmds[idx]->pfd[READ]);
-			//close_pipes(args);
-			show_pipex_args(args);
-			execve(args.cmds[idx]->cmd, args.cmds[idx]->flg, env);
-		}
-	}
-}
-*/
 static int	set_exit_error(t_pipex_args args)
 {
 	int	error;
@@ -227,23 +146,27 @@ static void	cmd_n(t_pipex_args args, char **env)
 	fprintf(stderr, "\nalive %d  ", args.exe_cmds);
 	close_pipes_but_mine(args);
 	open_or_exit(args);
+	show_pipex_args(args);
 	execve(args.cmds[args.exe_cmds]->cmd, args.cmds[args.exe_cmds]->flg, env);
 	//close_mine_pipes(args);
-	if (args.exe_cmds == 0)
+	if (args.exe_cmds < args.num_cmds)
 	{
 		if (!args.cmds[0]->is_r)
 			my_perror(args.cmds[0]->cli, ": command not found");
 		else if (!args.cmds[0]->is_x)
 			my_perror(args.cmds[0]->cli, ": permission denied");
 	}
-	if (args.exe_cmds == args.num_cmds)
+	else
 		exit(set_exit_error(args));
 }
 
 void	execute(t_pipex_args args, char **env)
 {
-	int	error;
-	int	i;
+	int		error;
+	int		i;
+	short	child;
+
+	child = 0;
 
 	while (args.exe_cmds < args.max_cmds)
 	{
@@ -257,10 +180,12 @@ void	execute(t_pipex_args args, char **env)
 		if (args.cmds[args.exe_cmds]->pid == 0)
 		{
 			cmd_n(args, env);
+			child = 1;
+			args.exe_cmds = args.max_cmds - 1;
 		}
 		args.exe_cmds++;
 	}
-	if (args.cmds[args.exe_cmds]->pid != 0)
+	if (!child)
 	{
 		close_pipes(args);
 		i = 0;
@@ -268,7 +193,7 @@ void	execute(t_pipex_args args, char **env)
 		{
 			waitpid(args.cmds[i]->pid, &error, 0);
 			if (WIFEXITED(error))
-				fprintf(stderr, "[%d] exited with %d\n", i, WEXITSTATUS(error));
+				fprintf(stderr, "[%d] %s ==> exited with %d\n", i, args.cmds[i]->cli, WEXITSTATUS(error));
 			i++;
 		}
 	}
