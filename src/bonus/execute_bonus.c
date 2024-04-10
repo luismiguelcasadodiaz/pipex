@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/04/08 09:37:21 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/10 20:44:22 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,11 +143,16 @@ static int	set_exit_error(t_pipex_args args)
 
 static void	cmd_n(t_pipex_args args, char **env)
 {
+	int	result;
+	int	numerr;
+
+
 	fprintf(stderr, "\nalive %d  ", args.exe_cmds);
 	close_pipes_but_mine(args);
 	open_or_exit(args);
 	show_pipex_args(args);
-	execve(args.cmds[args.exe_cmds]->cmd, args.cmds[args.exe_cmds]->flg, env);
+	result = execve(args.cmds[args.exe_cmds]->cmd, args.cmds[args.exe_cmds]->flg, env);
+	numerr = errno;
 	//close_mine_pipes(args);
 	if (args.exe_cmds < args.num_cmds)
 	{
@@ -179,6 +184,8 @@ void	execute(t_pipex_args args, char **env)
 		}
 		if (args.cmds[args.exe_cmds]->pid == 0)
 		{
+			while (args.cmds[args.exe_cmds]->pid == 0)
+				;
 			cmd_n(args, env);
 			child = 1;
 			args.exe_cmds = args.max_cmds - 1;
