@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/04/12 21:04:27 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/12 21:29:15 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,84 +52,11 @@ static void	my_close(int who, int fd, const char *func, int line)
 	free(txt);
 	free(loc);
 }
-/*
-static void	close_pipes(t_pipex_args args)
-{
-	int	i;
-
-	i = 0;
-	while (i < args.num_cmds)
-	{
-		my_close(args.exe_cmds, args.cmds[i]->pfd[0], __func__, __LINE__);
-		my_close(args.exe_cmds, args.cmds[i]->pfd[1], __func__, __LINE__);
-		i++;
-	}
-}
-*/
-/*  
-static void	close_mine_pipes(t_pipex_args args)
-{
-	if (args.exe_cmds != args.num_cmds)
-		my_close(args.exe_cmds, args.cmds[args.exe_cmds]->pfd[WRITE], __func__, __LINE__);
-	if (args.exe_cmds != 0)
-		my_close(args.exe_cmds, args.cmds[args.exe_cmds - 1]->pfd[READ], __func__, __LINE__);
-}
-  */
-/*
-static void	close_pipes_but_mine(t_pipex_args args)
-{
-	int	i;
-
-	fprintf(stderr, "i am cmd[%d] closing fds=[", args.exe_cmds);
-	if (args.exe_cmds == 0)
-	{
-		my_close(args.exe_cmds, args.cmds[0]->pfd[READ], __func__, __LINE__);
-		i = 1;
-		while (i < args.num_cmds)
-		{
-			my_close(args.exe_cmds, args.cmds[i]->pfd[READ], __func__, __LINE__);
-			my_close(args.exe_cmds, args.cmds[i++]->pfd[WRITE], __func__, __LINE__);
-		}
-	}
-	else if ((1 <= args.exe_cmds) && (args.exe_cmds < args.num_cmds - 1))
-	{
-		i = 0;
-		while (i < args.exe_cmds -1)
-		{
-			my_close(args.exe_cmds, args.cmds[i]->pfd[READ], __func__, __LINE__);
-			my_close(args.exe_cmds, args.cmds[i++]->pfd[WRITE], __func__, __LINE__);
-		}
-		my_close(args.exe_cmds, args.cmds[args.exe_cmds - 1]->pfd[WRITE], __func__, __LINE__);
-		my_close(args.exe_cmds, args.cmds[args.exe_cmds]->pfd[READ], __func__, __LINE__);
-		i = args.exe_cmds + 1;
-		while (i < args.num_cmds)
-		{
-			my_close(args.exe_cmds, args.cmds[i]->pfd[READ], __func__, __LINE__);
-			my_close(args.exe_cmds, args.cmds[i++]->pfd[WRITE], __func__, __LINE__);
-		}
-	}
-	else
-	{
-		i = 0;
-		while (i < args.num_cmds - 2)
-		{
-			my_close(args.exe_cmds, args.cmds[i]->pfd[READ], __func__, __LINE__);
-			my_close(args.exe_cmds, args.cmds[i++]->pfd[WRITE], __func__, __LINE__);
-		}
-		my_close(args.exe_cmds, args.cmds[i]->pfd[WRITE], __func__, __LINE__);
-		i++;
-		my_close(args.exe_cmds, args.cmds[i]->pfd[READ], __func__, __LINE__);
-		my_close(args.exe_cmds, args.cmds[i]->pfd[WRITE], __func__, __LINE__);
-	}
-	fprintf(stderr, "%s\n", "]");
-}
-*/
 
 static int	set_exit_error(t_pipex_args args)
 {
 	int	error;
 
-	//close_pipes(args);
 	error = -1;
 	if (!args.cmds[args.max_cmds -1]->is_r)
 	{
