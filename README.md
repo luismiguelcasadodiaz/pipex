@@ -249,6 +249,19 @@ In the same way, "tr 'a' 'e'", also fits into execve() without problems.
 It is not the case with, "tr 'a' ''", that substitutes a by ' if passed as {"tr", "'a'", "'", NULL}
 It is not the case with, "tr 'a' ' '", that do not execute if passed as {"tr", "'a'", "'", "'", NULL}
 
+### First Approach
+In my first a approach the commands structure holds a fd[2]  to hold its own pipe.
+it is the parent process who oppens all pipe requested according the numbre of comads to execute.
+I managed the fd deluge the father and the fork() creates. Such child closes the not needed fds.
+
+But i notice i have a relative low numbre of command to process, 120, cause hitting MAX_OPEN_FILES.
+
+I discover it comparing wiht how many | a bash command supports. more than 1000.
+
+### Second Approach
+The parent will create a pipe before forking the file. 
+the parente waits the child to finish before looping to execute the next command.
+
 ## What I read.
 
 [Here doc](https://linuxize.com/post/bash-heredoc/)
