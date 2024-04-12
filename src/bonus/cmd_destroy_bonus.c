@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:30:32 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/18 14:24:56 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/12 13:49:24 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,5 @@ void	cmd_destroy(t_cmd *x)
 	if (x->is_r)
 		free(x->cmd);
 	free(x->flg);
-	if (x->fd_i != -1)
-		close(x->fd_i);
-	if (x->fd_o != -1)
-		close(x->fd_o);
 	x = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:51:53 by luicasad          #+#    #+#             */
-/*   Updated: 2024/03/28 09:45:04 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/12 13:51:24 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_BONUS_H
@@ -27,8 +27,9 @@
    @var  cli: command line argument "wc" only.
    @var  cmd: command name wiht absolute path. "/usr/bin/wc"
    @var  flg: **char ready to pass it to execve "/usr/bin/wc" "-l" "NULL"
-   @var  arg: list of argument ot pass to the command.
-   @var	 pfd: array with 2 file descriptors to holde a pipe.
+   @var	 pid: fork() returns it to the father each child borns.
+   @var is_r: flag settled when command file is readable.
+   @var is_x: flag settled when command file is executable.
 
    @details
    A pipex argument like "ls -al" will be separated in two parts, the command
@@ -44,9 +45,6 @@ typedef struct s_cmd
 	pid_t	pid;
 	int		is_r;
 	int		is_x;
-	int		fd_i;
-	int		fd_o;
-	int		pfd[2];
 }	t_cmd;
 
 /* ************************************************************************** */
@@ -70,8 +68,10 @@ void			cmd_destroy(t_cmd *cmd);
    @var       pwd: Holdes PWD enviromental var
    @var    in_arg: infile filename passed in CLI
    @var    infile: Path to infile.
+   @var      fd_i: input file file descriptor when opened
    @var	  free_in: Flag. If 1 frees a strjoined infile (not starting by '/')
    @var    ou_arg: oitfile filename passed in CLI
+   @var      fd_o: output file file descriptos when opened
    @var   outfile: path to outfile.
    @var	  free_ou: Flag. If 1 frees a strjoined outfile (not starting by '/')
    @var    **cmds: array of strucutures holding commands variables
@@ -89,10 +89,13 @@ typedef struct s_pipex_args
 	char	*pwd;
 	char	*in_arg;
 	char	*infile;
+	int		fd_i;
 	int		free_in;
 	char	*ou_arg;
 	char	*outfile;
+	int		fd_o;
 	int		free_ou;
+	int		one_pipe[2];
 	t_cmd	**cmds;
 }	t_pipex_args;
 
@@ -108,7 +111,7 @@ void			destroy(t_pipex_args args);
 /* execute() forks and control child processes                                */
 /* ************************************************************************** */
 void			execute(t_pipex_args pip_arg, char **env);
-void			open_or_exit(t_pipex_args args);
+//void			open_or_exit(t_pipex_args args);
 /* ************************************************************************** */
 /* set_file() assign absolute path to file in the right slot                  */
 /* ************************************************************************** */

@@ -40,7 +40,7 @@ Should behave like:
 cmd << LIMITER | cmd1 >> file
 ```
 
-# Approach
+# General Approach
 
 ## Argument validation
 
@@ -58,16 +58,42 @@ The struct holds a all_ok variable that indicates if all filenames and commands 
 Also, max_cmds and num_cmds help to manage the cmds malloc
 
 ```c
-typedef struct	s_pipex_args
+typedef struct s_pipex_args
 {
 	int		max_cmds;
 	int		num_cmds;
+	int		exe_cmds;
+	short	all_ok;
+	char	*path;
+	char	*pwd;
+	char	*in_arg;
 	char	*infile;
+	int		fd_i;
+	int		free_in;
+	char	*ou_arg;
 	char	*outfile;
-	char	**cmds;
-	int		all_ok;
+	int		fd_o;
+	int		free_ou;
+	t_cmd	**cmds;
 }	t_pipex_args;
 ```
+   @var  max_cmds: number of commands in pipe, comes from argc minus 3.
+   @var  num_cmds: number of commands with verified  absolute path.
+   @var	 exe_cmds: number of executed commands
+   @var    all_ok: indicates if all files and commands are ok = 1.
+   @var      path: Holds PATH enviromental var 
+   @var       pwd: Holdes PWD enviromental var
+   @var    in_arg: infile filename passed in CLI
+   @var    infile: Path to infile.
+   @var      fd_i: input file file descriptor when opened
+   @var	  free_in: Flag. If 1 frees a strjoined infile (not starting by '/')
+   @var    ou_arg: oitfile filename passed in CLI
+   @var      fd_o: output file file descriptos when opened
+   @var   outfile: path to outfile.
+   @var	  free_ou: Flag. If 1 frees a strjoined outfile (not starting by '/')
+   @var    **cmds: array of strucutures holding commands variables
+
+
 ## What is a Shell command?
 
 ### According to `man bash`:
@@ -269,6 +295,14 @@ the parente waits the child to finish before looping to execute the next command
 [Simulating pipe](https://www.youtube.com/watch?v=6xbLgZpOBi8)
 
 ## What I Learnt
+
+### errno command
+There is a linux command to list all error codes at execution time.
+
+```bash
+errno --list
+```
+
 
 ### Leaks checking
 

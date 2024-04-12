@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/04/10 20:44:22 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/12 21:04:27 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	my_close(int who, int fd, const char *func, int line)
 	free(txt);
 	free(loc);
 }
-
+/*
 static void	close_pipes(t_pipex_args args)
 {
 	int	i;
@@ -65,6 +65,7 @@ static void	close_pipes(t_pipex_args args)
 		i++;
 	}
 }
+*/
 /*  
 static void	close_mine_pipes(t_pipex_args args)
 {
@@ -74,6 +75,7 @@ static void	close_mine_pipes(t_pipex_args args)
 		my_close(args.exe_cmds, args.cmds[args.exe_cmds - 1]->pfd[READ], __func__, __LINE__);
 }
   */
+/*
 static void	close_pipes_but_mine(t_pipex_args args)
 {
 	int	i;
@@ -121,6 +123,7 @@ static void	close_pipes_but_mine(t_pipex_args args)
 	}
 	fprintf(stderr, "%s\n", "]");
 }
+*/
 
 static int	set_exit_error(t_pipex_args args)
 {
@@ -146,14 +149,18 @@ static void	cmd_n(t_pipex_args args, char **env)
 	int	result;
 	int	numerr;
 
-
 	fprintf(stderr, "\nalive %d  ", args.exe_cmds);
-	close_pipes_but_mine(args);
-	open_or_exit(args);
-	show_pipex_args(args);
+	my_close(args.exe_cmds, args.one_pipe[READ], __func__, __LINE__);
+	if ((args.exe_cmds < args.num_cmds) && (dup2(args.one_pipe[WRITE], STDOUT_FILENO) == -1i))
+			ft_error_exit(ERR007, __func__, __LINE__);
+	else if (dup2(args.fd_o, STDOUT_FILENO) == -1)
+			ft_error_exit(ERR007, __func__, __LINE__);
+	my_close(args.exe_cmds, args.fd_o, __func__, __LINE__);
+	my_close(args.exe_cmds, args.one_pipe[WRITE], __func__, __LINE__);
+	my_close(args.exe_cmds, args.fd_i, __func__, __LINE__);
 	result = execve(args.cmds[args.exe_cmds]->cmd, args.cmds[args.exe_cmds]->flg, env);
 	numerr = errno;
-	//close_mine_pipes(args);
+	fprintf(stderr, "execve returned [%d] with errno=[%d] \n", result, numerr);
 	if (args.exe_cmds < args.num_cmds)
 	{
 		if (!args.cmds[0]->is_r)
@@ -168,40 +175,48 @@ static void	cmd_n(t_pipex_args args, char **env)
 void	execute(t_pipex_args args, char **env)
 {
 	int		error;
-	int		i;
-	short	child;
 
-	child = 0;
+	args.fd_i = open(args.infile, O_RDONLY);
+	if (args.fd_i == -1)
+	{
+		my_perror(args.in_arg, NULL);
+		exit(1);
+	}
+	if ((dup2(args.fd_i, STDIN_FILENO) == -1))
+			ft_error_exit(ERR007, __func__, __LINE__);
+	my_close(-1, args.fd_i, __func__, __LINE__);
+	args.fd_o = open(args.outfile, \
+				O_TRUNC | O_WRONLY | O_CREAT, 0664);
+	if (args.fd_o == -1)
+	{
+			my_perror("P1pex: ", args.ou_arg);
+			exit(1);
+	}
 
 	while (args.exe_cmds < args.max_cmds)
 	{
+		if (pipe(args.one_pipe) < 0)
+			ft_error_exit(ERR021, __func__, __LINE__);
 		fprintf(stderr, "creating %d of %d\n", args.exe_cmds, args.max_cmds);
 		args.cmds[args.exe_cmds]->pid = fork();
 		if (args.cmds[args.exe_cmds]->pid < 0)
-		{
-			close_pipes(args);
 			ft_error_exit(errno, __func__, __LINE__);
-		}
 		if (args.cmds[args.exe_cmds]->pid == 0)
 		{
-			while (args.cmds[args.exe_cmds]->pid == 0)
-				;
 			cmd_n(args, env);
-			child = 1;
 			args.exe_cmds = args.max_cmds - 1;
+		}
+		else
+		{
+			my_close(-1, args.one_pipe[WRITE], __func__, __LINE__);
+			if ((args.exe_cmds < args.max_cmds - 1) && dup2(args.one_pipe[READ], STDIN_FILENO) == 1)
+				ft_error_exit(ERR007, __func__, __LINE__);
+			my_close(-1, args.one_pipe[READ], __func__, __LINE__);
+			waitpid(args.cmds[args.exe_cmds]->pid, &error, 0);
+			if (WIFEXITED(error))
+				fprintf(stderr, "[%d] %s ==> exited with %d\n", args.exe_cmds, args.cmds[args.exe_cmds]->cli, WEXITSTATUS(error));
 		}
 		args.exe_cmds++;
 	}
-	if (!child)
-	{
-		close_pipes(args);
-		i = 0;
-		while (i < args.max_cmds)
-		{
-			waitpid(args.cmds[i]->pid, &error, 0);
-			if (WIFEXITED(error))
-				fprintf(stderr, "[%d] %s ==> exited with %d\n", i, args.cmds[i]->cli, WEXITSTATUS(error));
-			i++;
-		}
-	}
+	my_close(-1, args.fd_o, __func__, __LINE__);
 }

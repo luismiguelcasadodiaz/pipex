@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:06 by luicasad          #+#    #+#             */
-/*   Updated: 2024/04/08 09:33:30 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/12 13:52:40 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	show_pipex_args(t_pipex_args args)
 		}
 		fprintf(stderr,"R_OK=%d ", args.cmds[i]->is_r);
 		fprintf(stderr,"X_OK=%d ", args.cmds[i]->is_x);
-		fprintf(stderr,"fd_i=%d ", args.cmds[i]->fd_i);
-		fprintf(stderr,"fd_o=%d ", args.cmds[i]->fd_o);
-		fprintf(stderr,"pipe[0]=%d ", args.cmds[i]->pfd[READ]);
-		fprintf(stderr,"pipe[1]=%d ", args.cmds[i]->pfd[WRITE]);
+		fprintf(stderr,"fd_i=%d ", args.fd_i);
+		fprintf(stderr,"fd_o=%d ", args.fd_o);
+		fprintf(stderr,"pipe[0]=%d ", args.one_pipe[READ]);
+		fprintf(stderr,"pipe[1]=%d ", args.one_pipe[WRITE]);
 		fprintf(stderr,"\n");
 	}
 	fprintf(stderr,"all_ok %d\n", args.all_ok);

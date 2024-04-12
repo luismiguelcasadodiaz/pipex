@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/04/08 09:16:09 by luicasad         ###   ########.fr        #
+#    Updated: 2024/04/12 13:54:35 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,7 +89,7 @@ LOADLIBERROR 		= fterror
 
 MYLIBS			= $(NAMELIBPRINTF) $(NAMELIBFT) $(NAMELIBARGPA) $(NAMELIBERROR)
 LLIBS 			= -L$(LIBDIR) -l$(LOADLIBARGPA) -l$(LOADLIBPRINTF) -l$(LOADLIBERROR) -l$(LOADLIBFT) 
-LLIBS_BONUS		= -L$(LIBDIR) -l$(LOADLIBPRINTF) -l$(LOADLIBERROR) -l$(LOADLIBFT) 
+LLIBS_BONUS		= -L$(LIBDIR) -l$(LOADLIBERROR) -l$(LOADLIBFT) -l$(LOADLIBPRINTF) 
 # ============================================================================ #
 #                                 SOURCES                                      #
 # ============================================================================ #
@@ -119,7 +119,6 @@ SRCS_BONUS	= 	execute_bonus.c \
 				destroy_bonus.c \
 				cmd_create_bonus.c \
 				cmd_destroy_bonus.c \
-				open_or_exit_bonus.c \
 				show_pipex_args_bonus.c \
 				set_file_bonus.c \
 				pipex_bonus.c \
@@ -131,6 +130,7 @@ SRCS_BONUS	= 	execute_bonus.c \
 				arg_is_ou_file_bonus.c \
 				arg_val_var_bonus.c \
 				arg_ok_bonus.c
+				#open_or_exit_bonus.c \
 
 FILE_BONUS = $(addprefix $(SRCDIR_BONUS), $(SRCS_BONUS))
 
