@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/04/12 13:54:35 by luicasad         ###   ########.fr        #
+#    Updated: 2024/04/15 13:27:47 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -267,6 +267,7 @@ run:
 	valgrind -s --tool=memcheck --leak-check=full --track-origins=yes --track-fds=yes --trace-children=yes ./$(NAME) $(VAR)
 bonusrun:
 	#valgrind -s --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes ./$(BONUS) $(VAR)
-	valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./$(BONUS) $(VAR)
+	#valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./$(BONUS) $(VAR)
+	valgrind --track-fds=yes --trace-children=yes ./$(BONUS) $(VAR)
 bonusrung:
 	valgrind --tool=massif --stacks=yes ./$(BONUS)

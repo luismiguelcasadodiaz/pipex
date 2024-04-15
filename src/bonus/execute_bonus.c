@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/04/12 21:29:15 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/15 13:40:43 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,25 @@ static void	cmd_n(t_pipex_args args, char **env)
 
 	fprintf(stderr, "\nalive %d  ", args.exe_cmds);
 	my_close(args.exe_cmds, args.one_pipe[READ], __func__, __LINE__);
-	if ((args.exe_cmds < args.num_cmds) && (dup2(args.one_pipe[WRITE], STDOUT_FILENO) == -1i))
+	if (args.exe_cmds < args.num_cmds - 1)
+	{
+		if (dup2(args.one_pipe[WRITE], STDOUT_FILENO) == -1)
 			ft_error_exit(ERR007, __func__, __LINE__);
+		else
+		{
+			my_close(args.exe_cmds, args.one_pipe[WRITE], __func__, __LINE__);
+		//	my_close(args.exe_cmds, args.fd_i, __func__, __LINE__);
+		}
+	}
 	else if (dup2(args.fd_o, STDOUT_FILENO) == -1)
 			ft_error_exit(ERR007, __func__, __LINE__);
-	my_close(args.exe_cmds, args.fd_o, __func__, __LINE__);
-	my_close(args.exe_cmds, args.one_pipe[WRITE], __func__, __LINE__);
-	my_close(args.exe_cmds, args.fd_i, __func__, __LINE__);
+		else
+		{
+			my_close(args.exe_cmds, args.fd_o, __func__, __LINE__);
+			//my_close(args.exe_cmds, args.fd_i, __func__, __LINE__);
+		}
+	//my_close(args.exe_cmds, args.one_pipe[WRITE], __func__, __LINE__);
+	//my_close(args.exe_cmds, args.fd_i, __func__, __LINE__);
 	result = execve(args.cmds[args.exe_cmds]->cmd, args.cmds[args.exe_cmds]->flg, env);
 	numerr = errno;
 	fprintf(stderr, "execve returned [%d] with errno=[%d] \n", result, numerr);
@@ -113,7 +125,7 @@ void	execute(t_pipex_args args, char **env)
 			ft_error_exit(ERR007, __func__, __LINE__);
 	my_close(-1, args.fd_i, __func__, __LINE__);
 	args.fd_o = open(args.outfile, \
-				O_TRUNC | O_WRONLY | O_CREAT, 0664);
+    				O_TRUNC | O_WRONLY | O_CREAT, 0664);
 	if (args.fd_o == -1)
 	{
 			my_perror("P1pex: ", args.ou_arg);
@@ -145,5 +157,5 @@ void	execute(t_pipex_args args, char **env)
 		}
 		args.exe_cmds++;
 	}
-	my_close(-1, args.fd_o, __func__, __LINE__);
+	//my_close(-1, args.fd_o, __func__, __LINE__);
 }
