@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 14:59:58 by luicasad          #+#    #+#              #
-#    Updated: 2024/04/08 09:16:09 by luicasad         ###   ########.fr        #
+#    Updated: 2024/04/17 09:20:57 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,7 +89,7 @@ LOADLIBERROR 		= fterror
 
 MYLIBS			= $(NAMELIBPRINTF) $(NAMELIBFT) $(NAMELIBARGPA) $(NAMELIBERROR)
 LLIBS 			= -L$(LIBDIR) -l$(LOADLIBARGPA) -l$(LOADLIBPRINTF) -l$(LOADLIBERROR) -l$(LOADLIBFT) 
-LLIBS_BONUS		= -L$(LIBDIR) -l$(LOADLIBPRINTF) -l$(LOADLIBERROR) -l$(LOADLIBFT) 
+LLIBS_BONUS		= -L$(LIBDIR) -l$(LOADLIBERROR) -l$(LOADLIBFT) -l$(LOADLIBPRINTF) 
 # ============================================================================ #
 #                                 SOURCES                                      #
 # ============================================================================ #
