@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:51:53 by luicasad          #+#    #+#             */
-/*   Updated: 2024/04/12 13:51:24 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:10:24 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_BONUS_H
@@ -96,6 +96,7 @@ typedef struct s_pipex_args
 	int		fd_o;
 	int		free_ou;
 	int		one_pipe[2];
+	int		error_code;
 	t_cmd	**cmds;
 }	t_pipex_args;
 
@@ -110,7 +111,7 @@ void			destroy(t_pipex_args args);
 /* ************************************************************************** */
 /* execute() forks and control child processes                                */
 /* ************************************************************************** */
-void			execute(t_pipex_args pip_arg, char **env);
+int			execute(t_pipex_args pip_arg, char **env);
 //void			open_or_exit(t_pipex_args args);
 /* ************************************************************************** */
 /* set_file() assign absolute path to file in the right slot                  */

@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/04/17 12:11:29 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:19:40 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,27 +51,29 @@ static void	my_close(int who, int fd, const char *func, int line)
 	free(loc);
 }
 
-static int	set_exit_error(t_pipex_args args)
+static int	set_exit_error(t_pipex_args args, int error)
 {
-	int	error;
+	//int	error;
 
-	error = -1;
-	if (!args.cmds[args.max_cmds -1]->is_r)
+	//error = -1;
+	if ((error == 2) || (error == 14))
+	//if (!args.cmds[args.max_cmds -1]->is_r)
 	{
 		error = 127;
-		my_perror(args.cmds[args.max_cmds -1]->cli, ": command not found");
+		my_perror(args.cmds[args.max_cmds -1]->cli, "<: command not found");
 	}
-	else if (!args.cmds[args.max_cmds -1]->is_x)
+	else if (error == 13)
+	//else if (!args.cmds[args.max_cmds -1]->is_x)
 	{
 		error = 126;
-		my_perror(args.cmds[args.max_cmds -1]->cli, ": permission denied");
+		my_perror(args.cmds[args.max_cmds -1]->cli, "<: permission denied");
 	}
 	return (error);
 }
 
 static void	cmd_n(t_pipex_args args, char **env)
 {
-	int	result;
+	//int	result;
 	int	numerr;
 
 	my_close(args.exe_cmds, args.one_pipe[READ], __func__, __LINE__);
@@ -95,25 +97,29 @@ static void	cmd_n(t_pipex_args args, char **env)
 			my_close(args.exe_cmds, args.fd_o, __func__, __LINE__);
 		}
 	}
-	result = execve(args.cmds[args.exe_cmds]->cmd, \
+	execve(args.cmds[args.exe_cmds]->cmd, \
 				args.cmds[args.exe_cmds]->flg, env);
 	numerr = errno;
-	fprintf(stderr, "execve returned [%d] with errno=[%d] \n", result, numerr);
-	if (args.exe_cmds < args.num_cmds)
+	//fprintf(stderr, "execve returned [%d] with errno=[%d] \n", result, numerr);
+	//fprintf(stderr, "errno=[%d]", result);
+	if (args.exe_cmds < args.num_cmds -1 )
 	{
-		if (!args.cmds[0]->is_r)
-			my_perror(args.cmds[0]->cli, ": command not found");
-		else if (!args.cmds[0]->is_x)
-			my_perror(args.cmds[0]->cli, ": permission denied");
+		if ((numerr == 2) || (numerr == 14))
+		//if (!args.cmds[0]->is_r)
+			my_perror(args.cmds[args.exe_cmds]->cli, ": command not found");
+		if (numerr == 13)
+		//else if (!args.cmds[0]->is_x)
+			my_perror(args.cmds[args.exe_cmds]->cli, ": permission denied");
 	}
 	else
-		exit(set_exit_error(args));
+		exit(set_exit_error(args, numerr));
 }
 
-void	execute(t_pipex_args args, char **env)
+int	execute(t_pipex_args args, char **env)
 {
 	int		error;
 	int		iamchild;
+	int	error_code;
 
 	iamchild = 0;
 	args.fd_i = open(args.infile, O_RDONLY);
@@ -156,12 +162,16 @@ void	execute(t_pipex_args args, char **env)
 			if (WIFEXITED(error))
 			{
 				if (WEXITSTATUS(error))
-					fprintf(stderr, "[%d] %s ==> exited with %d\n", args.exe_cmds, \
-					args.cmds[args.exe_cmds]->cli, WEXITSTATUS(error));
+				{
+					error_code = WEXITSTATUS(error);	
+					//fprintf(stderr, "[%d] %s ==> exited with %d\n", args.exe_cmds, 
+					//args.cmds[args.exe_cmds]->cli, error_code);
+				}
 			}
 		}
 		args.exe_cmds++;
 	}
 	if (!iamchild)
 		my_close(-1, args.fd_o, __func__, __LINE__);
+	return (error_code);
 }
