@@ -277,16 +277,16 @@ It is not the case with, "tr 'a' ' '", that do not execute if passed as {"tr", "
 
 ### First Approach
 In my first a approach the commands structure holds a fd[2]  to hold its own pipe.
-it is the parent process who oppens all pipe requested according the numbre of comads to execute.
-I managed the fd deluge the father and the fork() creates. Such child closes the not needed fds.
+It is the parent process who opens all pipes requested according the number of commands to execute.
+I managed the fd deluge the father and the fork() creates. Each child closes the not needed fds.
 
-But i notice i have a relative low numbre of command to process, 120, cause hitting MAX_OPEN_FILES.
+But i notice i have a relative low number of command to process, 120, cause hitting MAX_OPEN_FILES.
 
 I discover it comparing wiht how many | a bash command supports. more than 1000.
 
 ### Second Approach
 The parent will create a pipe before forking the file. 
-the parente waits the child to finish before looping to execute the next command.
+The parente waits the child to finish before looping to execute the next command.
 
 ## What I read.
 
@@ -441,4 +441,4 @@ cat: stdin: Bad file descriptor
 
 
 
-A commnad `<infile.txt cat|cat|...|cat cat`   with 3333 cat commands inside executes normally in my computer, but not with 3334. This is my memory limit. Them i tried `./bonus infile cat cat ... cat cat removeme` and i got a bad file descriptor error.
+A commnad `<infile.txt cat|cat|...|cat cat`   with 3333 cat commands inside executes normally in my computer, but not with 3334. This is my memory limit. Them i tried `./bonus infile cat cat ... cat cat removeme` with 638 commands and i got a error 21 too many files open . this situation showed me that my architecture was not properly handled. Creating one pipe per commnad strategy failed.

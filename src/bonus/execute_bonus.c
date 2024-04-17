@@ -6,7 +6,7 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:05:14 by luicasad          #+#    #+#             */
-/*   Updated: 2024/04/15 13:40:43 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/17 12:11:29 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ static void	my_close(int who, int fd, const char *func, int line)
 	r = close(fd);
 	if (r)
 		my_perror(loc, txt);
-	else
-		fprintf(stderr, "closed [%d]  ", fd);
 	free(txt);
 	free(loc);
 }
@@ -76,7 +74,6 @@ static void	cmd_n(t_pipex_args args, char **env)
 	int	result;
 	int	numerr;
 
-	fprintf(stderr, "\nalive %d  ", args.exe_cmds);
 	my_close(args.exe_cmds, args.one_pipe[READ], __func__, __LINE__);
 	if (args.exe_cmds < args.num_cmds - 1)
 	{
@@ -85,19 +82,21 @@ static void	cmd_n(t_pipex_args args, char **env)
 		else
 		{
 			my_close(args.exe_cmds, args.one_pipe[WRITE], __func__, __LINE__);
-		//	my_close(args.exe_cmds, args.fd_i, __func__, __LINE__);
+			my_close(args.exe_cmds, args.fd_o, __func__, __LINE__);
 		}
 	}
-	else if (dup2(args.fd_o, STDOUT_FILENO) == -1)
+	else
+	{
+		if (dup2(args.fd_o, STDOUT_FILENO) == -1)
 			ft_error_exit(ERR007, __func__, __LINE__);
 		else
 		{
+			my_close(args.exe_cmds, args.one_pipe[WRITE], __func__, __LINE__);
 			my_close(args.exe_cmds, args.fd_o, __func__, __LINE__);
-			//my_close(args.exe_cmds, args.fd_i, __func__, __LINE__);
 		}
-	//my_close(args.exe_cmds, args.one_pipe[WRITE], __func__, __LINE__);
-	//my_close(args.exe_cmds, args.fd_i, __func__, __LINE__);
-	result = execve(args.cmds[args.exe_cmds]->cmd, args.cmds[args.exe_cmds]->flg, env);
+	}
+	result = execve(args.cmds[args.exe_cmds]->cmd, \
+				args.cmds[args.exe_cmds]->flg, env);
 	numerr = errno;
 	fprintf(stderr, "execve returned [%d] with errno=[%d] \n", result, numerr);
 	if (args.exe_cmds < args.num_cmds)
@@ -114,7 +113,9 @@ static void	cmd_n(t_pipex_args args, char **env)
 void	execute(t_pipex_args args, char **env)
 {
 	int		error;
+	int		iamchild;
 
+	iamchild = 0;
 	args.fd_i = open(args.infile, O_RDONLY);
 	if (args.fd_i == -1)
 	{
@@ -122,21 +123,19 @@ void	execute(t_pipex_args args, char **env)
 		exit(1);
 	}
 	if ((dup2(args.fd_i, STDIN_FILENO) == -1))
-			ft_error_exit(ERR007, __func__, __LINE__);
+		ft_error_exit(ERR007, __func__, __LINE__);
 	my_close(-1, args.fd_i, __func__, __LINE__);
 	args.fd_o = open(args.outfile, \
-    				O_TRUNC | O_WRONLY | O_CREAT, 0664);
+	O_TRUNC | O_WRONLY | O_CREAT, 0664);
 	if (args.fd_o == -1)
 	{
-			my_perror("P1pex: ", args.ou_arg);
-			exit(1);
+		my_perror("P1pex: ", args.ou_arg);
+		exit(1);
 	}
-
 	while (args.exe_cmds < args.max_cmds)
 	{
 		if (pipe(args.one_pipe) < 0)
 			ft_error_exit(ERR021, __func__, __LINE__);
-		fprintf(stderr, "creating %d of %d\n", args.exe_cmds, args.max_cmds);
 		args.cmds[args.exe_cmds]->pid = fork();
 		if (args.cmds[args.exe_cmds]->pid < 0)
 			ft_error_exit(errno, __func__, __LINE__);
@@ -144,18 +143,25 @@ void	execute(t_pipex_args args, char **env)
 		{
 			cmd_n(args, env);
 			args.exe_cmds = args.max_cmds - 1;
+			iamchild = 1;
 		}
 		else
 		{
 			my_close(-1, args.one_pipe[WRITE], __func__, __LINE__);
-			if ((args.exe_cmds < args.max_cmds - 1) && dup2(args.one_pipe[READ], STDIN_FILENO) == 1)
+			if ((args.exe_cmds < args.max_cmds - 1) && \
+					dup2(args.one_pipe[READ], STDIN_FILENO) == 1)
 				ft_error_exit(ERR007, __func__, __LINE__);
 			my_close(-1, args.one_pipe[READ], __func__, __LINE__);
 			waitpid(args.cmds[args.exe_cmds]->pid, &error, 0);
 			if (WIFEXITED(error))
-				fprintf(stderr, "[%d] %s ==> exited with %d\n", args.exe_cmds, args.cmds[args.exe_cmds]->cli, WEXITSTATUS(error));
+			{
+				if (WEXITSTATUS(error))
+					fprintf(stderr, "[%d] %s ==> exited with %d\n", args.exe_cmds, \
+					args.cmds[args.exe_cmds]->cli, WEXITSTATUS(error));
+			}
 		}
 		args.exe_cmds++;
 	}
-	//my_close(-1, args.fd_o, __func__, __LINE__);
+	if (!iamchild)
+		my_close(-1, args.fd_o, __func__, __LINE__);
 }
