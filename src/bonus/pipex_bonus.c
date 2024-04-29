@@ -6,15 +6,14 @@
 /*   By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:57:30 by luicasad          #+#    #+#             */
-/*   Updated: 2024/04/17 13:14:06 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/22 10:22:47 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 #include <stdlib.h>
-#include <unistd.h>
-#include "ft_error.h"
-#include <stdio.h>
+//#include <unistd.h>
+//#include <stdio.h>
 
 int	main(int argc, char **argv)
 {

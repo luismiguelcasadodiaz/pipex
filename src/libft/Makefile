@@ -6,7 +6,7 @@
 #    By: luicasad <luicasad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/21 18:16:38 by luicasad          #+#    #+#              #
-#    Updated: 2024/03/10 00:21:49 by luicasad         ###   ########.fr        #
+#    Updated: 2024/04/29 10:53:29 by luicasad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #MAKEFLAGS += rR
@@ -87,6 +87,7 @@ SRCS	=	ft_isalnum.c \
       	ft_strnstr.c \
       	ft_substr.c \
       	ft_strjoin.c \
+		ft_strjoin_int.c \
 		ft_split_mem.c \
       	ft_split.c \
 		ft_split_pipex.c \

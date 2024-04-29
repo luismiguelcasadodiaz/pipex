@@ -6,15 +6,15 @@
 /*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:26:56 by luicasad          #+#    #+#             */
-/*   Updated: 2024/04/12 13:48:59 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:45:21 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 #include <stdlib.h>
 #include "ft_error.h"
-#include "libft.h"
-#include <unistd.h>
+//#include "libft.h"
+//#include <unistd.h>
 
 t_cmd	*cmd_create(char *cmd, char **flg)
 {

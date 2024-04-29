@@ -6,13 +6,13 @@
 /*   By: luicasad <luicasad@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 09:18:22 by luicasad          #+#    #+#             */
-/*   Updated: 2024/04/17 12:51:10 by luicasad         ###   ########.fr       */
+/*   Updated: 2024/04/22 12:14:55 by luicasad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 #include <stdlib.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include "ft_error.h"
 
 t_pipex_args	create(int max_cmds)
@@ -40,6 +40,3 @@ t_pipex_args	create(int max_cmds)
 	r.error_code = 0;
 	return (r);
 }
-	//i = -1;
-	//while (++i < (r.max_cmds - 1))
-	//	dup2(r.cmds[i]->pfd[1], r.cmds[i + 1]->pfd[0]);
